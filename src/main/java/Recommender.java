@@ -6,5 +6,8 @@ import org.apache.spark.mllib.recommendation.Rating;
 public interface Recommender {
 
     //public static Rating[] getRecsForUser(int id, int num);
-    public void init2();
+    //public void init2();
+
+    public void update(String trainingFile);
+    public int[] recommend(int userId, int num);
 }

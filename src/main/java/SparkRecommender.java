@@ -33,12 +33,17 @@ public class SparkRecommender implements Recommender, Serializable {
     private static JavaSparkContext sc;
     private static MatrixFactorizationModel model;
     private static List<Tuple2<Object, Iterable<Rating>>> ratingPerUser;
+    private int rank;
+    private int iterations;
+    private double lambda;
+    private double alpha;
+
 
     public static void main(String[] args) {
         //init();
         //SparkRecommender sr = new SparkRecommender();
-        Recommender r = new SparkRecommender();
-        r.init2();
+        SparkRecommender r = new SparkRecommender();
+        r.init();
         //sr.init2();
         /*int x = 1; //teller
         Rating[] predictionsForUser = model.recommendProducts(1, 10);
@@ -57,12 +62,13 @@ public class SparkRecommender implements Recommender, Serializable {
             System.out.println("\t" + r.product()+ ", score " + r.rating());
         }
         System.out.println(recs.length);*/
-        writeTopNToFile();
+
+        //writeTopNToFile();
 
         stopSparkContext();
     }
 
-    public void init2() {
+    public void init() {
         conf = new SparkConf().
                 setAppName("Java Ranking Metrics Example").
                 setMaster("local");
@@ -150,10 +156,34 @@ public class SparkRecommender implements Recommender, Serializable {
 
         // Train an ALS model
         //final MatrixFactorizationModel model = ALS.train(JavaRDD.toRDD(ratings), 10, 10, 0.01);
+        //trainImplicit(RDD<Rating> ratings, int rank, int iterations, double lambda, double alpha)
         model = ALS.trainImplicit(JavaRDD.toRDD(ratings), 10, 10, 0.01, 0.01);
     }
 
-    public static void init() {
+
+    public void initialize() {
+        conf = new SparkConf().
+                setAppName("Model-based recommender").
+                setMaster("local");
+        sc = new JavaSparkContext(conf);
+        rank = 10;
+        iterations = 10;
+        lambda = 0.01;
+        alpha = 0.01;
+    }
+
+    public void initialize(int rank, int iterations, double lambda, double alpha) {
+        conf = new SparkConf().
+                setAppName("Model-based recommender").
+                setMaster("local");
+        sc = new JavaSparkContext(conf);
+        this.rank = rank;
+        this.iterations = iterations;
+        this.lambda = lambda;
+        this.alpha = alpha;
+    }
+
+    /*public static void init() {
         conf = new SparkConf().
                 setAppName("Java Ranking Metrics Example").
                 setMaster("local");
@@ -165,6 +195,66 @@ public class SparkRecommender implements Recommender, Serializable {
         //String path = "/home/simen/Documents/datasett/crossfold-movielens100k.data/training"; //ikke binary - men gjoer om til
         String path= "/home/simen/Documents/datasett/crossfold-movielens-binary/training";
         JavaRDD<String> data = sc.textFile(path);
+        JavaRDD<Rating> ratings = data.map(
+                new Function<String, Rating>() {
+                    @Override
+                    public Rating call(String line) {
+                        //String[] parts = line.split("::");
+                        String[] parts = line.split("\t");
+                        //String[] parts = line.split(",");
+                        */
+                        /*double ratingValue = Double.parseDouble(parts[2]);
+                        if (ratingValue > 0) {
+                            ratingValue = 1;
+                        }
+                        else {
+                            ratingValue = 0;
+                        }
+                        return new Rating(Integer.parseInt(parts[0]),
+                                Integer.parseInt(parts[1]), ratingValue);
+
+                    }
+                }
+        );
+        ratings.cache();
+
+
+        //finn alle ratings for hver bruker her -> bruke list sin removeAll fra recommendationslista
+        //boer nok forst groupby user som i userMovies i annen fil
+        // Group ratings by common user //LITT USIKKER -> tror gjoer om fra Rating-map til <id, [Rating]>-tupler for hver bruker
+        JavaPairRDD<Object, Iterable<Rating>> userMovies = ratings.groupBy( //grupperer ratings etter bruker
+                new Function<Rating, Object>() {
+                    @Override
+                    public Object call(Rating r) {
+                        return r.user();
+                    }
+                }
+        );
+
+        JavaPairRDD<Object, Iterable<Rating>> userMovies2 = userMovies.sortByKey(); //sorterer brukerne fra lav til stoerst
+
+        //List<Rating> rlist = ratings.collect(); //faar da en liste med alle ratings (100K pga ml100k)
+        //int x = 0;
+        //for (Rating r : rlist) {
+        //    System.out.println(x++);
+        //}
+        ratingPerUser = userMovies2.collect(); //gjoer om dataene til en liste der indeks 0 er en Iterable for Ratingene til bruker 1, indeks1->bruker2,osv.
+        //gir et tuppel for hver bruker med en iterable for ratingene
+
+
+
+
+
+
+        // Train an ALS model
+        //final MatrixFactorizationModel model = ALS.train(JavaRDD.toRDD(ratings), 10, 10, 0.01);
+        model = ALS.trainImplicit(JavaRDD.toRDD(ratings), 10, 10, 0.01, 0.01);
+    }*/
+
+
+    public void update(String trainingFile) {
+        //String path= "/home/simen/Documents/datasett/crossfold-movielens-binary/training";
+        JavaRDD<String> data = sc.textFile(trainingFile);
         JavaRDD<Rating> ratings = data.map(
                 new Function<String, Rating>() {
                     @Override
@@ -239,11 +329,55 @@ public class SparkRecommender implements Recommender, Serializable {
         //////////*/
 
 
-        // Train an ALS model
-        //final MatrixFactorizationModel model = ALS.train(JavaRDD.toRDD(ratings), 10, 10, 0.01);
-        model = ALS.trainImplicit(JavaRDD.toRDD(ratings), 10, 10, 0.01, 0.01);
+        // Trains the ALS-model
+        model = ALS.trainImplicit(JavaRDD.toRDD(ratings), rank, iterations, lambda, alpha);
     }
 
+    public int[] recommend(int userId, int num) {
+        Tuple2<Object, Iterable<Rating>> tup = ratingPerUser.get(userId-1); //henter brukeren sine ratings //dette boer endres -> virker skjoert
+        //Iterator<Rating> iterator =  tup._2().iterator();
+
+        //Iterable<Rating> usersRatings = ratingPerUser.get(id-1);
+        Rating[] ratings = model.recommendProducts(userId, num+1000);
+        System.out.println(ratings.length);
+        Rating[] finalRatings = new Rating[ratings.length-1000]; //change to num
+
+        //Rating r = iterator.next();
+        // System.out.println("User " + r.user() + " - ratings removed:");
+        int x = 0;
+        int y = 0;
+        for (Rating rating : ratings) {
+            //System.out.println(rating.product());
+            Boolean match = false;
+            Iterator<Rating> iterator =  tup._2().iterator();
+            while (iterator.hasNext()) {
+                //System.out.println(rating.product());
+                Rating r = iterator.next();
+
+                //System.out.println("Checking " + r.product() + " against " + rating.product());
+                if (r.product() == rating.product()) {
+                    //System.out.println(r.product() + " " + r.rating() + " ");
+                    y++;
+                    //continue; //don't add this Rating to the finalRating because rated before
+                    match = true;
+                    break;
+                }
+            }
+            if (!match) finalRatings[x++] = rating;
+            if (x == num) break;
+        }
+
+        //System.out.println(finalRatings.length + ", fjernet: "+y);
+        //System.out.println("Making recs for user " + );
+
+        int[] recommendedItems = new int[num];
+        for (int i = 0; i < num; i++) {
+            recommendedItems[i] = finalRatings[i].product();
+        }
+        //fjern overlapp
+        //return finalRatings;
+        return recommendedItems;
+    }
 
     public static Rating[] getRecsForUser(int id, int num) {
         Rating[] ratings = model.recommendProducts(id, num);
