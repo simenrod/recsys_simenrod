@@ -1,3 +1,5 @@
+package recommender;
+
 import org.apache.spark.mllib.recommendation.Rating;
 
 /**

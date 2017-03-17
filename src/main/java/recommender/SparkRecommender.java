@@ -1,10 +1,10 @@
+package recommender;
+
 import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaPairRDD;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.api.java.function.Function;
-import org.apache.spark.mllib.evaluation.RankingMetrics;
-import org.apache.spark.mllib.evaluation.RegressionMetrics;
 import org.apache.spark.mllib.recommendation.ALS;
 import org.apache.spark.mllib.recommendation.MatrixFactorizationModel;
 import org.apache.spark.mllib.recommendation.Rating;
@@ -14,7 +14,6 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
@@ -24,7 +23,7 @@ import java.util.Scanner;
  * Created by simen on 2/8/17.
  */
 
-//lag ny klasse med en del av innholdet i lenskit.ImplicitRecommender -> dvs. det som trengs for aa lage recs for brukere - saa man kan taste inn bruker-id
+//lag ny klasse med en del av innholdet i recommender.lenskit.ImplicitRecommender -> dvs. det som trengs for aa lage recs for brukere - saa man kan taste inn bruker-id
 // og faa recs
 //kan vaere lurt aa skille ut Ratings-delen som en egen metode (feks parseRatings()) og updateModel -> saa den kan oppdateres underveis.
 //Burde skifte navn til ImplALS ellerno
@@ -41,7 +40,7 @@ public class SparkRecommender implements Recommender, Serializable {
 
     public static void main(String[] args) {
         //init();
-        //SparkRecommender sr = new SparkRecommender();
+        //recommender.SparkRecommender sr = new recommender.SparkRecommender();
         SparkRecommender r = new SparkRecommender();
         r.init();
         //sr.init2();
@@ -73,9 +72,11 @@ public class SparkRecommender implements Recommender, Serializable {
                 setAppName("Java Ranking Metrics Example").
                 setMaster("local");
         sc = new JavaSparkContext(conf);
+        sc.setLogLevel("WARN");
+        //options for Level include: all, debug, error, fatal, info, off, trace, trace_int, warn
         // $example on$
         //String path = "sample_movielens_ratings.txt";
-        //String path = "/home/simen/Documents/test/lenskit/ratings2.csv";
+        //String path = "/home/simen/Documents/test/recommender.lenskit/ratings2.csv";
         //String path = "/home/simen/Documents/datasett/movielens100k.data";
         //String path = "/home/simen/Documents/datasett/crossfold-movielens100k.data/training"; //ikke binary - men gjoer om til
         String path= "/home/simen/Documents/datasett/crossfold-movielens-binary/training";
@@ -166,6 +167,8 @@ public class SparkRecommender implements Recommender, Serializable {
                 setAppName("Model-based recommender").
                 setMaster("local");
         sc = new JavaSparkContext(conf);
+        sc.setLogLevel("WARN");
+        //options for Level include: all, debug, error, fatal, info, off, trace, trace_int, warn
         rank = 10;
         iterations = 10;
         lambda = 0.01;
@@ -177,6 +180,7 @@ public class SparkRecommender implements Recommender, Serializable {
                 setAppName("Model-based recommender").
                 setMaster("local");
         sc = new JavaSparkContext(conf);
+        sc.setLogLevel("WARN");
         this.rank = rank;
         this.iterations = iterations;
         this.lambda = lambda;
@@ -190,7 +194,7 @@ public class SparkRecommender implements Recommender, Serializable {
         sc = new JavaSparkContext(conf);
         // $example on$
         //String path = "sample_movielens_ratings.txt";
-        //String path = "/home/simen/Documents/test/lenskit/ratings2.csv";
+        //String path = "/home/simen/Documents/test/recommender.lenskit/ratings2.csv";
         //String path = "/home/simen/Documents/datasett/movielens100k.data";
         //String path = "/home/simen/Documents/datasett/crossfold-movielens100k.data/training"; //ikke binary - men gjoer om til
         String path= "/home/simen/Documents/datasett/crossfold-movielens-binary/training";
@@ -335,6 +339,8 @@ public class SparkRecommender implements Recommender, Serializable {
 
     public int[] recommend(int userId, int num) {
         Tuple2<Object, Iterable<Rating>> tup = ratingPerUser.get(userId-1); //henter brukeren sine ratings //dette boer endres -> virker skjoert
+        //TROR LURT AA BRUKE lookup(userId) i stedet - men da maa man kanskje bruke groupByKey foerst - undersoek naermere
+        //Tuple2<Object, Iterable<Rating>> tup = ratingPerUser.lookup(userId);
         //Iterator<Rating> iterator =  tup._2().iterator();
 
         //Iterable<Rating> usersRatings = ratingPerUser.get(id-1);

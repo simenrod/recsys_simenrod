@@ -1,3 +1,5 @@
+package recommender;
+
 import org.grouplens.lenskit.ItemRecommender;
 import org.grouplens.lenskit.ItemScorer;
 import org.grouplens.lenskit.RecommenderBuildException;
@@ -16,9 +18,7 @@ import org.grouplens.lenskit.knn.item.ItemItemScorer;
 import org.grouplens.lenskit.knn.item.ModelSize;
 import org.grouplens.lenskit.knn.item.NeighborhoodScorer;
 import org.grouplens.lenskit.knn.item.SimilaritySumNeighborhoodScorer;
-import org.grouplens.lenskit.knn.user.UserSimilarity;
 import org.grouplens.lenskit.knn.user.UserUserItemScorer;
-import org.grouplens.lenskit.knn.user.UserVectorSimilarity;
 import org.grouplens.lenskit.mf.funksvd.FeatureCount;
 import org.grouplens.lenskit.mf.funksvd.FunkSVDItemScorer;
 import org.grouplens.lenskit.scored.ScoredId;
@@ -28,8 +28,6 @@ import org.grouplens.lenskit.transform.normalize.BaselineSubtractingUserVectorNo
 import org.grouplens.lenskit.transform.normalize.MeanCenteringVectorNormalizer;
 import org.grouplens.lenskit.transform.normalize.UserVectorNormalizer;
 import org.grouplens.lenskit.transform.normalize.VectorNormalizer;
-import org.grouplens.lenskit.vectors.similarity.PearsonCorrelation;
-import org.grouplens.lenskit.vectors.similarity.VectorSimilarity;
 
 import java.io.File;
 import java.util.List;

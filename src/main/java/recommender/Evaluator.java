@@ -1,9 +1,12 @@
+package recommender;
+
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Set;
+import recommender.lenskit.*;
 
 /**
  * Created by simen on 3/16/17.
@@ -13,11 +16,13 @@ public class Evaluator {
     public static void main(String[] args) {
         Evaluator eval = new Evaluator();
         System.out.println("Test");
+        //ItemBasedRecommender sr = new ItemBasedRecommender();
         SparkRecommender sr = new SparkRecommender();
         sr.initialize();
         String[] trainingFiles = {"/home/simen/Documents/datasett/crossfold-movielens-binary/training"};
         String[] testFiles = {"/home/simen/Documents/datasett/crossfold-movielens-binary/test"};
-        eval.hitRate(sr, trainingFiles, testFiles, 10);
+        //eval.hitRate(sr, trainingFiles, testFiles, 10);
+        eval.map(sr, trainingFiles, testFiles, 10);
         SparkRecommender.stopSparkContext(); //make instance variable + probably not make new context for each test
 
     }
@@ -32,7 +37,7 @@ public class Evaluator {
         for (int i = 0; i < trainingFiles.length; i++) {
             System.out.println("Testing with file " + i + ".");
             rs.update(trainingFiles[i]); //trains recommender with training file
-            HashMap<String, HashMap<String, Integer>> testData = readTestData(testFiles[i]);
+            HashMap<Integer, HashMap<Integer, Integer>> testData = readTestData(testFiles[i]);
             int matches = 0;
             int users = testData.size();
             double hr;
@@ -52,8 +57,8 @@ public class Evaluator {
             //System.out.println(testData.size());
 
 
-            for (String userId : testData.keySet()) {
-                int[] recommendedItems = rs.recommend(Integer.parseInt(userId), n);
+            for (int userId : testData.keySet()) {
+                int[] recommendedItems = rs.recommend(userId, n);
                 if (isMatch(recommendedItems, testData.get(userId).keySet())) matches++;
                 /*for (String itemId : testData.get(userId).keySet()) {
                     for (int recommendedId : recommendedItems) {
@@ -71,10 +76,10 @@ public class Evaluator {
 
     //Returns true if one of the recommended items are in the set of relevant items
     //(if I want to include ARHR -> return index for first match, if want to use MAP -> return AP for user)
-    public boolean isMatch(int[] recommendedItems, Set<String> relevantItems) {
+    public boolean isMatch(int[] recommendedItems, Set<Integer> relevantItems) {
         for (int recommendedId : recommendedItems) {
-            for (String relevantId : relevantItems) {
-                if (recommendedId == Integer.parseInt(relevantId)) {
+            for (int relevantId : relevantItems) {
+                if (recommendedId == relevantId) {
                     return true;
                 }
             }
@@ -83,12 +88,78 @@ public class Evaluator {
     }
 
 
+    //n=number of recs
+    public void map(Recommender rs, String[] trainingFiles, String[] testFiles, int n) {
+        long startTime;
+        long endTime;
+
+        if (trainingFiles.length != testFiles.length) {
+            System.out.println("Not equal numbers of trainingFiles and testFiles");
+            return;
+        }
+
+        //Repeats for all of the trainingfiles. i is the fold nr
+        for (int i = 0; i < trainingFiles.length; i++) {
+            System.out.println("Testing with file " + i + ".");
+
+            startTime = System.nanoTime();
+            rs.update(trainingFiles[i]); //trains recommender with training file
+            endTime = System.nanoTime();
+            System.out.println("Time used for training recommender:" + (endTime-startTime));
+
+            HashMap<Integer, HashMap<Integer, Integer>> testData = readTestData(testFiles[i]);
+            double sum = 0;
+            double avgTime = 0;
+            int users = testData.size();
+            double map;
+
+            for (int userId : testData.keySet()) {
+                startTime = System.nanoTime();
+                int[] recommendedItems = rs.recommend(userId, n);
+                endTime = System.nanoTime();
+                avgTime += (endTime-startTime)/users;
+                //if (isMatch(recommendedItems, testData.get(userId).keySet())) matches++;
+                sum += averagePrecision(recommendedItems, testData.get(userId).keySet());
+                /*for (String itemId : testData.get(userId).keySet()) {
+                    for (int recommendedId : recommendedItems) {
+                        if (recommendedId  == Integer.parseInt(itemId)) {
+                            matches++;
+                        }
+                    }
+                }*/
+            }
+            map = (double) sum / users;
+            System.out.println("Map: " + map);
+            System.out.println("Avg time producing rec: " + avgTime);
+        }
+    }
+
+    public double averagePrecision(int[] recommendedItems, Set<Integer> relevantItems) {
+        int rel = 0;
+        double sum = 0;
+        double ap;
+
+        for (int i = 0; i < recommendedItems.length; i++) {
+            for (int relevantId : relevantItems) {
+                if (recommendedItems[i] == relevantId) {
+                    sum += (++rel / (i+1));
+
+                }
+            }
+        }
+        if (rel == 0) return 0;
+
+        ap = sum / rel;
+        return ap;
+    }
+
+
     //Returns datastructure with data from trainingFile
-    public HashMap<String, HashMap<String, Integer>> readTestData(String testFile){
+    public HashMap<Integer, HashMap<Integer, Integer>> readTestData(String testFile){
 
         //datastructure for relevant intems: HashMap with one hashmap for each test user. The inner hashmap stores the relevant
         //items for the user
-        HashMap<String, HashMap<String, Integer>> testData = new HashMap<String, HashMap<String, Integer>>();
+        HashMap<Integer, HashMap<Integer, Integer>> testData = new HashMap<Integer, HashMap<Integer, Integer>>();
 
         try {
             BufferedReader br = new BufferedReader(new FileReader(testFile));
@@ -96,12 +167,12 @@ public class Evaluator {
             String line = br.readLine();
             while (line != null) {
                 String[] parts = line.split("\t");
-                String userId = parts[0];
-                String itemId = parts[1];
+                Integer userId = Integer.parseInt(parts[0]);
+                Integer itemId = Integer.parseInt(parts[1]);
                 Integer rating = Integer.parseInt(parts[2]);
 
                 //adds relevant item in this user's hashmap
-                if (testData.get(userId) == null) testData.put(userId, new HashMap<String, Integer>());
+                if (testData.get(userId) == null) testData.put(userId, new HashMap<Integer, Integer>());
                 testData.get(userId).put(itemId, rating);
                 line = br.readLine();
             }
