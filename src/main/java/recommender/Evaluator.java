@@ -21,10 +21,14 @@ public class Evaluator {
         sr.initialize();
         //String[] trainingFiles = {"/home/simen/Documents/datasett/crossfold-movielens-binary/training"};
         //String[] testFiles = {"/home/simen/Documents/datasett/crossfold-movielens-binary/test"};
-        String[] trainingFiles = {"data/movielens/leave_one_out/training"};
-        String[] testFiles = {"data/movielens/leave_one_out/test"};
-        //eval.hitRate(sr, trainingFiles, testFiles, 10);
-        eval.map(sr, trainingFiles, testFiles, 10);
+        String[] trainingFiles = {"data/movielens/leave_one_out/train1","data/movielens/leave_one_out/train2",
+                "data/movielens/leave_one_out/train3","data/movielens/leave_one_out/train4",
+                "data/movielens/leave_one_out/train5"};
+        String[] testFiles = {"data/movielens/leave_one_out/test1","data/movielens/leave_one_out/test2",
+                "data/movielens/leave_one_out/test3","data/movielens/leave_one_out/test4",
+                "data/movielens/leave_one_out/test5"};
+        eval.hitRate(sr, trainingFiles, testFiles, 10);
+        //eval.map(sr, trainingFiles, testFiles, 10);
         SparkRecommender.stopSparkContext(); //make instance variable + probably not make new context for each test
 
     }
@@ -35,9 +39,12 @@ public class Evaluator {
             return;
         }
 
+        double avgHr = 0;
+        double avgTime = 0;
+
         //Repeats for all of the trainingfiles. i is the fold nr
         for (int i = 0; i < trainingFiles.length; i++) {
-            System.out.println("Testing with file " + i + ".");
+            System.out.println("Testing with file " + (i+1) + ".");
             rs.update(trainingFiles[i]); //trains recommender with training file
             HashMap<Integer, HashMap<Integer, Double>> testData = readTestData(testFiles[i]);
             int matches = 0;
@@ -71,8 +78,11 @@ public class Evaluator {
                 }*/
             }
             hr = (double) matches / users;
-            System.out.println(hr);
+            avgHr += hr/trainingFiles.length;
+            System.out.println("Hr fold nr " + i + ": " + hr);
         }
+
+        System.out.println("Average hr all folds: " + avgHr);
     }
 
 

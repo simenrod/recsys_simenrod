@@ -70,7 +70,7 @@ public class ItemBasedRecommender implements Recommender {
         config.bind(NeighborhoodScorer.class).to(SimilaritySumNeighborhoodScorer.class);
         config.bind(BaselineScorer.class, ItemScorer.class).to(UserMeanItemScorer.class);
         config.bind(UserMeanBaseline.class, ItemScorer.class).to(ItemMeanRatingItemScorer.class);
-        //config.set(NeighborhoodSize.class).to(k); //ta med
+        config.set(NeighborhoodSize.class).to(k);
         //config.bind(EventDAO.class).to(new SimpleFileRatingDAO(new File("/home/simen/Documents/datasett/movielens-binary"), ","));
         config.bind(EventDAO.class).to(new SimpleFileRatingDAO(new File(trainingFile), "\t"));
 
