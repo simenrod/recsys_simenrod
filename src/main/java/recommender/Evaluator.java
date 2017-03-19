@@ -19,8 +19,10 @@ public class Evaluator {
         //ItemBasedRecommender sr = new ItemBasedRecommender();
         SparkRecommender sr = new SparkRecommender();
         sr.initialize();
-        String[] trainingFiles = {"/home/simen/Documents/datasett/crossfold-movielens-binary/training"};
-        String[] testFiles = {"/home/simen/Documents/datasett/crossfold-movielens-binary/test"};
+        //String[] trainingFiles = {"/home/simen/Documents/datasett/crossfold-movielens-binary/training"};
+        //String[] testFiles = {"/home/simen/Documents/datasett/crossfold-movielens-binary/test"};
+        String[] trainingFiles = {"data/movielens/leave_one_out/training"};
+        String[] testFiles = {"data/movielens/leave_one_out/test"};
         //eval.hitRate(sr, trainingFiles, testFiles, 10);
         eval.map(sr, trainingFiles, testFiles, 10);
         SparkRecommender.stopSparkContext(); //make instance variable + probably not make new context for each test
@@ -37,7 +39,7 @@ public class Evaluator {
         for (int i = 0; i < trainingFiles.length; i++) {
             System.out.println("Testing with file " + i + ".");
             rs.update(trainingFiles[i]); //trains recommender with training file
-            HashMap<Integer, HashMap<Integer, Integer>> testData = readTestData(testFiles[i]);
+            HashMap<Integer, HashMap<Integer, Double>> testData = readTestData(testFiles[i]);
             int matches = 0;
             int users = testData.size();
             double hr;
@@ -107,7 +109,7 @@ public class Evaluator {
             endTime = System.nanoTime();
             System.out.println("Time used for training recommender:" + (endTime-startTime));
 
-            HashMap<Integer, HashMap<Integer, Integer>> testData = readTestData(testFiles[i]);
+            HashMap<Integer, HashMap<Integer, Double>> testData = readTestData(testFiles[i]);
             double sum = 0;
             double avgTime = 0;
             int users = testData.size();
@@ -155,11 +157,11 @@ public class Evaluator {
 
 
     //Returns datastructure with data from trainingFile
-    public HashMap<Integer, HashMap<Integer, Integer>> readTestData(String testFile){
+    public HashMap<Integer, HashMap<Integer, Double>> readTestData(String testFile){
 
         //datastructure for relevant intems: HashMap with one hashmap for each test user. The inner hashmap stores the relevant
         //items for the user
-        HashMap<Integer, HashMap<Integer, Integer>> testData = new HashMap<Integer, HashMap<Integer, Integer>>();
+        HashMap<Integer, HashMap<Integer, Double>> testData = new HashMap<Integer, HashMap<Integer, Double>>();
 
         try {
             BufferedReader br = new BufferedReader(new FileReader(testFile));
@@ -169,10 +171,10 @@ public class Evaluator {
                 String[] parts = line.split("\t");
                 Integer userId = Integer.parseInt(parts[0]);
                 Integer itemId = Integer.parseInt(parts[1]);
-                Integer rating = Integer.parseInt(parts[2]);
+                Double rating = Double.parseDouble(parts[2]);
 
                 //adds relevant item in this user's hashmap
-                if (testData.get(userId) == null) testData.put(userId, new HashMap<Integer, Integer>());
+                if (testData.get(userId) == null) testData.put(userId, new HashMap<Integer, Double>());
                 testData.get(userId).put(itemId, rating);
                 line = br.readLine();
             }

@@ -344,9 +344,9 @@ public class SparkRecommender implements Recommender, Serializable {
         //Iterator<Rating> iterator =  tup._2().iterator();
 
         //Iterable<Rating> usersRatings = ratingPerUser.get(id-1);
-        Rating[] ratings = model.recommendProducts(userId, num+1000);
+        Rating[] ratings = model.recommendProducts(userId, num+10000);
         System.out.println(ratings.length);
-        Rating[] finalRatings = new Rating[ratings.length-1000]; //change to num
+        Rating[] finalRatings = new Rating[num]; //change to num
 
         //Rating r = iterator.next();
         // System.out.println("User " + r.user() + " - ratings removed:");
@@ -375,11 +375,13 @@ public class SparkRecommender implements Recommender, Serializable {
 
         //System.out.println(finalRatings.length + ", fjernet: "+y);
         //System.out.println("Making recs for user " + );
-
+        System.out.println("userid: "+ userId);
         int[] recommendedItems = new int[num];
         for (int i = 0; i < num; i++) {
             recommendedItems[i] = finalRatings[i].product();
+            System.out.print(i);
         }
+        System.out.println("");
         //fjern overlapp
         //return finalRatings;
         return recommendedItems;
