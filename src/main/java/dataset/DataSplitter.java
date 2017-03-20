@@ -7,13 +7,13 @@ import java.io.*;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
-class User {
+/*class User {
     HashMap<String,Rating> ratings;
 
     User() {
         ratings = new HashMap<String,Rating>();
     }
-}
+}*/
 
 class Rating {
     private String user;

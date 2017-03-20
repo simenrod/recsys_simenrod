@@ -7,7 +7,12 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Set;
 
+
+
 import recommender.lenskit.ItemBasedRecommender;
+import recommender.nonframework.Baseline;
+import recommender.nonframework.Cbf;
+//import recommender.nonframework.Baseline;
 import recommender.spark.SparkRecommender;
 
 /**
@@ -18,11 +23,19 @@ public class Evaluator {
     public static void main(String[] args) {
         Evaluator eval = new Evaluator();
         System.out.println("Test");
-        ItemBasedRecommender sr = new ItemBasedRecommender();
+        //ItemBasedRecommender sr = new ItemBasedRecommender();
         //SparkRecommender sr = new SparkRecommender();
+        //Cbf sr = new Cbf();
+        Baseline sr = new Baseline();
         sr.initialize();
         //String[] trainingFiles = {"/home/simen/Documents/datasett/crossfold-movielens-binary/training"};
         //String[] testFiles = {"/home/simen/Documents/datasett/crossfold-movielens-binary/test"};
+        /*String[] trainingFiles = {"data/movielens/leave_one_out/train1","data/movielens/leave_one_out/train2",
+                "data/movielens/leave_one_out/train3","data/movielens/leave_one_out/train4",
+                "data/movielens/leave_one_out/train5"};
+        String[] testFiles = {"data/movielens/leave_one_out/test1","data/movielens/leave_one_out/test2",
+                "data/movielens/leave_one_out/test3","data/movielens/leave_one_out/test4",
+                "data/movielens/leave_one_out/test5"};*/
         String[] trainingFiles = {"data/movielens/cross-val/train1","data/movielens/cross-val/train2",
                 "data/movielens/cross-val/train3","data/movielens/cross-val/train4",
                 "data/movielens/cross-val/train5"};
@@ -101,6 +114,8 @@ public class Evaluator {
         return false;
     }
 
+//https://github.com/lenskit/lenskit/blob/master/lenskit-eval/src/main/java/org/lenskit/eval/traintest/recommend/TopNMAPMetric.java
+
 
     //n=number of recs
     public void map(Recommender rs, String[] trainingFiles, String[] testFiles, int n) {
@@ -140,6 +155,9 @@ public class Evaluator {
                 endTime = System.nanoTime();
                 avgTime += (endTime-startTime)/users;
                 //if (isMatch(recommendedItems, testData.get(userId).keySet())) matches++;
+                //double ap = averagePrecision(recommendedItems, testData.get(userId).keySet());
+                //System.out.println(ap);
+                //sum +=  ap;
                 sum += averagePrecision(recommendedItems, testData.get(userId).keySet());
                 /*for (String itemId : testData.get(userId).keySet()) {
                     for (int recommendedId : recommendedItems) {
@@ -161,7 +179,7 @@ public class Evaluator {
     }
 
     public double averagePrecision(int[] recommendedItems, Set<Integer> relevantItems) {
-        int rel = 0;
+        double rel = 0;
         double sum = 0;
         double ap;
 
@@ -169,10 +187,11 @@ public class Evaluator {
             for (int relevantId : relevantItems) {
                 if (recommendedItems[i] == relevantId) {
                     sum += (++rel / (i+1));
-
+                    //System.out.println("Nr rel: " + rel + ", pos: " + (i+1));
                 }
             }
         }
+        //System.out.println("sum: " + sum + ", rel: " + rel);
         if (rel == 0) return 0;
 
         ap = sum / rel;

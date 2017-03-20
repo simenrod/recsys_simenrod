@@ -56,3 +56,9 @@ Avg time producing rec: 4.0474661E7
 Average map (all folds): 0.401821892271487
 Average train time (all folds): 5.237039056E9
 Average test time (all folds): 4.89706444E7
+
+CBF k=itemsize
+Average map (all folds): 0.027807592172671546
+Average train time (all folds): 5.791820097000001E9
+Average test time (all folds): 1.498299366E8
+(k=30: map = 0.019)
