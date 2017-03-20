@@ -6,7 +6,9 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Set;
-import recommender.lenskit.*;
+
+import recommender.lenskit.ItemBasedRecommender;
+import recommender.spark.SparkRecommender;
 
 /**
  * Created by simen on 3/16/17.
@@ -16,20 +18,20 @@ public class Evaluator {
     public static void main(String[] args) {
         Evaluator eval = new Evaluator();
         System.out.println("Test");
-        //ItemBasedRecommender sr = new ItemBasedRecommender();
-        SparkRecommender sr = new SparkRecommender();
+        ItemBasedRecommender sr = new ItemBasedRecommender();
+        //SparkRecommender sr = new SparkRecommender();
         sr.initialize();
         //String[] trainingFiles = {"/home/simen/Documents/datasett/crossfold-movielens-binary/training"};
         //String[] testFiles = {"/home/simen/Documents/datasett/crossfold-movielens-binary/test"};
-        String[] trainingFiles = {"data/movielens/leave_one_out/train1","data/movielens/leave_one_out/train2",
-                "data/movielens/leave_one_out/train3","data/movielens/leave_one_out/train4",
-                "data/movielens/leave_one_out/train5"};
-        String[] testFiles = {"data/movielens/leave_one_out/test1","data/movielens/leave_one_out/test2",
-                "data/movielens/leave_one_out/test3","data/movielens/leave_one_out/test4",
-                "data/movielens/leave_one_out/test5"};
-        eval.hitRate(sr, trainingFiles, testFiles, 10);
-        //eval.map(sr, trainingFiles, testFiles, 10);
-        SparkRecommender.stopSparkContext(); //make instance variable + probably not make new context for each test
+        String[] trainingFiles = {"data/movielens/cross-val/train1","data/movielens/cross-val/train2",
+                "data/movielens/cross-val/train3","data/movielens/cross-val/train4",
+                "data/movielens/cross-val/train5"};
+        String[] testFiles = {"data/movielens/cross-val/test1","data/movielens/cross-val/test2",
+                "data/movielens/cross-val/test3","data/movielens/cross-val/test4",
+                "data/movielens/cross-val/test5"};
+        //eval.hitRate(sr, trainingFiles, testFiles, 10);
+        eval.map(sr, trainingFiles, testFiles, 10);
+        //SparkRecommender.stopSparkContext(); //make instance variable + probably not make new context for each test
 
     }
 
@@ -44,7 +46,7 @@ public class Evaluator {
 
         //Repeats for all of the trainingfiles. i is the fold nr
         for (int i = 0; i < trainingFiles.length; i++) {
-            System.out.println("Testing with file " + (i+1) + ".");
+            //System.out.println("Testing with file " + (i+1) + ".");
             rs.update(trainingFiles[i]); //trains recommender with training file
             HashMap<Integer, HashMap<Integer, Double>> testData = readTestData(testFiles[i]);
             int matches = 0;
@@ -104,6 +106,10 @@ public class Evaluator {
     public void map(Recommender rs, String[] trainingFiles, String[] testFiles, int n) {
         long startTime;
         long endTime;
+        double avgMap = 0;
+        double avgTrainTime = 0;
+        double avgRecTime = 0;
+        int nFolds = trainingFiles.length;
 
         if (trainingFiles.length != testFiles.length) {
             System.out.println("Not equal numbers of trainingFiles and testFiles");
@@ -112,12 +118,15 @@ public class Evaluator {
 
         //Repeats for all of the trainingfiles. i is the fold nr
         for (int i = 0; i < trainingFiles.length; i++) {
-            System.out.println("Testing with file " + i + ".");
+            //System.out.println("Testing with file " + (i+1) + ".");
 
             startTime = System.nanoTime();
             rs.update(trainingFiles[i]); //trains recommender with training file
             endTime = System.nanoTime();
-            System.out.println("Time used for training recommender:" + (endTime-startTime));
+            double trainingTime = endTime-startTime;
+            System.out.println("Time used for training recommender:" + trainingTime);
+            avgTrainTime += trainingTime/nFolds;
+
 
             HashMap<Integer, HashMap<Integer, Double>> testData = readTestData(testFiles[i]);
             double sum = 0;
@@ -143,7 +152,12 @@ public class Evaluator {
             map = (double) sum / users;
             System.out.println("Map: " + map);
             System.out.println("Avg time producing rec: " + avgTime);
+            avgMap += map/nFolds;
+            avgRecTime += avgTime/nFolds;
         }
+        System.out.println("Average map (all folds): " + avgMap);
+        System.out.println("Average train time (all folds): " + avgTrainTime);
+        System.out.println("Average test time (all folds): " + avgRecTime);
     }
 
     public double averagePrecision(int[] recommendedItems, Set<Integer> relevantItems) {

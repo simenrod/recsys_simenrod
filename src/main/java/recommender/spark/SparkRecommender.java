@@ -1,4 +1,4 @@
-package recommender;
+package recommender.spark;
 
 import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaPairRDD;
@@ -8,6 +8,7 @@ import org.apache.spark.api.java.function.Function;
 import org.apache.spark.mllib.recommendation.ALS;
 import org.apache.spark.mllib.recommendation.MatrixFactorizationModel;
 import org.apache.spark.mllib.recommendation.Rating;
+import recommender.Recommender;
 import scala.Tuple2;
 
 import java.io.File;
@@ -40,7 +41,7 @@ public class SparkRecommender implements Recommender, Serializable {
 
     public static void main(String[] args) {
         //init();
-        //recommender.SparkRecommender sr = new recommender.SparkRecommender();
+        //recommender.spark.SparkRecommender sr = new recommender.spark.SparkRecommender();
         SparkRecommender r = new SparkRecommender();
         r.init();
         //sr.init2();
@@ -345,7 +346,7 @@ public class SparkRecommender implements Recommender, Serializable {
 
         //Iterable<Rating> usersRatings = ratingPerUser.get(id-1);
         Rating[] ratings = model.recommendProducts(userId, num+10000);
-        System.out.println(ratings.length);
+        //System.out.println(ratings.length);
         Rating[] finalRatings = new Rating[num]; //change to num
 
         //Rating r = iterator.next();
@@ -375,13 +376,13 @@ public class SparkRecommender implements Recommender, Serializable {
 
         //System.out.println(finalRatings.length + ", fjernet: "+y);
         //System.out.println("Making recs for user " + );
-        System.out.println("userid: "+ userId);
+        //System.out.println("userid: "+ userId);
         int[] recommendedItems = new int[num];
         for (int i = 0; i < num; i++) {
             recommendedItems[i] = finalRatings[i].product();
-            System.out.print(i);
+            //System.out.print(i);
         }
-        System.out.println("");
+        //System.out.println("");
         //fjern overlapp
         //return finalRatings;
         return recommendedItems;

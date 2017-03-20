@@ -9,6 +9,25 @@ Hr fold nr 3: 0.21951219512195122
 Hr fold nr 4: 0.20996818663838812
 Average hr all folds: 0.20954400848356308
 
+Time used for training recommender:6.46564406E9
+Map: 0.37796044343663393
+Avg time producing rec: 5.8962594E7
+Time used for training recommender:4.23844463E9
+Map: 0.3670802889056856
+Avg time producing rec: 2.7988734E7
+Time used for training recommender:2.224802622E9
+Map: 0.3944108507600572
+Avg time producing rec: 2.9281775E7
+Time used for training recommender:2.326606987E9
+Map: 0.380637875717663
+Avg time producing rec: 2.7558441E7
+Time used for training recommender:2.075628021E9
+Map: 0.39252152988855116
+Avg time producing rec: 2.8217072E7
+Average map (all folds): 0.3825221977417182
+Average train time (all folds): 3.466225264E9
+Average test time (all folds): 3.44017232E7
+
 Spark ALS, alpha == 0,01
 Hr fold nr 0: 0.2704135737009544
 Hr fold nr 1: 0.2979851537645811
@@ -16,3 +35,24 @@ Hr fold nr 2: 0.2841993637327678
 Hr fold nr 3: 0.2948038176033934
 Hr fold nr 4: 0.28207847295864263
 Average hr all folds: 0.2858960763520679
+
+Time used for training recommender:1.2178487284E10
+Map: 0.3715083564289914
+Avg time producing rec: 7.4051271E7
+Time used for training recommender:4.492682436E9
+Map: 0.3963046947173931
+Avg time producing rec: 4.8208233E7
+Time used for training recommender:3.756218776E9
+Map: 0.4263542454018644
+Avg time producing rec: 4.1965227E7
+Testing with file 3.
+Time used for training recommender:3.013206604E9
+Map: 0.42447441742654496
+Avg time producing rec: 4.015383E7
+Testing with file 4.
+Time used for training recommender:2.74460018E9
+Map: 0.3904677473826412
+Avg time producing rec: 4.0474661E7
+Average map (all folds): 0.401821892271487
+Average train time (all folds): 5.237039056E9
+Average test time (all folds): 4.89706444E7
