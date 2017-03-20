@@ -37,13 +37,17 @@ class Rating {
     public String getRating() {
         return rating;
     }
+
+    public String getString() {
+        return user + "\t" + item + "\t" + rating + "\n";
+    }
 }
 
 public class DataSplitter {
     public static void main(String[] args) {
         //leaveOneOut("movielens100k.data");
         //leaveOneOut("data/movielens/u.data", "data/movielens/leave_one_out", 5, "\t"); //not change leave_one_out for movielens
-        nFoldCrossValidationSets("data/movielens/u.data", "data/movielens/cross-val", 1, "\t");
+        nFoldCrossValidationSets("data/movielens/u.data", "data/movielens/cross-val", 5, "\t", -1);
     }
 
 
@@ -110,7 +114,7 @@ public class DataSplitter {
     }
 
 
-    public static void nFoldCrossValidationSets(String inFile, String outDirectory, int nFolds, String delimiter) {
+    public static void nFoldCrossValidationSets(String inFile, String outDirectory, int nFolds, String delimiter, int givenN) {
         HashMap<String,HashMap<String,Rating>> usersRatings = readRatingData(inFile, delimiter);
         int numUsers = usersRatings.size();
 
@@ -119,43 +123,62 @@ public class DataSplitter {
         Collections.shuffle(list);
 
         int usersPerFraction = numUsers / nFolds; //MUST CHANGE -> NOT EQUAL SIZES (BECAUSE OF REST)
+        int rest = usersPerFraction % nFolds;
+        int lowerBorder = 0;
+        int upperBorder;
 
+        System.out.println(rest);
         try {
 
             //Repeats for all n folds
             for (int i = 1; i <= nFolds; i++) {
                 FileWriter writeTrain = new FileWriter(new File(outDirectory + "/train" + i));
                 FileWriter writeTest = new FileWriter(new File(outDirectory + "/test" + i));
+                upperBorder = lowerBorder + usersPerFraction;
+                int x = 1;
+                if (i <= rest) upperBorder++;
 
                 for (int j = 0; j < numUsers; j++) {
-                    System.out.println(list.get(j).getKey());
-                /*for (String userId : usersRatings.keySet()) {
+                    //System.out.println(list.get(j).getKey());
 
-                    HashMap<String, Rating> ratings = usersRatings.get(userId); //gets thie given user's ratings
-                    int numRatings = ratings.size();
-                    if (numRatings <= 2) continue; //dont add data for users with too few ratings
-                    int randomNum = ThreadLocalRandom.current().nextInt(0, numRatings); //chooses which index of the ratings to leave out
-                    int j = 0;
+                    if (j < upperBorder && j >= lowerBorder) {
+                        //System.out.println(x++);
+                        //System.out.println("Userid: "+list.get(j).getKey());
+                        List<Map.Entry<String, Rating>> ratingsForUser = new ArrayList<>(list.get(j).getValue().entrySet());
+                        Collections.shuffle(ratingsForUser);
+                        int numToTrain;
 
-                    for (Rating rating : ratings.values()) {
-                        String ratingString = rating.getUser() + "\t" + rating.getItem() + "\t" + rating.getRating() + "\n";
+                        if (givenN == -1) numToTrain = ratingsForUser.size() / 2;
+                        else numToTrain = givenN;
 
-                        //if the random rating, write to test set, otherwise write to training set
-                        if (j == randomNum) {
-                            writeTest.write(ratingString);
+                        for (int k = 0; k < ratingsForUser.size(); k++) {
+                            Rating rating = ratingsForUser.get(k).getValue();
+
+                            if (k < numToTrain) {
+                                writeTrain.write(rating.getString());
+                            }
+                            else {
+                                writeTest.write(rating.getString());
+                            }
                         }
-                        else {
-                            writeTrain.write(ratingString);
-                        }
-                        j++;
+                        //Skriv halvparten (eller gitt verdi) til trening og resten til test
                     }
-                }*/
+                    else {
+                        //skriv alt til trening
+                        List<Map.Entry<String, Rating>> ratingsForUser = new ArrayList<>(list.get(j).getValue().entrySet());
+                        Collections.shuffle(ratingsForUser);
+                        for (Map.Entry<String, Rating> entry : ratingsForUser) {
+                            Rating rating = entry.getValue();
+                            writeTrain.write(rating.getString());
+                        }
+                    }
                 }
+                lowerBorder = upperBorder;
                 writeTrain.flush();
                 writeTrain.close();
                 writeTest.flush();
                 writeTest.close();
-
+                System.out.println("-----------------------");
             }
         }
         catch (IOException ie) {
