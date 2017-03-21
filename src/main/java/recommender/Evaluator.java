@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.Set;
 
 
-
+import recommender.lenskit.ContentBased;
 import recommender.lenskit.ItemBasedRecommender;
 import recommender.nonframework.Baseline;
 import recommender.nonframework.Cbf;
@@ -23,11 +23,14 @@ public class Evaluator {
     public static void main(String[] args) {
         Evaluator eval = new Evaluator();
         System.out.println("Test");
-        ItemBasedRecommender sr = new ItemBasedRecommender();
+        ContentBased sr = new ContentBased();
+        //sr.initialize("data/movie-tags.csv", "data/movie-titles-test.csv");
+        sr.initialize("data/movielens/item-tags", "data/movielens/titles");
+        //ItemBasedRecommender sr = new ItemBasedRecommender();
         //SparkRecommender sr = new SparkRecommender();
         //Cbf sr = new Cbf();
         //Baseline sr = new Baseline();
-        sr.initialize();
+        //sr.initialize();
         //String[] trainingFiles = {"/home/simen/Documents/datasett/crossfold-movielens-binary/training"};
         //String[] testFiles = {"/home/simen/Documents/datasett/crossfold-movielens-binary/test"};
         /*String[] trainingFiles = {"data/movielens/leave_one_out/train1","data/movielens/leave_one_out/train2",
@@ -36,14 +39,16 @@ public class Evaluator {
         String[] testFiles = {"data/movielens/leave_one_out/test1","data/movielens/leave_one_out/test2",
                 "data/movielens/leave_one_out/test3","data/movielens/leave_one_out/test4",
                 "data/movielens/leave_one_out/test5"};*/
-        /*String[] trainingFiles = {"data/movielens/cross-val/train1","data/movielens/cross-val/train2",
+        String[] trainingFiles = {"data/movielens/cross-val/train1","data/movielens/cross-val/train2",
                 "data/movielens/cross-val/train3","data/movielens/cross-val/train4",
                 "data/movielens/cross-val/train5"};
         String[] testFiles = {"data/movielens/cross-val/test1","data/movielens/cross-val/test2",
                 "data/movielens/cross-val/test3","data/movielens/cross-val/test4",
-                "data/movielens/cross-val/test5"};*/
-        String[] testFiles = {"data/bx/cross-val/test1"};
-        String[] trainingFiles = {"data/bx/cross-val/train1"};
+                "data/movielens/cross-val/test5"};
+        /*String[] testFiles = {"data/bx/cross-val/test1"};
+        String[] trainingFiles = {"data/bx/cross-val/train1"};*/
+        /*String[] testFiles = {"data/tag-test/test1"};
+        String[] trainingFiles = {"data/tag-test/train1"};*/
 
         //eval.hitRate(sr, trainingFiles, testFiles, 10);
         eval.map(sr, trainingFiles, testFiles, 10);
@@ -85,6 +90,7 @@ public class Evaluator {
 
 
             for (int userId : testData.keySet()) {
+
                 int[] recommendedItems = rs.recommend(userId, n);
                 if (isMatch(recommendedItems, testData.get(userId).keySet())) matches++;
                 /*for (String itemId : testData.get(userId).keySet()) {
@@ -161,6 +167,7 @@ public class Evaluator {
                 //double ap = averagePrecision(recommendedItems, testData.get(userId).keySet());
                 //System.out.println(ap);
                 //sum +=  ap;
+                //System.out.println("Recs for user "+userId);
                 sum += averagePrecision(recommendedItems, testData.get(userId).keySet());
                 /*for (String itemId : testData.get(userId).keySet()) {
                     for (int recommendedId : recommendedItems) {
@@ -187,6 +194,7 @@ public class Evaluator {
         double ap;
 
         for (int i = 0; i < recommendedItems.length; i++) {
+            //System.out.println(recommendedItems[i]);
             for (int relevantId : relevantItems) {
                 if (recommendedItems[i] == relevantId) {
                     sum += (++rel / (i+1));

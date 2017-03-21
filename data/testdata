@@ -63,6 +63,13 @@ Average train time (all folds): 5.791820097000001E9
 Average test time (all folds): 1.498299366E8
 (k=30: map = 0.019)
 
+CBF (lenskit)
+Time used for training recommender:1.14237556E8
+Map: 0.18095505459867162
+Avg time producing rec: 2081110.0
+Average map (all folds): 0.17851551693919843
+Average train time (all folds): 5.261760895999999E8
+Average test time (all folds): 4282532.0
 
 
 
