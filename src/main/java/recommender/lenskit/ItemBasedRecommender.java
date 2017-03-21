@@ -66,7 +66,7 @@ public class ItemBasedRecommender implements Recommender {
         config = new LenskitConfiguration();
         config.bind(ItemScorer.class).to(ItemItemScorer.class);
         config.set(MinNeighbors.class).to(2);
-        config.set(ModelSize.class).to(1000);
+        config.set(ModelSize.class).to(100); //changed to 100 because of big files
         config.bind(NeighborhoodScorer.class).to(SimilaritySumNeighborhoodScorer.class);
         config.bind(BaselineScorer.class, ItemScorer.class).to(UserMeanItemScorer.class);
         config.bind(UserMeanBaseline.class, ItemScorer.class).to(ItemMeanRatingItemScorer.class);

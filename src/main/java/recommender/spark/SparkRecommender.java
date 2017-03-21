@@ -339,6 +339,7 @@ public class SparkRecommender implements Recommender, Serializable {
     }
 
     public int[] recommend(int userId, int num) {
+        //MAA ENDRES -> GIR ARRAY INDEX OUT OF BOUND EXCEPTION
         Tuple2<Object, Iterable<Rating>> tup = ratingPerUser.get(userId-1); //henter brukeren sine ratings //dette boer endres -> virker skjoert
         //TROR LURT AA BRUKE lookup(userId) i stedet - men da maa man kanskje bruke groupByKey foerst - undersoek naermere
         //Tuple2<Object, Iterable<Rating>> tup = ratingPerUser.lookup(userId);

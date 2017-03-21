@@ -326,7 +326,9 @@ public class Cbf implements Recommender {
         while (j < recommendations.length) {
             Prediction p = recommendations[j];
             String itemId = p.getItem().getId();
-            if (u.getHistory().get(itemId) == null) { //ikke ratet fra foer
+
+            //only recommends this item if it is not rated before
+            if (u.getHistory().get(itemId) == null) {
                 //fw.write(id + "\t");
                 recIds[x] = Integer.parseInt(itemId);
                 x++;

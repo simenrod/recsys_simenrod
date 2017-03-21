@@ -23,10 +23,10 @@ public class Evaluator {
     public static void main(String[] args) {
         Evaluator eval = new Evaluator();
         System.out.println("Test");
-        //ItemBasedRecommender sr = new ItemBasedRecommender();
+        ItemBasedRecommender sr = new ItemBasedRecommender();
         //SparkRecommender sr = new SparkRecommender();
         //Cbf sr = new Cbf();
-        Baseline sr = new Baseline();
+        //Baseline sr = new Baseline();
         sr.initialize();
         //String[] trainingFiles = {"/home/simen/Documents/datasett/crossfold-movielens-binary/training"};
         //String[] testFiles = {"/home/simen/Documents/datasett/crossfold-movielens-binary/test"};
@@ -36,12 +36,15 @@ public class Evaluator {
         String[] testFiles = {"data/movielens/leave_one_out/test1","data/movielens/leave_one_out/test2",
                 "data/movielens/leave_one_out/test3","data/movielens/leave_one_out/test4",
                 "data/movielens/leave_one_out/test5"};*/
-        String[] trainingFiles = {"data/movielens/cross-val/train1","data/movielens/cross-val/train2",
+        /*String[] trainingFiles = {"data/movielens/cross-val/train1","data/movielens/cross-val/train2",
                 "data/movielens/cross-val/train3","data/movielens/cross-val/train4",
                 "data/movielens/cross-val/train5"};
         String[] testFiles = {"data/movielens/cross-val/test1","data/movielens/cross-val/test2",
                 "data/movielens/cross-val/test3","data/movielens/cross-val/test4",
-                "data/movielens/cross-val/test5"};
+                "data/movielens/cross-val/test5"};*/
+        String[] testFiles = {"data/bx/cross-val/test1"};
+        String[] trainingFiles = {"data/bx/cross-val/train1"};
+
         //eval.hitRate(sr, trainingFiles, testFiles, 10);
         eval.map(sr, trainingFiles, testFiles, 10);
         //SparkRecommender.stopSparkContext(); //make instance variable + probably not make new context for each test

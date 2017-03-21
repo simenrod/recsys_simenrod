@@ -62,3 +62,16 @@ Average map (all folds): 0.027807592172671546
 Average train time (all folds): 5.791820097000001E9
 Average test time (all folds): 1.498299366E8
 (k=30: map = 0.019)
+
+
+
+
+==BX (min 10 ratings)==
+
+Baseline (1-fold)
+Time used for training recommender:5.021366445E9
+Map: 0.0948524727351257
+Avg time producing rec: 5532.0
+Average map (all folds): 0.0948524727351257
+Average train time (all folds): 5.021366445E9
+Average test time (all folds): 5532.0

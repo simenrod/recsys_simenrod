@@ -47,7 +47,8 @@ public class DataSplitter {
     public static void main(String[] args) {
         //leaveOneOut("movielens100k.data");
         //leaveOneOut("data/movielens/u.data", "data/movielens/leave_one_out", 5, "\t"); //not change leave_one_out for movielens
-        nFoldCrossValidationSets("data/movielens/u.data", "data/movielens/cross-val", 5, "\t", -1);
+        //nFoldCrossValidationSets("data/movielens/u.data", "data/movielens/cross-val", 5, "\t", -1);
+        nFoldCrossValidationSets("data/bx/bx-ratings.csv", "data/bx/cross-val", 5, "\t", -1);
     }
 
 
@@ -113,7 +114,7 @@ public class DataSplitter {
         }
     }
 
-
+    //givenN = -1 indicates 50/50 train/test for test users
     public static void nFoldCrossValidationSets(String inFile, String outDirectory, int nFolds, String delimiter, int givenN) {
         HashMap<String,HashMap<String,Rating>> usersRatings = readRatingData(inFile, delimiter);
         int numUsers = usersRatings.size();
@@ -136,10 +137,20 @@ public class DataSplitter {
                 FileWriter writeTest = new FileWriter(new File(outDirectory + "/test" + i));
                 upperBorder = lowerBorder + usersPerFraction;
                 int x = 1;
+                int usersRetained = 0;
+                int ratingsRetained = 0;
                 if (i <= rest) upperBorder++;
 
                 for (int j = 0; j < numUsers; j++) {
                     //System.out.println(list.get(j).getKey());
+
+                    if (list.get(j).getValue().size() < 10) {
+                        continue;
+                    }
+                    else {
+                        usersRetained++;
+                        ratingsRetained += list.get(j).getValue().size();
+                    }
 
                     if (j < upperBorder && j >= lowerBorder) {
                         //System.out.println(x++);
@@ -179,6 +190,7 @@ public class DataSplitter {
                 writeTest.flush();
                 writeTest.close();
                 System.out.println("-----------------------");
+                System.out.println("Users retained: " + usersRetained + ", ratings retained: " + ratingsRetained);
             }
         }
         catch (IOException ie) {

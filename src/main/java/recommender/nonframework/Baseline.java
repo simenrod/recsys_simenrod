@@ -18,7 +18,7 @@ public class Baseline implements Recommender {
 
     public static void main(String[] args) {
         Baseline baseRec = new Baseline();
-        baseRec.readRatings("\t");
+        baseRec.readRatings("\t", "/home/simen/Documents/datasett/crossfold-movielens-binary/training");
         System.out.println("Har lest ratings");
         //baseRec.recommend();
         baseRec.writeTopNToFile();
@@ -30,7 +30,7 @@ public class Baseline implements Recommender {
     }
 
     public void update(String trainingFile) {
-        readRatings("\t");
+        readRatings("\t", trainingFile);
     }
 
     public int[] recommend(int userId, int num) {
@@ -41,6 +41,7 @@ public class Baseline implements Recommender {
         while (j < sortedPredictions.length) {
             Prediction p = sortedPredictions[j];
             String itemId = p.getItem().getId();
+            if (u == null) System.out.println("uid: "+ userId + ", itemId: " + itemId);
             if (u.getHistory().get(itemId) == null) { //ikke ratet fra foer
                 //if (i < 10) System.out.println("-"+itemId + " ("+p.getValue()); //TESTUTSKRIFT
                 //fw.write(itemId + "\t");
@@ -66,11 +67,12 @@ public class Baseline implements Recommender {
         return sortedPredictions;
     }
 
-    public void readRatings(String splitter) {
+    public void readRatings(String splitter, String trainingFile) {
 
         try {
             //BufferedReader br = new BufferedReader(new FileReader("/home/simen/Documents/datasett/ml-100k/u.data"));
-            BufferedReader br = new BufferedReader(new FileReader("/home/simen/Documents/datasett/crossfold-movielens-binary/training"));
+            //BufferedReader br = new BufferedReader(new FileReader("/home/simen/Documents/datasett/crossfold-movielens-binary/training"));
+            BufferedReader br = new BufferedReader(new FileReader(trainingFile));
             String line = br.readLine();
 
             while (line != null) {
