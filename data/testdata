@@ -101,9 +101,17 @@ Average map (all folds): 0.0948524727351257
 Average train time (all folds): 5.021366445E9
 Average test time (all folds): 5532.0
 
-Spark (1-fold)
+Spark (1-fold) SE NESTE
 Map: 0.07433505821470077
 Avg time producing rec: 7.54099207E8
 Average map (all folds): 0.07433505821470077
 Average train time (all folds): 3.5456621516E10
 Average test time (all folds): 7.54099207E8
+
+Spark (1-fold) oppdatert versjon
+Time used for training recommender:4.6605593632E10
+Map: 0.07242667485367589
+Avg time producing rec: 2.2875366E8
+Average map (all folds): 0.07242667485367589
+Average train time (all folds): 4.6605593632E10
+Average test time (all folds): 2.2875366E8
