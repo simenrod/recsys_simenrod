@@ -15,6 +15,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
@@ -28,21 +29,23 @@ import java.util.Scanner;
 // og faa recs
 //kan vaere lurt aa skille ut Ratings-delen som en egen metode (feks parseRatings()) og updateModel -> saa den kan oppdateres underveis.
 //Burde skifte navn til ImplALS ellerno
-public class SparkRecommender implements Recommender, Serializable {
+public class ModelBased implements Recommender, Serializable {
     private static SparkConf conf;
     private static JavaSparkContext sc;
     private static MatrixFactorizationModel model;
     private static List<Tuple2<Object, Iterable<Rating>>> ratingPerUser;
+    private static JavaPairRDD<Object, Iterable<Rating>> userMovies2;
     private int rank;
     private int iterations;
     private double lambda;
     private double alpha;
+    //private HashMap<Integer, HashMap<Integer, Double>> usersRatings;
 
 
     public static void main(String[] args) {
         //init();
-        //recommender.spark.SparkRecommender sr = new recommender.spark.SparkRecommender();
-        SparkRecommender r = new SparkRecommender();
+        //recommender.spark.ModelBased sr = new recommender.spark.ModelBased();
+        ModelBased r = new ModelBased();
         r.init();
         //sr.init2();
         /*int x = 1; //teller
@@ -88,10 +91,14 @@ public class SparkRecommender implements Recommender, Serializable {
                     public Rating call(String line) {
                         //String[] parts = line.split("::");
                         String[] parts = line.split("\t");
+                        int userId = Integer.parseInt(parts[0]);
+                        int itemId = Integer.parseInt(parts[1]);
+                        double ratingValue = Double.parseDouble(parts[2]);
+
                         //String[] parts = line.split(",");
                         /*return new Rating(Integer.parseInt(parts[0]), Integer.parseInt(parts[1]), Double
                                 .parseDouble(parts[2]) - 2.5);*/
-                        double ratingValue = Double.parseDouble(parts[2]);
+
                         if (ratingValue > 0) {
                             ratingValue = 1;
                         }
@@ -119,8 +126,8 @@ public class SparkRecommender implements Recommender, Serializable {
                 }
         );
 
-        JavaPairRDD<Object, Iterable<Rating>> userMovies2 = userMovies.sortByKey(); //sorterer brukerne fra lav til stoerst
-
+        //JavaPairRDD<Object, Iterable<Rating>> userMovies2 = userMovies.sortByKey(); //sorterer brukerne fra lav til stoerst
+        userMovies2 = userMovies.sortByKey();
         //List<Rating> rlist = ratings.collect(); //faar da en liste med alle ratings (100K pga ml100k)
         //int x = 0;
         //for (Rating r : rlist) {
@@ -270,12 +277,20 @@ public class SparkRecommender implements Recommender, Serializable {
                         /*return new Rating(Integer.parseInt(parts[0]), Integer.parseInt(parts[1]), Double
                                 .parseDouble(parts[2]) - 2.5);*/
                         double ratingValue = Double.parseDouble(parts[2]);
-                        if (ratingValue > 0) {
+
+                        //String[] parts = line.split(",");
+                        /*return new Rating(Integer.parseInt(parts[0]), Integer.parseInt(parts[1]), Double
+                                .parseDouble(parts[2]) - 2.5);*/
+                        /*usersRatings.putIfAbsent(userId, new HashMap<>());
+                        System.out.println(usersRatings.size());
+                        usersRatings.get(userId).put(itemId, ratingValue);
+
+                        /*if (ratingValue > 0) {
                             ratingValue = 1;
                         }
                         else {
                             ratingValue = 0;
-                        }
+                        }*/
                         return new Rating(Integer.parseInt(parts[0]),
                                 Integer.parseInt(parts[1]), ratingValue);
 
@@ -289,15 +304,22 @@ public class SparkRecommender implements Recommender, Serializable {
         //boer nok forst groupby user som i userMovies i annen fil
         // Group ratings by common user //LITT USIKKER -> tror gjoer om fra Rating-map til <id, [Rating]>-tupler for hver bruker
         JavaPairRDD<Object, Iterable<Rating>> userMovies = ratings.groupBy( //grupperer ratings etter bruker
-                new Function<Rating, Object>() {
-                    @Override
-                    public Object call(Rating r) {
-                        return r.user();
-                    }
-                }
+                (Function<Rating, Object>) r -> r.user()
         );
 
-        JavaPairRDD<Object, Iterable<Rating>> userMovies2 = userMovies.sortByKey(); //sorterer brukerne fra lav til stoerst
+
+        /*//===================ALTERNATIV VERSJON
+        //val ratingsGroupedByUser = ratings.map(rat => (rat.user, rat)).groupByKey().persist()
+        ratings.map(
+                new Function<Rating, Object>() {
+                    return
+                }
+        );*/
+
+
+        //================================================
+
+        userMovies2 = userMovies.sortByKey(); //sorterer brukerne fra lav til stoerst
 
         //List<Rating> rlist = ratings.collect(); //faar da en liste med alle ratings (100K pga ml100k)
         //int x = 0;
@@ -333,21 +355,57 @@ public class SparkRecommender implements Recommender, Serializable {
 
         //////////*/
 
-
         // Trains the ALS-model
         model = ALS.trainImplicit(JavaRDD.toRDD(ratings), rank, iterations, lambda, alpha);
+
+
+    }
+
+
+
+    public Iterator<Rating> getRatingHistory(int userId) {
+        for (Tuple2<Object, Iterable<Rating>> t : ratingPerUser) {
+            //Iterable<Rating> usersRatings = t._2();
+            Iterator<Rating> it = t._2().iterator();
+            while (it.hasNext()) {
+                Rating r = it.next();
+                if (userId != r.user()) break;
+                //System.out.println("FANT RIKTIG BRUKER");
+                return t._2().iterator();
+            }
+        }
+        return null;
     }
 
     public int[] recommend(int userId, int num) {
+        //List<Integer> ratedBefore = new List<>();
+        Iterator<Rating> iterator = getRatingHistory(userId);
+        //private static List<Tuple2<Object, Iterable<Rating>>> ratingPerUser;
+
+        HashMap<Integer, Integer> hm = new HashMap<>();
+        while (iterator.hasNext()) {
+            Rating r = iterator.next();
+            hm.put(r.product(), r.product());
+        }
+
+
         //MAA ENDRES -> GIR ARRAY INDEX OUT OF BOUND EXCEPTION
-        Tuple2<Object, Iterable<Rating>> tup = ratingPerUser.get(userId-1); //henter brukeren sine ratings //dette boer endres -> virker skjoert
+        //Tuple2<Object, Iterable<Rating>> tup = ratingPerUser.get(userId-1); //henter brukeren sine ratings //dette boer endres -> virker skjoert
+        //Iterator<Rating> iterator =  ratingPerUser.get(userId-1)._2().iterator();
+
+
+        //System.out.println(userId);
+        //Iterable<Rating> tup = userMovies2.lookup(userId).get(0);
+
+
         //TROR LURT AA BRUKE lookup(userId) i stedet - men da maa man kanskje bruke groupByKey foerst - undersoek naermere
         //Tuple2<Object, Iterable<Rating>> tup = ratingPerUser.lookup(userId);
         //Iterator<Rating> iterator =  tup._2().iterator();
 
         //Iterable<Rating> usersRatings = ratingPerUser.get(id-1);
+
         Rating[] ratings = model.recommendProducts(userId, num+10000);
-        //System.out.println(ratings.length);
+        /*//System.out.println(ratings.length);
         Rating[] finalRatings = new Rating[num]; //change to num
 
         //Rating r = iterator.next();
@@ -357,7 +415,8 @@ public class SparkRecommender implements Recommender, Serializable {
         for (Rating rating : ratings) {
             //System.out.println(rating.product());
             Boolean match = false;
-            Iterator<Rating> iterator =  tup._2().iterator();
+            //Iterator<Rating> iterator =  tup._2().iterator();
+            //Iterator<Rating> iterator =  tup.iterator();
             while (iterator.hasNext()) {
                 //System.out.println(rating.product());
                 Rating r = iterator.next();
@@ -383,6 +442,14 @@ public class SparkRecommender implements Recommender, Serializable {
             recommendedItems[i] = finalRatings[i].product();
             //System.out.print(i);
         }
+        //int[] recommendedItems = {1,2,3,4,5,6,7,8,9,10};*/
+        int i = 0;
+        int[] recommendedItems = new int[num];
+        for (Rating r : ratings) {
+            if (!hm.containsKey(r.product())) recommendedItems[i++] = r.product();
+            if (i == num) break;
+        }
+
         //System.out.println("");
         //fjern overlapp
         //return finalRatings;

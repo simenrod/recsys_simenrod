@@ -11,9 +11,12 @@ import java.util.HashMap;
  */
 public class Baseline implements Recommender {
     //private HashMap<String,Integer> items = new HashMap<String, Integer>();
-    private HashMap<String,Item> items = new HashMap<String, Item>();
+    /*private HashMap<String,Item> items = new HashMap<String, Item>();
     private HashMap<String, User> users = new HashMap<String, User>();
-    private HashMap<String,Prediction> predictions = new HashMap<String, Prediction>();
+    private HashMap<String,Prediction> predictions = new HashMap<String, Prediction>();*/
+    private HashMap<String,Item> items;
+    private HashMap<String, User> users;
+    private HashMap<String,Prediction> predictions;
     private Prediction[] sortedPredictions;
 
     public static void main(String[] args) {
@@ -68,6 +71,9 @@ public class Baseline implements Recommender {
     }
 
     public void readRatings(String splitter, String trainingFile) {
+        items = new HashMap<>();
+        users = new HashMap<>();
+        predictions = new HashMap<>();
 
         try {
             //BufferedReader br = new BufferedReader(new FileReader("/home/simen/Documents/datasett/ml-100k/u.data"));

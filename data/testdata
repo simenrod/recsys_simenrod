@@ -71,7 +71,25 @@ Average map (all folds): 0.17851551693919843
 Average train time (all folds): 5.261760895999999E8
 Average test time (all folds): 4282532.0
 
-
+Baseline
+Time used for training recommender:6.91434601E8
+Map: 0.5050485358752553
+Avg time producing rec: 33817.0
+Time used for training recommender:3.5875292E8
+Map: 0.5097416152430013
+Avg time producing rec: 18249.0
+Time used for training recommender:3.1638987E8
+Map: 0.5442552708424151
+Avg time producing rec: 2936.0
+Time used for training recommender:2.97984672E8
+Map: 0.5142250354140872
+Avg time producing rec: 3093.0
+Time used for training recommender:1.73136034E8
+Map: 0.5257145839029074
+Avg time producing rec: 5138.0
+Average map (all folds): 0.5197970082555333
+Average train time (all folds): 3.675396194E8
+Average test time (all folds): 12646.600000000002
 
 ==BX (min 10 ratings)==
 
@@ -82,3 +100,10 @@ Avg time producing rec: 5532.0
 Average map (all folds): 0.0948524727351257
 Average train time (all folds): 5.021366445E9
 Average test time (all folds): 5532.0
+
+Spark (1-fold)
+Map: 0.07433505821470077
+Avg time producing rec: 7.54099207E8
+Average map (all folds): 0.07433505821470077
+Average train time (all folds): 3.5456621516E10
+Average test time (all folds): 7.54099207E8
