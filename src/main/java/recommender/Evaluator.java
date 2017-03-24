@@ -26,8 +26,8 @@ public class Evaluator {
         //ContentBased sr = new ContentBased();
         //sr.initialize("data/movie-tags.csv", "data/movie-titles-test.csv");
         //sr.initialize("data/movielens/item-tags", "data/movielens/titles");
-        ItemBasedRecommender sr = new ItemBasedRecommender();
-        //ModelBased sr = new ModelBased();
+        //ItemBasedRecommender sr = new ItemBasedRecommender();
+        ModelBased sr = new ModelBased();
         //Cbf sr = new Cbf();
         //Baseline sr = new Baseline();
         sr.initialize();
@@ -52,7 +52,7 @@ public class Evaluator {
 
         //eval.hitRate(sr, trainingFiles, testFiles, 10);
         eval.map(sr, trainingFiles, testFiles, 10);
-        //ModelBased.stopSparkContext(); //make instance variable + probably not make new context for each test
+        ModelBased.stopSparkContext(); //make instance variable + probably not make new context for each test
 
     }
 
