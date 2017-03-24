@@ -9,6 +9,7 @@ import java.util.Set;
 
 
 import recommender.lenskit.ContentBased;
+import recommender.lenskit.ItemBasedRecommender;
 import recommender.nonframework.Baseline;
 import recommender.spark.ModelBased;
 //import recommender.nonframework.Baseline;
@@ -25,8 +26,8 @@ public class Evaluator {
         //ContentBased sr = new ContentBased();
         //sr.initialize("data/movie-tags.csv", "data/movie-titles-test.csv");
         //sr.initialize("data/movielens/item-tags", "data/movielens/titles");
-        //ItemBasedRecommender sr = new ItemBasedRecommender();
-        ModelBased sr = new ModelBased();
+        ItemBasedRecommender sr = new ItemBasedRecommender();
+        //ModelBased sr = new ModelBased();
         //Cbf sr = new Cbf();
         //Baseline sr = new Baseline();
         sr.initialize();
@@ -38,20 +39,20 @@ public class Evaluator {
         String[] testFiles = {"data/movielens/leave_one_out/test1","data/movielens/leave_one_out/test2",
                 "data/movielens/leave_one_out/test3","data/movielens/leave_one_out/test4",
                 "data/movielens/leave_one_out/test5"};*/
-        /*String[] trainingFiles = {"data/movielens/cross-val/train1","data/movielens/cross-val/train2",
+        String[] trainingFiles = {"data/movielens/cross-val/train1","data/movielens/cross-val/train2",
                 "data/movielens/cross-val/train3","data/movielens/cross-val/train4",
                 "data/movielens/cross-val/train5"};
         String[] testFiles = {"data/movielens/cross-val/test1","data/movielens/cross-val/test2",
                 "data/movielens/cross-val/test3","data/movielens/cross-val/test4",
-                "data/movielens/cross-val/test5"};*/
-        String[] testFiles = {"data/bx/cross-val/test1"};
-        String[] trainingFiles = {"data/bx/cross-val/train1"};
+                "data/movielens/cross-val/test5"};
+        //String[] testFiles = {"data/bx/cross-val/test1"};
+        //String[] trainingFiles = {"data/bx/cross-val/train1"};
         /*String[] testFiles = {"data/tag-test/test1"};
         String[] trainingFiles = {"data/tag-test/train1"};*/
 
         //eval.hitRate(sr, trainingFiles, testFiles, 10);
         eval.map(sr, trainingFiles, testFiles, 10);
-        ModelBased.stopSparkContext(); //make instance variable + probably not make new context for each test
+        //ModelBased.stopSparkContext(); //make instance variable + probably not make new context for each test
 
     }
 

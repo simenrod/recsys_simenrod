@@ -38,7 +38,7 @@ public class ContentBased implements Recommender {
         config = new LenskitConfiguration();
         // configure the rating data source
         config.bind(EventDAO.class)
-                .to(MOOCRatingDAO.class);
+                .to(MOOCRatingDAO.class); //could maybe have used SimpleFileRatingDAO
         config.set(RatingFile.class)
                 .to(new File(trainingFile));
 
