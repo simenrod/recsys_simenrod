@@ -25,7 +25,7 @@ import java.util.Scanner;
  * Created by simen on 2/8/17.
  */
 
-public class ModelBased implements Recommender, Serializable {
+public class ModelBasedRecommender implements Recommender, Serializable {
     private static SparkConf conf;
     private static JavaSparkContext sc;
     private static MatrixFactorizationModel model;
@@ -43,10 +43,7 @@ public class ModelBased implements Recommender, Serializable {
         sc = new JavaSparkContext(conf);
         sc.setLogLevel("WARN");
         //options for Level include: all, debug, error, fatal, info, off, trace, trace_int, warn
-        rank = 10;
-        iterations = 10;
-        lambda = 0.01;
-        alpha = 0.01;
+        setParameters(10,10,0.01,0.01);
     }
 
     //Method used for initiating Spark-context and -configuration, and for setting the parameters of the recommender.
@@ -56,12 +53,15 @@ public class ModelBased implements Recommender, Serializable {
                 setMaster("local");
         sc = new JavaSparkContext(conf);
         sc.setLogLevel("WARN");
+        setParameters(rank, iterations, lambda, alpha);
+    }
+
+    public void setParameters(int rank, int iterations, double lambda, double alpha) {
         this.rank = rank;
         this.iterations = iterations;
         this.lambda = lambda;
         this.alpha = alpha;
     }
-
 
     //Train the model-based recommender with the trainingfile, so it's ready to produce recommendation
     public void update(String trainingFile) {
@@ -135,4 +135,8 @@ public class ModelBased implements Recommender, Serializable {
         sc.stop();
     } //shuts down the spark context
 
+    public String getInfo() {
+        return "Model-based Collaborative filtering | r = " + rank
+                +" i = "+ iterations + " l = " + lambda + " a = " + alpha;
+    }
 }

@@ -7,13 +7,23 @@ import org.apache.spark.mllib.recommendation.Rating;
  */
 public interface Recommender {
 
-    //public static Rating[] getRecsForUser(int id, int num);
-    //public void init2();
-
-
-    //maybe include String delimiter, e.g. "\t"  or ","
+    /**
+     * Method that trains the recommender with a training file
+     * @param trainingFile file used for training
+     */
     public void update(String trainingFile);
 
 
+    /**
+     *
+     * @param userId The id of the user - given as int
+     * @param num Number of recommendations to give
+     * @return Returns the itemids of the recommendations for the user. Does not include already rated items
+     */
     public int[] recommend(int userId, int num);
+
+    /**
+     * @return Returns info about which type of recommender this is, and parameters (if any)
+     */
+    public String getInfo();
 }

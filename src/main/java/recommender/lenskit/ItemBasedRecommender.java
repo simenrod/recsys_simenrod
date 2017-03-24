@@ -89,7 +89,7 @@ public class ItemBasedRecommender implements Recommender {
 
     //returns info about this recommender as a String
     public String getInfo() {
-        return "Item-based Collaborative filtering | k = " + k;
+        return "Item-based Collaborative Filtering | k = " + k;
     }
 
 }
