@@ -49,6 +49,7 @@ public class CSVItemTagDAO extends MOOCItemDAO implements ItemTagDAO {
                                 tags = new ArrayList<String>();
                                 tagCache.put(mid, tags);
                             }
+                            if (line.length == 1) System.out.println(line[0]);
                             tags.add(line[1]);
                             vocabBuilder.add(line[1]);
                         }
