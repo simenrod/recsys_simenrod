@@ -9,6 +9,7 @@ import java.util.Set;
 
 
 import recommender.lenskit.ContentBasedRecommender;
+import recommender.lenskit.ItemBasedRecommender;
 import recommender.nonframework.BaselineRecommender;
 import recommender.spark.ModelBasedRecommender;
 //import recommender.nonframework.BaselineRecommender;
@@ -24,10 +25,10 @@ public class Evaluator {
         ContentBasedRecommender sr = new ContentBasedRecommender();
         //sr.initialize("data/movie-tags.csv", "data/movie-titles-test.csv");
         //sr.initialize("data/movielens/item-tags", "data/movielens/titles");
-        sr.initialize("data/bx/item-tags", "data/bx/titles");
+        //sr.initialize("data/bx/item-tags", "data/bx/titles");
+        sr.initialize("data/bx6k/item-tags-reduced", "data/bx6k/titles");
         //ItemBasedRecommender sr = new ItemBasedRecommender();
         //ModelBasedRecommender sr = new ModelBasedRecommender();
-        //Cbf sr = new Cbf();
         //BaselineRecommender sr = new BaselineRecommender();
         //sr.initialize();
         //String[] trainingFiles = {"/home/simen/Documents/datasett/crossfold-movielens-binary/training"};
@@ -44,10 +45,12 @@ public class Evaluator {
         String[] testFiles = {"data/movielens/cross-val/test1","data/movielens/cross-val/test2",
                 "data/movielens/cross-val/test3","data/movielens/cross-val/test4",
                 "data/movielens/cross-val/test5"};*/
-        //String[] testFiles = {"data/bx/cross-val/test1"};
-        //String[] trainingFiles = {"data/bx/cross-val/train1"};
-        String[] testFiles = {"data/tag-test/test1"};
-        String[] trainingFiles = {"data/tag-test/train1"};
+        /*String[] testFiles = {"data/bx/cross-val/test1"};
+        String[] trainingFiles = {"data/bx/cross-val/train1"};*/
+        String[] testFiles = {"data/bx6k/cross-val/test1"};
+        String[] trainingFiles = {"data/bx6k/cross-val/train1"};
+        //String[] testFiles = {"data/tag-test/test1"};
+        //String[] trainingFiles = {"data/tag-test/train1"};
 
         //eval.hitRate(sr, trainingFiles, testFiles, 10);
         eval.map(sr, trainingFiles, testFiles, 10);

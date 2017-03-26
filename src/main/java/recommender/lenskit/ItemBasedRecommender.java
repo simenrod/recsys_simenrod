@@ -60,7 +60,7 @@ public class ItemBasedRecommender implements Recommender {
         config.bind(ItemScorer.class).to(ItemItemScorer.class);
         config.bind(VectorSimilarity.class).to(CosineVectorSimilarity.class);
         config.set(MinNeighbors.class).to(2);
-        config.set(ModelSize.class).to(250);
+        config.set(ModelSize.class).to(100);
         config.bind(NeighborhoodScorer.class).to(SimilaritySumNeighborhoodScorer.class);
         config.set(NeighborhoodSize.class).to(k);
         config.bind(EventDAO.class).to(new SimpleFileRatingDAO(new File(trainingFile), "\t"));

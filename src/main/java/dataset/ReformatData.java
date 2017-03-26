@@ -2,10 +2,10 @@ package dataset;
 
 
 import it.unimi.dsi.fastutil.Hash;
+import shapeless.tag;
 
 import java.io.*;
-import java.util.HashMap;
-import java.util.HashSet;
+import java.util.*;
 
 /**
  * Created by simen on 3/21/17.
@@ -15,8 +15,10 @@ public class ReformatData {
 
     public static void main(String[] args) {
         //movieLens("data/movielens/u.item", "data/movielens/item-tags", "data/movielens/titles");
-        bookCrossing("data/bx/bx.csv","data/bx/bx-books.csv", "data/bx/ratings",
-                "data/bx/item-tags","data/bx/titles");
+        /*bookCrossing("data/bx6k/ratings","data/bx/bx-books.csv", "data/bx6k/ratings-transformed",
+                "data/bx6k/item-tags","data/bx6k/titles");*/
+        //makeSubset("data/bx/bx.csv", "data/bx6k/ratings",";", 6000, 20, 200);
+        reduceTags("data/bx6k/item-tags", "data/bx6k/item-tags-reduced", 10);
     }
 
     //makes a new file with tags for movies, and a file with the titles of the movies
@@ -222,7 +224,7 @@ public class ReformatData {
         return hm;
     }
 
-    public static void makeSubset(String inputFile, String outputFile, String delimiter) {
+    public static void makeSubset(String inputFile, String outputFile, String delimiter, int numUsers, int minRatings, int maxRatings) {
         //read all lines
         //for each line, store userID in hashset h1
         //shuffle all userIds in set
@@ -231,31 +233,53 @@ public class ReformatData {
         //read all lines again
         //for each line, if userid is in hashset h2, write the line to new file
 
-        /*HashSet<String> users;
+        HashMap<String, Integer> users = new HashMap<>();
+        HashSet<String> usersToKeep = new HashSet<>();
+        //HashSet<String> users = new HashSet<>();
         try {
             BufferedReader br = new BufferedReader(new FileReader(inputFile));
-            FileWriter fw = new FileWriter(new File(outputFile));
-
             String line = br.readLine();
-            int lineNr = 0;
 
             while (line != null) {
-                String[]words = line.split(";");
+                String[] words = line.split(delimiter);
 
-                for (int i = 0; i < words.length; i++) {
-                    words[i] = words[i].replace("\"","");
-                    //System.out.println(words[i]);
-                }
-
-                if (hm.get(words[1]) == null) {
-                    hm.put(words[1], new Integer(counter++));
-                }
-                int book_nr = hm.get(words[1]);
-
-                fw.write(words[0]+"\t"+book_nr+"\t"+words[2]+"\n");
+                users.putIfAbsent(words[0],0);
+                users.put(words[0], users.get(words[0])+1);
                 line = br.readLine();
-                //if (lineNr++ >= 10) break;
             }
+
+            //transforms hashmap of users to a arraylist, so it can be shuffled
+            List<Map.Entry<String,Integer>> list = new ArrayList<>(users.entrySet());
+            Collections.shuffle(list);
+
+            //stores the numUsers users to keep in the set usersToKeep. The list has been shuffled
+            //and we store the x first users who has ratings in the range we have chosen (ensures random users)
+            int i = 0;
+            for (Map.Entry<String,Integer> entry : list) {
+                if (entry.getValue() >= minRatings && entry.getValue() <= maxRatings) {
+                    usersToKeep.add(entry.getKey());
+                    if (i >= numUsers) break;
+                    i++;
+                }
+            }
+            System.out.println("Randomly chosen " + i + " users");
+
+            br = new BufferedReader(new FileReader(inputFile));
+            FileWriter fw = new FileWriter(new File(outputFile));
+            line = br.readLine();
+
+            while (line != null) {
+                String[] words = line.split(delimiter);
+                if (usersToKeep.contains(words[0])) {
+                    //System.out.println(line);
+                    fw.write(line + "\n");
+                }
+
+                //users.putIfAbsent(words[0],0);
+                //users.put(words[0], users.get(words[0])+1);
+                line = br.readLine();
+            }
+
             fw.flush();
             fw.close();
 
@@ -264,7 +288,41 @@ public class ReformatData {
         catch(IOException ie) {
             ie.printStackTrace();
             System.exit(1);
-        }*/
+        }
+    }
+
+    //Reduces the tagfile by removing tags that have frequency smaller or equal to minNum
+    public static void reduceTags(String inputFile, String outputFile, int minNum) {
+        HashMap<String, Integer> tags = new HashMap<>();
+
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(inputFile));
+            FileWriter fw = new FileWriter(new File(outputFile));
+
+            String line = br.readLine();
+
+            while (line != null) {
+                String[]words = line.split(",");
+
+                tags.putIfAbsent(words[1], 0);
+                tags.put(words[1], tags.get(words[1])+1);
+                line = br.readLine();
+            }
+
+            br = new BufferedReader(new FileReader(inputFile));
+            line = br.readLine();
+            while (line != null) {
+                String[] words = line.split(",");
+                if (tags.get(words[1]) >= minNum) fw.write(line + "\n");
+                line = br.readLine();
+            }
+            fw.flush();
+            fw.close();
+        }
+        catch(IOException ie) {
+            ie.printStackTrace();
+            System.exit(1);
+        }
     }
 
 }
