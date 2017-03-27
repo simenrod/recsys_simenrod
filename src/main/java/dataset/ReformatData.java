@@ -20,11 +20,12 @@ public class ReformatData {
         //makeSubset("data/bx/bx.csv", "data/bx6k/ratings",";", 6000, 20, 200);
         //makeSubset("/home/simen/Desktop/train_triplets.txt", "data/msd6k/ratings4","\t", 6000, 30, 100);
         //makeSubset("/home/simen/Desktop/ml-1m/ratings.dat", "data/ml6k/ratings","::", 6000, 20, 200);
-        msd("data/msd6k/ratings3", "data/msd6k/song-to-track", "data/msd6k/itemids",
-                "data/msd6k/ratings-transformed", "/home/simen/Desktop/msd/tid_tag.csv",
-                "data/msd6k/tags", "data/msd6k/titles");
+        /*msd("data/msd6k/ratings3", "data/msd6k/song-to-track", "data/msd6k/itemids",
+                "data/msd6k/ratings-transformed", "/home/simen/Desktop/msd/tags-reduced",
+                "data/msd6k/tags", "data/msd6k/titles");*/
 
-        //reduceTags("data/bx6k/item-tags", "data/bx6k/item-tags-reduced", 10);
+        reduceTags("data/msd6k/tags", "data/msd6k/tags-reduced", 10);
+        //reduceMsdTags("/home/simen/Desktop/msd/tid_tag.csv", "/home/simen/Desktop/msd/tags-reduced", 30);
     }
 
     //makes a new file with tags for movies, and a file with the titles of the movies
@@ -333,6 +334,29 @@ public class ReformatData {
         }
     }
 
+    //Reduces the tag file for MSD by not keeping tags with values below minVal (MSD tags comes with values between 0-100)
+    public static void reduceMsdTags(String inputFile, String outputFile, int minVal) {
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(inputFile));
+            FileWriter fw = new FileWriter(new File(outputFile));
+
+            String line = br.readLine();
+
+            while (line != null) {
+                String[] words = line.split(",");
+                if (Double.parseDouble(words[2]) > minVal) fw.write(words[0] + "," + words[1] + "," + words[2] + "\n");
+                line = br.readLine();
+            }
+
+            fw.flush();
+            fw.close();
+        }
+        catch(IOException ie) {
+            ie.printStackTrace();
+            System.exit(1);
+        }
+    }
+
     public static void msd(String ratingFile, String trackToSongFile, String itemIdsFile, String outputRatingFile,
                            String tagFile, String outputTagFile, String outputTitleFile) {
         HashMap<String, String> trackToSong = new HashMap<>();
@@ -466,5 +490,13 @@ public class ReformatData {
 
 
     }
+
+    public void binarizeRatings(String inputFile, String outputFile) {
+
+    }
+    //TODO binarize values, change evaluation-method to all-but-n, change evaluation-method to measure hit-rate
+    //and using several recsizes (e.g. 10,20,30,100/500),
+    //format ml10m to 6k and handle tags,
+    //make scalability-test (train with whole dataset) and test e.g. recs for 100 persons for ml100k, ml1m, ml10m
 
 }
