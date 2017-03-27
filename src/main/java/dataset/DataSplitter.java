@@ -49,7 +49,7 @@ public class DataSplitter {
         //leaveOneOut("data/movielens/u.data", "data/movielens/leave_one_out", 5, "\t"); //not change leave_one_out for movielens
         //nFoldCrossValidationSets("data/movielens/u.data", "data/movielens/cross-val", 5, "\t", -1);
         //nFoldCrossValidationSets("data/bx/bx-ratings.csv", "data/bx/cross-val", 5, "\t", -1);
-        nFoldCrossValidationSets("data/bx6k/ratings-transformed", "data/bx6k/cross-val", 5, "\t", -1);
+        nFoldCrossValidationSets("data/msd6k/ratings-transformed", "data/msd6k/cross-val", 5, "\t", -1);
     }
 
 

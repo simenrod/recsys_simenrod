@@ -18,7 +18,13 @@ public class ReformatData {
         /*bookCrossing("data/bx6k/ratings","data/bx/bx-books.csv", "data/bx6k/ratings-transformed",
                 "data/bx6k/item-tags","data/bx6k/titles");*/
         //makeSubset("data/bx/bx.csv", "data/bx6k/ratings",";", 6000, 20, 200);
-        reduceTags("data/bx6k/item-tags", "data/bx6k/item-tags-reduced", 10);
+        //makeSubset("/home/simen/Desktop/train_triplets.txt", "data/msd6k/ratings4","\t", 6000, 30, 100);
+        //makeSubset("/home/simen/Desktop/ml-1m/ratings.dat", "data/ml6k/ratings","::", 6000, 20, 200);
+        msd("data/msd6k/ratings3", "data/msd6k/song-to-track", "data/msd6k/itemids",
+                "data/msd6k/ratings-transformed", "/home/simen/Desktop/msd/tid_tag.csv",
+                "data/msd6k/tags", "data/msd6k/titles");
+
+        //reduceTags("data/bx6k/item-tags", "data/bx6k/item-tags-reduced", 10);
     }
 
     //makes a new file with tags for movies, and a file with the titles of the movies
@@ -224,6 +230,8 @@ public class ReformatData {
         return hm;
     }
 
+    //makes a subset in outputFile of inputFile. Chooses numUsers random users from the subset with
+    // ratings in the range given
     public static void makeSubset(String inputFile, String outputFile, String delimiter, int numUsers, int minRatings, int maxRatings) {
         //read all lines
         //for each line, store userID in hashset h1
@@ -291,7 +299,7 @@ public class ReformatData {
         }
     }
 
-    //Reduces the tagfile by removing tags that have frequency smaller or equal to minNum
+    //Reduces the tagfile by removing tags that have frequency smaller or equal to minNum (for bookcrossing)
     public static void reduceTags(String inputFile, String outputFile, int minNum) {
         HashMap<String, Integer> tags = new HashMap<>();
 
@@ -323,6 +331,140 @@ public class ReformatData {
             ie.printStackTrace();
             System.exit(1);
         }
+    }
+
+    public static void msd(String ratingFile, String trackToSongFile, String itemIdsFile, String outputRatingFile,
+                           String tagFile, String outputTagFile, String outputTitleFile) {
+        HashMap<String, String> trackToSong = new HashMap<>();
+        HashMap<String, Integer> songToItemId = new HashMap<>();
+        HashSet<Integer> itemIds = new HashSet<>();
+        HashMap<String, Integer> userIds = new HashMap<>();
+        HashMap<String, Integer> numRatings = new HashMap<>();
+
+        //for hver linje i ratingfile, lagre item-nokkel
+
+        //gammel item-tag -> ny item-tag
+        //gjoere om ny item-tag til int-verdier tilsvarende tag-fil
+        //skrive ny tag-fil (fjerne forste linje og tredje kolonne -verdier og evt utvelgelse av tags)
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(trackToSongFile));
+            FileWriter fwRatings = new FileWriter(new File(outputRatingFile));
+            FileWriter fwTags = new FileWriter(new File(outputTagFile));
+            FileWriter fwTitles = new FileWriter(new File(outputTitleFile));
+
+            String line = br.readLine();
+
+            //reads trackIds to songIds mapping and stores mapping in hashmap
+            while (line != null) {
+                //System.out.println(line);
+                String[] words = line.split("\t");
+                if (words.length > 1) trackToSong.put(words[0], words[1]);
+                /*tags.putIfAbsent(words[1], 0);
+                tags.put(words[1], tags.get(words[1])+1);*/
+                line = br.readLine();
+            }
+
+            //reads songIds to itemIds, so songs are compatible with tagging files whcih uses itemIds as
+            // integers from 1-n (where n is number of items).
+            br = new BufferedReader(new FileReader(itemIdsFile));
+            line = br.readLine();
+            int itemId = 1;
+
+            while (line != null) {
+                //if (itemId < 10) System.out.println(line + ", " + itemId);
+                songToItemId.put(line, itemId++);
+                //System.out.println(itemId);
+                line = br.readLine();
+            }
+
+            //reads ratingsfile to make int-values for each user and store in hashmap userIds
+            br = new BufferedReader(new FileReader(ratingFile));
+            line = br.readLine();
+            int userId = 1;
+
+            while (line != null) {
+                String[] words = line.split("\t");
+                userIds.putIfAbsent(words[0], userId++);
+                //System.out.println(words[0]);
+
+
+                //if (itemId < 10) System.out.println(line + ", " + itemId);
+                //songToItemId.put(line, itemId++);
+                //System.out.println(itemId);
+                line = br.readLine();
+            }
+
+            br = new BufferedReader(new FileReader(ratingFile));
+            line = br.readLine();
+            int songIdentifier = 0;
+            int x = 1;
+
+            while (line != null) {
+                String[] words = line.split("\t");
+                //trackToSong.put(words[0], words[1]);
+                String songId = trackToSong.get(words[1]);
+
+                //skips songs without mappable trackId FJERN KOMMENTAR
+                if (songId == null) {
+                    trackToSong.put(words[1], Integer.toString(songIdentifier));
+                    songId = Integer.toString(songIdentifier++);
+                    //x++;
+                    //line = br.readLine();
+                    //continue;
+                }
+
+                //skips songs without mappable songId FJERN KOMMENTAR
+                if (!songToItemId.containsKey(songId)) {
+                    songToItemId.put(songId, itemId++);
+                    //x++;
+                    //line = br.readLine();
+                    //continue;
+                    //System.out.println(x++);
+                }
+
+                fwRatings.write(userIds.get(words[0]) + "\t" + songToItemId.get(songId) + "\t" + words[2] + "\n");
+                itemIds.add(songToItemId.get(songId));
+
+                numRatings.putIfAbsent(words[0], 0);
+                numRatings.put(words[0], numRatings.get(words[0]) + 1);
+
+                //System.out.println("user id "+ words[0] + ", itemId " + words[1] + " / " + songId + " / " + itemId + ", rating " + words[2]);
+                line = br.readLine();
+            }
+
+            br = new BufferedReader(new FileReader(tagFile));
+            line = br.readLine();
+            while (line != null) {
+                String[] words = line.split(",");
+                //if (songToItemId.containsValue(words[0])) fwTags.write(words[0] + "+\t" + words[1]);
+                if (itemIds.contains(Integer.parseInt(words[0]))) fwTags.write(words[0] + "," + words[1] + "\n");
+                //if (tags.get(words[1]) >= minNum) fw.write(line + "\n");
+                line = br.readLine();
+            }
+
+            //because we must have a title file for the content-based recommender, we make a titlefile.
+            //but we do not have any titles, so we only add the ids (it will not affect the recommendations)
+            for (Integer i : itemIds) {
+                fwTitles.write(i + "," + i + "\n");
+            }
+
+            fwRatings.flush();
+            fwRatings.close();
+            fwTags.flush();
+            fwTags.close();
+            fwTitles.flush();
+            fwTitles.close();
+
+            for (Map.Entry<String, Integer> entry : numRatings.entrySet()) {
+                if (entry.getValue() < 20) System.out.println(entry.getKey() +" -.-.--.--");
+            }
+        }
+        catch(IOException ie) {
+            ie.printStackTrace();
+            System.exit(1);
+        }
+
+
     }
 
 }

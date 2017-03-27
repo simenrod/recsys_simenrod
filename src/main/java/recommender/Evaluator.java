@@ -23,10 +23,11 @@ public class Evaluator {
     public static void main(String[] args) {
         Evaluator eval = new Evaluator();
         ContentBasedRecommender sr = new ContentBasedRecommender();
+        sr.initialize("data/msd6k/tags", "data/msd6k/titles");
         //sr.initialize("data/movie-tags.csv", "data/movie-titles-test.csv");
         //sr.initialize("data/movielens/item-tags", "data/movielens/titles");
         //sr.initialize("data/bx/item-tags", "data/bx/titles");
-        sr.initialize("data/bx6k/item-tags-reduced", "data/bx6k/titles");
+        //sr.initialize("data/bx6k/item-tags-reduced", "data/bx6k/titles");
         //ItemBasedRecommender sr = new ItemBasedRecommender();
         //ModelBasedRecommender sr = new ModelBasedRecommender();
         //BaselineRecommender sr = new BaselineRecommender();
@@ -47,8 +48,10 @@ public class Evaluator {
                 "data/movielens/cross-val/test5"};*/
         /*String[] testFiles = {"data/bx/cross-val/test1"};
         String[] trainingFiles = {"data/bx/cross-val/train1"};*/
-        String[] testFiles = {"data/bx6k/cross-val/test1"};
-        String[] trainingFiles = {"data/bx6k/cross-val/train1"};
+        /*String[] testFiles = {"data/bx6k/cross-val/test1"};
+        String[] trainingFiles = {"data/bx6k/cross-val/train1"};*/
+        String[] testFiles = {"data/msd6k/cross-val/test1"};
+        String[] trainingFiles = {"data/msd6k/cross-val/train1"};
         //String[] testFiles = {"data/tag-test/test1"};
         //String[] trainingFiles = {"data/tag-test/train1"};
 
