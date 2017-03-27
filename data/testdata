@@ -125,7 +125,7 @@ Average train time (all folds): 6.623557952335E12
 Average test time (all folds): 2.0156214393E10
 
 
-==BX (subset 6k users w/ 20-200 ratings)
+==BX (subset 6k users w/ 20-200 ratings)==
 
 IBCF (1-fold)
 Time used for training recommender:5.7894783512E10 (57 sek)
@@ -161,7 +161,7 @@ Average test time (all folds): 1.243560231E9
 
 
 
-==MSD==
+==MSD (6k w/ 20-200 ratings)==
 
 Spark (1-fold)
 Time used for training recommender:2.1703577042E10 (21 sek)
@@ -186,3 +186,78 @@ Avg time producing rec: 2.46369595E8 (246 ms)
 Average map (all folds): 0.1936665257306626
 Average train time (all folds): 5.6959551171E10
 Average test time (all folds): 2.46369595E8
+
+Content-based (1-fold)
+Time used for training recommender:2.8770624744E10 (28 sek)
+Map: 0.0011111111111111111
+Avg time producing rec: 1.7888859E8 (178 ms)
+Average map (all folds): 0.0011111111111111111
+Average train time (all folds): 2.8770624744E10
+Average test time (all folds): 1.7888859E8
+
+==MSD all-but-10==
+Spark
+Time used for training recommender:1.8561964053E10
+Map: 0.12467840765935999
+Avg time producing rec: 5.0187124E7
+Average map (all folds): 0.12467840765935999
+Average train time (all folds): 1.8561964053E10
+Average test time (all folds): 5.0187124E7
+
+Baseline
+Time used for training recommender:2.383562271E9
+Map: 0.07855055114638448
+Avg time producing rec: 11618.0
+Average map (all folds): 0.07855055114638448
+Average train time (all folds): 2.383562271E9
+Average test time (all folds): 11618.0
+
+==MSD all-but-20==
+Spark
+Time used for training recommender:1.7671596815E10
+Map: 0.1596533242604049
+Avg time producing rec: 5.6475915E7
+Average map (all folds): 0.1596533242604049
+Average train time (all folds): 1.7671596815E10
+Average test time (all folds): 5.6475915E7
+
+Baseline
+Time used for training recommender:2.260855764E9
+Map: 0.10036544269921167
+Avg time producing rec: 33399.0
+Average map (all folds): 0.10036544269921167
+Average train time (all folds): 2.260855764E9
+Average test time (all folds): 33399.0
+
+==ML 6K==
+Spark
+Time used for training recommender:1.61423522E10
+Map: 0.4375968378632309
+Avg time producing rec: 4.1009772E7
+Average map (all folds): 0.4375968378632309
+Average train time (all folds): 1.61423522E10
+Average test time (all folds): 4.1009772E7
+
+Baseline
+Time used for training recommender:1.558165266E9
+Map: 0.23138589616402114
+Avg time producing rec: 10922.0
+Average map (all folds): 0.23138589616402114
+Average train time (all folds): 1.558165266E9
+Average test time (all folds): 10922.0
+
+Content-based
+Time used for training recommender:2.813016756E9
+Map: 0.015524470899470894
+Avg time producing rec: 5486506.0
+Average map (all folds): 0.015524470899470894
+Average train time (all folds): 2.813016756E9
+Average test time (all folds): 5486506.0
+
+Item-based
+Time used for training recommender:1.7047310934E10
+Map: 0.41985395775594186
+Avg time producing rec: 2.2924089E7
+Average map (all folds): 0.41985395775594186
+Average train time (all folds): 1.7047310934E10
+Average test time (all folds): 2.2924089E7

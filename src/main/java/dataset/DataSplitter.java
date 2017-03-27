@@ -47,9 +47,9 @@ public class DataSplitter {
     public static void main(String[] args) {
         //leaveOneOut("movielens100k.data");
         //leaveOneOut("data/movielens/u.data", "data/movielens/leave_one_out", 5, "\t"); //not change leave_one_out for movielens
-        //nFoldCrossValidationSets("data/movielens/u.data", "data/movielens/cross-val", 5, "\t", -1);
-        //nFoldCrossValidationSets("data/bx/bx-ratings.csv", "data/bx/cross-val", 5, "\t", -1);
-        nFoldCrossValidationSets("data/msd6k/ratings-transformed", "data/msd6k/cross-val", 5, "\t", -1);
+        //kFoldCrossValidationSets("data/movielens/u.data", "data/movielens/cross-val", 5, "\t", -1);
+        //kFoldCrossValidationSets("data/bx/bx-ratings.csv", "data/bx/cross-val", 5, "\t", -1);
+        kFoldCrossValidationSets("data/ml6k/ratings", "data/ml6k/cross-val", 5, "::", 10, false);
     }
 
 
@@ -115,8 +115,10 @@ public class DataSplitter {
         }
     }
 
-    //givenN = -1 indicates 50/50 train/test for test users
-    public static void nFoldCrossValidationSets(String inFile, String outDirectory, int nFolds, String delimiter, int givenN) {
+    //Method to make a cross-validation set of a dataset. Gives k train/test sets
+    //n = -1 indicates 50/50 train/test for test users, givenN specifies if given-n or all-but-n method for splitting
+    //should be used
+    public static void kFoldCrossValidationSets(String inFile, String outDirectory, int kFolds, String delimiter, int n, boolean givenN) {
         HashMap<String,HashMap<String,Rating>> usersRatings = readRatingData(inFile, delimiter);
         int numUsers = usersRatings.size();
 
@@ -124,7 +126,96 @@ public class DataSplitter {
         List<Map.Entry<String,HashMap<String,Rating>>> list = new ArrayList<>(usersRatings.entrySet());
         Collections.shuffle(list);
 
-        int usersPerFraction = numUsers / nFolds; //MUST CHANGE -> NOT EQUAL SIZES (BECAUSE OF REST)
+        int usersPerFraction = numUsers / kFolds;
+        int rest = usersPerFraction % kFolds;
+        int lowerBorder = 0;
+        int upperBorder;
+
+        System.out.println(rest);
+        try {
+
+            //Repeats for all n folds
+            for (int i = 1; i <= kFolds; i++) {
+                FileWriter writeTrain = new FileWriter(new File(outDirectory + "/train" + i));
+                FileWriter writeTest = new FileWriter(new File(outDirectory + "/test" + i));
+                upperBorder = lowerBorder + usersPerFraction; //borders that divide users in different sets
+                int x = 1;
+                int usersRetained = 0;
+                int ratingsRetained = 0;
+                if (i <= rest) upperBorder++;
+
+
+                for (int j = 0; j < numUsers; j++) {
+
+                    //ensures all users have at least 20 ratings
+                    if (list.get(j).getValue().size() < 20) {
+                        System.out.println("Skipping user with less than 20 ratings");
+                        continue;
+                    }
+                    else {
+                        usersRetained++;
+                        ratingsRetained += list.get(j).getValue().size();
+                    }
+
+                    //if user is inside the set that are used for test set in this fold
+                    if (j < upperBorder && j >= lowerBorder) {
+                        List<Map.Entry<String, Rating>> ratingsForUser = new ArrayList<>(list.get(j).getValue().entrySet());
+                        Collections.shuffle(ratingsForUser);
+                        int numToTrain;
+
+                        if (n == -1) numToTrain = ratingsForUser.size() / 2; //divides by half
+                        else if (givenN) numToTrain = n; //given-n, i.e. n ratings are written to train set
+                        else numToTrain = ratingsForUser.size() - n; //all-but-n, i.e. all ratings except n are written to train set
+
+                        for (int k = 0; k < ratingsForUser.size(); k++) {
+                            Rating rating = ratingsForUser.get(k).getValue();
+
+                            if (k < numToTrain) {
+                                writeTrain.write(rating.getString());
+                            }
+                            else {
+                                writeTest.write(rating.getString());
+                            }
+                        }
+                    }
+                    //if user outside testset for this fold - write all ratings to train set
+                    else {
+                        List<Map.Entry<String, Rating>> ratingsForUser = new ArrayList<>(list.get(j).getValue().entrySet());
+                        Collections.shuffle(ratingsForUser);
+                        for (Map.Entry<String, Rating> entry : ratingsForUser) {
+                            Rating rating = entry.getValue();
+                            writeTrain.write(rating.getString());
+                        }
+                    }
+                }
+                lowerBorder = upperBorder;
+                writeTrain.flush();
+                writeTrain.close();
+                writeTest.flush();
+                writeTest.close();
+                System.out.println("-----------------------");
+                System.out.println("Users retained: " + usersRetained + ", ratings retained: " + ratingsRetained);
+            }
+        }
+        catch (IOException ie) {
+            //System.out.println("Error: "+ ie.stackTrace());
+            ie.printStackTrace(System.out);
+            System.exit(0);
+        }
+
+    }
+
+
+    /*//givenN = -1 indicates 50/50 train/test for test users
+    public static void kFoldCrossValidationSets(String inFile, String outDirectory, int nFolds, String delimiter, int givenN) {
+        HashMap<String,HashMap<String,Rating>> usersRatings = readRatingData(inFile, delimiter);
+        int numUsers = usersRatings.size();
+
+        //Transforms entries in hashmap to a list which is shuffled, so the users are in random order
+        List<Map.Entry<String,HashMap<String,Rating>>> list = new ArrayList<>(usersRatings.entrySet());
+        Collections.shuffle(list);
+
+        int usersPerFraction = numUsers / nFolds;
         int rest = usersPerFraction % nFolds;
         int lowerBorder = 0;
         int upperBorder;
@@ -200,7 +291,8 @@ public class DataSplitter {
             System.exit(0);
         }
 
-    }
+    }*/
+
 
     public static HashMap<String,HashMap<String,Rating>> readRatingData(String file, String delimiter) {
         HashMap<String,HashMap<String,Rating>> usersRatings = new HashMap<String,HashMap<String,Rating>>();
