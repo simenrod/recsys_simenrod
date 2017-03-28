@@ -83,4 +83,6 @@ public class BaselineRecommender implements Recommender {
         return "Popularity baseline recommender";
     }
 
+    public void close() {/*nothing to close*/}
+
 }

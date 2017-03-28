@@ -261,3 +261,27 @@ Avg time producing rec: 2.2924089E7
 Average map (all folds): 0.41985395775594186
 Average train time (all folds): 1.7047310934E10
 Average test time (all folds): 2.2924089E7
+
+
+Info about data:
+
+BX6k (ratings-transformed / ratings) 6000 users w/ ratings between 20 and 200
+Total number of users: 6001
+Total number of items: 150771
+Total number of ratings: 336051.0
+Avg ratings per user: 55.9992
+Avg ratings per item: 2.2289
+
+MSD (ratings3) 6000 users w/ ratings between 20 and 200
+Total number of users: 6001
+Total number of items: 87957
+Total number of ratings: 337867
+Avg ratings per user: 56.3018
+Avg ratings per item: 3.8413
+
+ML (ratings) 6000 users w/ ratings between 20 and 200
+Total number of users: 6001
+Total number of items: 7359
+Total number of ratings: 407571
+Avg ratings per user: 67.9172
+Avg ratings per item: 55.3840

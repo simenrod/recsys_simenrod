@@ -35,6 +35,18 @@ public class ModelBasedRecommender implements Recommender, Serializable {
     private double lambda;
     private double alpha;
 
+
+    //default values in spark: rank=10, iterations=10, lambda=0.01 alpha= 1.0 (thinks only alpha should be cross-validated if we use cross-validation)
+
+    public ModelBasedRecommender() {
+        setParameters(10,10,0.01,0.01);
+    }
+
+    public ModelBasedRecommender(int rank, int iterations, double lambda, double alpha) {
+        setParameters(rank, iterations, lambda, alpha);
+    }
+
+
     //Method used for initiating Spark-context and -configuration. Uses defaults parameters for the recommender
     public void initialize() {
         conf = new SparkConf().
@@ -43,17 +55,6 @@ public class ModelBasedRecommender implements Recommender, Serializable {
         sc = new JavaSparkContext(conf);
         sc.setLogLevel("WARN");
         //options for Level include: all, debug, error, fatal, info, off, trace, trace_int, warn
-        setParameters(10,10,0.01,0.01);
-    }
-
-    //Method used for initiating Spark-context and -configuration, and for setting the parameters of the recommender.
-    public void initialize(int rank, int iterations, double lambda, double alpha) {
-        conf = new SparkConf().
-                setAppName("Model-based recommender").
-                setMaster("local");
-        sc = new JavaSparkContext(conf);
-        sc.setLogLevel("WARN");
-        setParameters(rank, iterations, lambda, alpha);
     }
 
     public void setParameters(int rank, int iterations, double lambda, double alpha) {
@@ -138,5 +139,10 @@ public class ModelBasedRecommender implements Recommender, Serializable {
     public String getInfo() {
         return "Model-based Collaborative filtering | r = " + rank
                 +" i = "+ iterations + " l = " + lambda + " a = " + alpha;
+    }
+
+    //shuts down spark config
+    public void close() {
+        sc.stop();
     }
 }

@@ -8,6 +8,12 @@ import org.apache.spark.mllib.recommendation.Rating;
 public interface Recommender {
 
     /**
+     * Method that initializes Recommender, if anything must be initialized for the recommender to work.
+     *
+     */
+    public void initialize();
+
+    /**
      * Method that trains the recommender with a training file
      * @param trainingFile file used for training
      */
@@ -26,4 +32,9 @@ public interface Recommender {
      * @return Returns info about which type of recommender this is, and parameters (if any)
      */
     public String getInfo();
+
+    /**
+     * Method that shuts down configuration, if any.
+     */
+    public void close();
 }

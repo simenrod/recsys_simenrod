@@ -28,8 +28,13 @@ public class ReformatData {
         //reduceMsdTags("/home/simen/Desktop/msd/tid_tag.csv", "/home/simen/Desktop/msd/tags-reduced", 30);
         //binarizeRatings("data/msd6k/ratings", "data/msd6k/binarized-ratings");
         //makeSubset("/home/simen/Desktop/ml-10M100K/ratings.dat","data/ml6k/ratings", "::", 6000,20,200);
-        movieLensTagsLarge("/home/simen/Desktop/ml-10M100K/movies.dat", "data/ml6k/ratings",
-                "data/ml6k/tags", "data/ml6k/titles");
+        /*movieLensTagsLarge("/home/simen/Desktop/ml-10M100K/movies.dat", "data/ml6k/ratings",
+                "data/ml6k/tags", "data/ml6k/titles");*/
+        /*bookCrossing("data/bx6k/ratings","data/bx/bx-books.csv", "data/bx6k/ratings-transformed",
+                "data/bx6k/item-tags","data/bx6k/titles");*/
+        //printInfoAboutData("data/msd6k/ratings3", "\t");
+        //printInfoAboutData("data/bx6k/ratings-transformed", "\t");
+        //printInfoAboutData("data/ml6k/ratings", "::");
     }
 
     //makes a new file with tags for movies, and a file with the titles of the movies (for movielens 100k ratings)
@@ -560,9 +565,39 @@ public class ReformatData {
     }
     //TODO  change evaluation-method to measure hit-rate
     //and using several recsizes (e.g. 10,20,30,100/500),
-    //format ml10m to 6k and handle tags,
     //make scalability-test (train with whole dataset) and test e.g. recs for 100 persons for ml100k, ml1m, ml10m
     //check the tags for msd, if they are correct (take som "stikkprøver"/samples across the datasets)
 
     //DONE binarize values, change evaluation-method to all-but-n,
+    //format ml10m to 6k and handle tags,
+
+    public static void printInfoAboutData(String ratingFile, String delimiter) {
+        HashSet<String> users = new HashSet<>();
+        HashSet<String> items = new HashSet<>();
+        double ratings = 0;
+
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(ratingFile));
+            String line = br.readLine();
+
+            while (line != null) {
+                String[] words = line.split(delimiter);
+                users.add(words[0]);
+                items.add(words[1]);
+                ratings++;
+                line = br.readLine();
+            }
+            System.out.println("Total number of users: " + users.size());
+            System.out.println("Total number of items: " + items.size());
+            System.out.println("Total number of ratings: " + ratings);
+            System.out.println("Avg ratings per user: " + ratings/users.size());
+            System.out.println("Avg ratings per item: " + ratings/items.size());
+
+        }
+        catch(IOException ie) {
+            ie.printStackTrace();
+            System.exit(1);
+        }
+
+    }
 }

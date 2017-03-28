@@ -49,7 +49,11 @@ public class DataSplitter {
         //leaveOneOut("data/movielens/u.data", "data/movielens/leave_one_out", 5, "\t"); //not change leave_one_out for movielens
         //kFoldCrossValidationSets("data/movielens/u.data", "data/movielens/cross-val", 5, "\t", -1);
         //kFoldCrossValidationSets("data/bx/bx-ratings.csv", "data/bx/cross-val", 5, "\t", -1);
-        kFoldCrossValidationSets("data/ml6k/ratings", "data/ml6k/cross-val", 5, "::", 10, false);
+        //kFoldCrossValidationSets("data/ml6k/ratings", "data/ml6k/cross-val", 5, "::", 10, false);
+        //kFoldCrossValidationSets("data/ml6k/ratings", "data/ml6k/ab10", 5, "::", 10, false);
+        //kFoldCrossValidationSets("data/bx6k/ratings-transformed", "data/bx6k/ab10", 5, "\t", 10, false);
+        kFoldCrossValidationSets("data/msd6k/ratings-transformed", "data/msd6k/ab10", 5, "\t", 10, false);
+
     }
 
 

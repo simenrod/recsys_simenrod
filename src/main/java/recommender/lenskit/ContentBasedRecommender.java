@@ -29,11 +29,12 @@ public class ContentBasedRecommender implements Recommender {
     private String titleFile;
 
 
-    //Specifies the file for tags and file for item titles
-    public void initialize(String tagFile, String titleFile) {
+    public ContentBasedRecommender(String tagFile, String titleFile){
         this.tagFile = tagFile;
         this.titleFile = titleFile;
     }
+
+    public void initialize() {/*nothing to inialize*/}
 
 
     public void update(String trainingFile) {
@@ -79,4 +80,6 @@ public class ContentBasedRecommender implements Recommender {
     public String getInfo() {
         return "Content-based";
     }
+
+    public void close() {/*nothing to close*/}
 }

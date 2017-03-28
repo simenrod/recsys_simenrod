@@ -1,0 +1,659 @@
+Fold 1
+ Time used for training recommender:1.938342778E9
+ Map: 0.23138589616402114
+ Avg time producing rec:  31702.0
+Data all folds: 
+ Avg map: 0.23138589616402114
+ Avg train time: 1.938342778E9
+ Avg test time: 31702.0
+Fold 1
+ Time used for training recommender:1.535517451E9
+ Map: 0.23138589616402114
+ Avg time producing rec:  9117.0
+Data all folds: 
+ Avg map: 0.23138589616402114
+ Avg train time: 1.535517451E9
+ Avg test time: 9117.0
+
+
+Recommender: Popularity baseline recommender
+Fold 1
+ Time used for training recommender:1.538272146E9
+ Map: 0.23138589616402114
+ Avg time producing rec:  12042.0
+Data all folds: 
+ Avg map: 0.23138589616402114
+ Avg train time: 1.538272146E9
+ Avg test time: 12042.0
+
+
+Recommender: Popularity baseline recommender
+Fold 1
+ Time used for training recommender:1.609099523E9
+ Map: 0.23138589616402114
+ Avg time producing rec: 11738.0
+Data all folds: 
+ Avg map: 0.23138589616402114
+ Avg train time: 1.609099523E9
+ Avg test time: 11738.0
+
+Recommender: Popularity baseline recommender
+Fold 1
+ Time used for training recommender:1.547497736E9
+ Map: 0.23138589616402114
+ Avg time producing rec: 49398.0
+Data all folds: 
+ Avg map: 0.23138589616402114
+ Avg train time: 1.547497736E9
+ Avg test time: 49398.0
+
+Recommender: Popularity baseline recommender
+Fold 1
+ Time used for training recommender:2.746670005E9
+ Map: 0.08117685185185188
+ Avg time producing rec: 17828.0
+Fold 2
+ Time used for training recommender:1.328518136E9
+ Map: 0.07091096781305116
+ Avg time producing rec: 2268.0
+Fold 3
+ Time used for training recommender:7.72485532E8
+ Map: 0.06427129629629631
+ Avg time producing rec: 11931.0
+Fold 4
+ Time used for training recommender:8.086452E8
+ Map: 0.07912101127488036
+ Avg time producing rec: 1283.0
+Fold 5
+ Time used for training recommender:7.10612171E8
+ Map: 0.07825644841269842
+ Avg time producing rec: 1170.0
+Data all folds: 
+ Avg map: 0.07474731512975563
+ Avg train time: 1.2733862088E9
+ Avg test time: 6896.0
+Test of dataset in folderdata/msd6k/ab10
+
+Recommender: Popularity baseline recommender
+Fold 1
+ Time used for training recommender:2.038004856E9
+ Map: 0.08117685185185188
+ Avg time producing rec: 19079.0
+Fold 2
+ Time used for training recommender:1.625252187E9
+ Map: 0.07091096781305116
+ Avg time producing rec: 1659.0
+Fold 3
+ Time used for training recommender:6.71329367E8
+ Map: 0.06427129629629631
+ Avg time producing rec: 2456.0
+Fold 4
+ Time used for training recommender:8.75043539E8
+ Map: 0.07912101127488036
+ Avg time producing rec: 6016.0
+Fold 5
+ Time used for training recommender:8.59863818E8
+ Map: 0.07825644841269842
+ Avg time producing rec: 4847.0
+Data all folds: 
+ Avg map: 0.07474731512975563
+ Avg train time: 1.2138987533999999E9
+ Avg test time: 6811.4
+
+Test of dataset in folderdata/msd6k/ab10
+
+Recommender: Popularity baseline recommender
+Fold 1
+ Time used for training recommender:2.043704539E9
+ Map: 0.08117685185185188
+ Avg time producing rec: 22860.0
+Fold 2
+ Time used for training recommender:1.633944155E9
+ Map: 0.07091096781305116
+ Avg time producing rec: 7685.0
+Fold 3
+ Time used for training recommender:7.39281294E8
+ Map: 0.06427129629629631
+ Avg time producing rec: 4528.0
+Fold 4
+ Time used for training recommender:6.72263376E8
+ Map: 0.07912101127488036
+ Avg time producing rec: 6822.0
+Fold 5
+ Time used for training recommender:7.47153855E8
+ Map: 0.07825644841269842
+ Avg time producing rec: 1009.0
+Data all folds: 
+ Avg map: 0.07474731512975563
+ Avg train time: 1.1672694438E9
+ Avg test time: 8580.8
+
+Test of dataset in folderdata/ml6k/ab10
+
+Recommender: Model-based Collaborative filtering | r = 10 i = 10 l = 0.01 a = 0.01
+Fold 1
+ Time used for training recommender:2.0034343685E10
+ Map: 0.43173208669270147
+ Avg time producing rec: 5.3088362E7
+Fold 2
+ Time used for training recommender:8.137293169E9
+ Map: 0.4416051727712692
+ Avg time producing rec: 4.1886896E7
+Fold 3
+ Time used for training recommender:7.921768259E9
+ Map: 0.43546953236541497
+ Avg time producing rec: 3.298782E7
+Fold 4
+ Time used for training recommender:6.156741559E9
+ Map: 0.4395251621945072
+ Avg time producing rec: 3.0788585E7
+Fold 5
+ Time used for training recommender:5.426503277E9
+ Map: 0.43270716477177273
+ Avg time producing rec: 2.9660038E7
+Data all folds: 
+ Avg map: 0.43620782375913314
+ Avg train time: 9.535329989800001E9
+ Avg test time: 3.76823402E7
+
+Recommender: Item-based Collaborative Filtering | k = 20
+Fold 1
+ Time used for training recommender:1.3804242459E10
+ Map: 0.41967878795036506
+ Avg time producing rec: 1.8362467E7
+Fold 2
+ Time used for training recommender:1.0556475759E10
+ Map: 0.40668227067061363
+ Avg time producing rec: 1.5209466E7
+Fold 3
+ Time used for training recommender:1.0062632341E10
+ Map: 0.42325147812211295
+ Avg time producing rec: 1.4873583E7
+Fold 4
+ Time used for training recommender:9.805127437E9
+ Map: 0.4151368016187959
+ Avg time producing rec: 1.6853889E7
+Fold 5
+ Time used for training recommender:9.95301627E9
+ Map: 0.41599379487906263
+ Avg time producing rec: 1.4649462E7
+Data all folds: 
+ Avg map: 0.4161486266481901
+ Avg train time: 1.08362988532E10
+ Avg test time: 1.59897734E7
+
+Recommender: Content-based
+Fold 1
+ Time used for training recommender:6.19137224E8
+ Map: 0.01390707671957671
+ Avg time producing rec: 5541534.0
+Fold 2
+ Time used for training recommender:3.93789965E8
+ Map: 0.016017857142857132
+ Avg time producing rec: 4147575.0
+Fold 3
+ Time used for training recommender:4.22628924E8
+ Map: 0.012975198412698405
+ Avg time producing rec: 6156820.0
+Fold 4
+ Time used for training recommender:6.47887868E8
+ Map: 0.013177248677248671
+ Avg time producing rec: 6782784.0
+Fold 5
+ Time used for training recommender:7.13831712E8
+ Map: 0.01572916666666666
+ Avg time producing rec: 5908737.0
+Data all folds: 
+ Avg map: 0.014361309523809516
+ Avg train time: 5.594551386E8
+ Avg test time: 5707490.0
+
+Recommender: Popularity baseline recommender
+Fold 1
+ Time used for training recommender:8.8609639E8
+ Map: 0.2216531084656083
+ Avg time producing rec: 9075.0
+Fold 2
+ Time used for training recommender:1.303171383E9
+ Map: 0.23684045414462057
+ Avg time producing rec: 14711.0
+Fold 3
+ Time used for training recommender:2.668681912E9
+ Map: 0.22675806327160472
+ Avg time producing rec: 1551.0
+Fold 4
+ Time used for training recommender:1.264536606E9
+ Map: 0.22919594907407387
+ Avg time producing rec: 11661.0
+Fold 5
+ Time used for training recommender:6.00107862E8
+ Map: 0.2255056272045852
+ Avg time producing rec: 1664.0
+Data all folds: 
+ Avg map: 0.22799064043209855
+ Avg train time: 1.3445188306000001E9
+ Avg test time: 7732.4
+
+Test of dataset in folder: data/ml6k/ab10
+
+Recommender: Model-based Collaborative filtering | r = 10 i = 10 l = 0.01 a = 0.01
+Fold 1
+ Time used for training recommender:1.7504458588E10
+ Map: 0.4318855400184767
+ Avg time producing rec: 5.9554804E7
+Fold 2
+ Time used for training recommender:6.744768967E9
+ Map: 0.4383085292527508
+ Avg time producing rec: 3.8872881E7
+Fold 3
+ Time used for training recommender:7.9423226E9
+ Map: 0.43443731851536865
+ Avg time producing rec: 4.5425199E7
+Fold 4
+ Time used for training recommender:9.407428982E9
+ Map: 0.45028948005899877
+ Avg time producing rec: 4.6359691E7
+Fold 5
+ Time used for training recommender:6.915461043E9
+ Map: 0.4339918321418073
+ Avg time producing rec: 3.3176078E7
+Data all folds: 
+ Avg map: 0.43778253999748046
+ Avg train time: 9.702888036E9
+ Avg test time: 4.46777306E7
+
+Recommender: Item-based Collaborative Filtering | k = 20
+Fold 1
+ Time used for training recommender:1.4200034529E10
+ Map: 0.41967878795036506
+ Avg time producing rec: 2.3357098E7
+Fold 2
+ Time used for training recommender:1.3294965524E10
+ Map: 0.40668227067061363
+ Avg time producing rec: 1.9555073E7
+Fold 3
+ Time used for training recommender:1.2020669677E10
+ Map: 0.42325147812211295
+ Avg time producing rec: 1.3695786E7
+Fold 4
+ Time used for training recommender:9.395359435E9
+ Map: 0.4151368016187959
+ Avg time producing rec: 1.3697965E7
+Fold 5
+ Time used for training recommender:1.5760773792E10
+ Map: 0.41599379487906263
+ Avg time producing rec: 2.3691189E7
+Data all folds: 
+ Avg map: 0.4161486266481901
+ Avg train time: 1.29343605914E10
+ Avg test time: 1.87994222E7
+
+Recommender: Content-based
+Fold 1
+ Time used for training recommender:1.039918854E9
+ Map: 0.01390707671957671
+ Avg time producing rec: 5320044.0
+Fold 2
+ Time used for training recommender:4.40403655E8
+ Map: 0.016017857142857132
+ Avg time producing rec: 4053895.0
+Fold 3
+ Time used for training recommender:4.60568627E8
+ Map: 0.012975198412698405
+ Avg time producing rec: 4227567.0
+Fold 4
+ Time used for training recommender:3.20584917E8
+ Map: 0.013177248677248671
+ Avg time producing rec: 4043233.0
+Fold 5
+ Time used for training recommender:3.31083697E8
+ Map: 0.01572916666666666
+ Avg time producing rec: 3859601.0
+Data all folds: 
+ Avg map: 0.014361309523809516
+ Avg train time: 5.1851195E8
+ Avg test time: 4300868.0
+
+Recommender: Popularity baseline recommender
+Fold 1
+ Time used for training recommender:4.98719126E8
+ Map: 0.2216531084656083
+ Avg time producing rec: 6351.0
+Fold 2
+ Time used for training recommender:6.48029321E8
+ Map: 0.23684045414462057
+ Avg time producing rec: 1349.0
+Fold 3
+ Time used for training recommender:3.28861126E8
+ Map: 0.22675806327160472
+ Avg time producing rec: 5426.0
+Fold 4
+ Time used for training recommender:3.30808818E8
+ Map: 0.22919594907407387
+ Avg time producing rec: 7409.0
+Fold 5
+ Time used for training recommender:4.18208831E8
+ Map: 0.2255056272045852
+ Avg time producing rec: 1579.0
+Data all folds: 
+ Avg map: 0.22799064043209855
+ Avg train time: 4.4492544440000004E8
+ Avg test time: 4422.8
+
+Test of dataset in folder: data/ml6k/ab10
+
+Recommender: Model-based Collaborative filtering | r = 10 i = 10 l = 0.01 a = 0.01
+Fold 1
+ Time used for training recommender:1.586065759E10
+ Map: 0.4319514571260604
+ Avg time producing rec: 4.1211326E7
+Fold 2
+ Time used for training recommender:6.363526148E9
+ Map: 0.44044856544469646
+ Avg time producing rec: 3.5503759E7
+Fold 3
+ Time used for training recommender:8.313136017E9
+ Map: 0.4291827073885105
+ Avg time producing rec: 3.3269964E7
+Fold 4
+ Time used for training recommender:6.487059851E9
+ Map: 0.45258509647686207
+ Avg time producing rec: 3.0640822E7
+Fold 5
+ Time used for training recommender:7.444936715E9
+ Map: 0.4341493841595283
+ Avg time producing rec: 2.8962577E7
+Data all folds: 
+ Avg map: 0.43766344211913155
+ Avg train time: 8.8938632642E9
+ Avg test time: 3.39176896E7
+
+Recommender: Item-based Collaborative Filtering | k = 20
+Fold 1
+ Time used for training recommender:1.2254315443E10
+ Map: 0.41967878795036506
+ Avg time producing rec: 1.7396845E7
+Fold 2
+ Time used for training recommender:1.0723321726E10
+ Map: 0.40668227067061363
+ Avg time producing rec: 1.472477E7
+Fold 3
+ Time used for training recommender:9.542525129E9
+ Map: 0.42325147812211295
+ Avg time producing rec: 1.427737E7
+Fold 4
+ Time used for training recommender:9.159582193E9
+ Map: 0.4151368016187959
+ Avg time producing rec: 1.4943886E7
+Fold 5
+ Time used for training recommender:9.167363106E9
+ Map: 0.41599379487906263
+ Avg time producing rec: 1.477391E7
+Data all folds: 
+ Avg map: 0.4161486266481901
+ Avg train time: 1.0169421519400002E10
+ Avg test time: 1.52233562E7
+
+Recommender: Content-based
+Fold 1
+ Time used for training recommender:6.20072959E8
+ Map: 0.01390707671957671
+ Avg time producing rec: 4575833.0
+Fold 2
+ Time used for training recommender:4.15670447E8
+ Map: 0.016017857142857132
+ Avg time producing rec: 4061897.0
+Fold 3
+ Time used for training recommender:3.78307138E8
+ Map: 0.012975198412698405
+ Avg time producing rec: 3932471.0
+Fold 4
+ Time used for training recommender:3.09476544E8
+ Map: 0.013177248677248671
+ Avg time producing rec: 3915725.0
+Fold 5
+ Time used for training recommender:3.08875184E8
+ Map: 0.01572916666666666
+ Avg time producing rec: 3778304.0
+Data all folds: 
+ Avg map: 0.014361309523809516
+ Avg train time: 4.064804544E8
+ Avg test time: 4052846.0
+
+Recommender: Popularity baseline recommender
+Fold 1
+ Time used for training recommender:4.95861288E8
+ Map: 0.2216531084656083
+ Avg time producing rec: 8061.0
+Fold 2
+ Time used for training recommender:5.85317513E8
+ Map: 0.23684045414462057
+ Avg time producing rec: 1562.0
+Fold 3
+ Time used for training recommender:7.44350428E8
+ Map: 0.22675806327160472
+ Avg time producing rec: 4675.0
+Fold 4
+ Time used for training recommender:4.45180378E8
+ Map: 0.22919594907407387
+ Avg time producing rec: 1516.0
+Fold 5
+ Time used for training recommender:3.70260505E8
+ Map: 0.2255056272045852
+ Avg time producing rec: 1256.0
+Data all folds: 
+ Avg map: 0.22799064043209855
+ Avg train time: 5.281940224E8
+ Avg test time: 3413.9999999999995
+
+Test of dataset in folder: data/msd6k/ab10
+
+Recommender: Model-based Collaborative filtering | r = 10 i = 10 l = 0.01 a = 0.01
+Fold 1
+ Time used for training recommender:7.942765588E9
+ Map: 0.12817411816578478
+ Avg time producing rec: 3.9860177E7
+Fold 2
+ Time used for training recommender:6.795890301E9
+ Map: 0.11872085695389269
+ Avg time producing rec: 4.1751822E7
+Fold 3
+ Time used for training recommender:8.837939888E9
+ Map: 0.12585289351851847
+ Avg time producing rec: 4.2476469E7
+Fold 4
+ Time used for training recommender:1.1572916931E10
+ Map: 0.12284031399596863
+ Avg time producing rec: 3.986131E7
+Fold 5
+ Time used for training recommender:1.1912631762E10
+ Map: 0.13285648148148146
+ Avg time producing rec: 4.0094021E7
+Data all folds: 
+ Avg map: 0.1256889328231292
+ Avg train time: 9.412428894E9
+ Avg test time: 4.0808759800000004E7
+
+Recommender: Item-based Collaborative Filtering | k = 20
+Fold 1
+ Time used for training recommender:4.5251899924E10
+ Map: 0.12358922508818339
+ Avg time producing rec: 2.23769782E8
+Fold 2
+ Time used for training recommender:4.607279255E10
+ Map: 0.12708558909674986
+ Avg time producing rec: 1.57688529E8
+Fold 3
+ Time used for training recommender:4.6779459316E10
+ Map: 0.11923861489040057
+ Avg time producing rec: 1.84610991E8
+Fold 4
+ Time used for training recommender:4.2072422929E10
+ Map: 0.13528075396825393
+ Avg time producing rec: 1.65442258E8
+Fold 5
+ Time used for training recommender:4.5112014926E10
+ Map: 0.12806686507936504
+ Avg time producing rec: 1.69558911E8
+Data all folds: 
+ Avg map: 0.12665220962459056
+ Avg train time: 4.5057717929E10
+ Avg test time: 1.802140942E8
+
+Recommender: Content-based
+Fold 1
+ Time used for training recommender:4.89307134368E11
+ Map: 0.0011944444444444444
+ Avg time producing rec: 1.595518079E9
+Fold 2
+ Time used for training recommender:4.97775382258E11
+ Map: 0.0034520502645502644
+ Avg time producing rec: 1.588962406E9
+Fold 3
+ Time used for training recommender:5.03383531494E11
+ Map: 0.004078703703703703
+ Avg time producing rec: 1.583839655E9
+Fold 4
+ Time used for training recommender:4.84786951704E11
+ Map: 0.0025029761904761904
+ Avg time producing rec: 1.580154077E9
+Fold 5
+ Time used for training recommender:4.83500236455E11
+ Map: 0.0010578703703703703
+ Avg time producing rec: 1.584001461E9
+Data all folds: 
+ Avg map: 0.0024572089947089946
+ Avg train time: 4.917506472558E11
+ Avg test time: 1.5864951356000001E9
+
+Recommender: Popularity baseline recommender
+Fold 1
+ Time used for training recommender:5.7558397E8
+ Map: 0.08117685185185188
+ Avg time producing rec: 6319.0
+Fold 2
+ Time used for training recommender:4.13104242E8
+ Map: 0.07091096781305116
+ Avg time producing rec: 1010.0
+Fold 3
+ Time used for training recommender:5.52132439E8
+ Map: 0.06427129629629631
+ Avg time producing rec: 3560.0
+Fold 4
+ Time used for training recommender:3.84766362E8
+ Map: 0.07912101127488036
+ Avg time producing rec: 1242.0
+Fold 5
+ Time used for training recommender:4.32163134E8
+ Map: 0.07825644841269842
+ Avg time producing rec: 1666.0
+Data all folds: 
+ Avg map: 0.07474731512975563
+ Avg train time: 4.7155002940000004E8
+ Avg test time: 2759.4
+
+Test of dataset in folder: data/bx6k/ab10
+
+Recommender: Model-based Collaborative filtering | r = 10 i = 10 l = 0.01 a = 0.01
+Fold 1
+ Time used for training recommender:7.697443474E9
+ Map: 0.040456514550264555
+ Avg time producing rec: 4.3221911E7
+Fold 2
+ Time used for training recommender:7.008228657E9
+ Map: 0.03640228174603175
+ Avg time producing rec: 5.6888956E7
+Fold 3
+ Time used for training recommender:8.001312048E9
+ Map: 0.05597156084656088
+ Avg time producing rec: 5.7194355E7
+Fold 4
+ Time used for training recommender:1.3839232134E10
+ Map: 0.04475727513227516
+ Avg time producing rec: 5.652324E7
+Fold 5
+ Time used for training recommender:1.2936409806E10
+ Map: 0.061074404761904795
+ Avg time producing rec: 5.6218836E7
+Data all folds: 
+ Avg map: 0.04773240740740743
+ Avg train time: 9.8965252238E9
+ Avg test time: 5.4009459599999994E7
+
+Recommender: Item-based Collaborative Filtering | k = 20
+Fold 1
+ Time used for training recommender:4.7525731405E10
+ Map: 0.04348544973544976
+ Avg time producing rec: 1.02543891E8
+Fold 2
+ Time used for training recommender:4.7764082155E10
+ Map: 0.037317791005291014
+ Avg time producing rec: 1.00050917E8
+Fold 3
+ Time used for training recommender:4.6841472159E10
+ Map: 0.04168154761904764
+ Avg time producing rec: 1.21952126E8
+Fold 4
+ Time used for training recommender:4.7452971877E10
+ Map: 0.0405129794973545
+ Avg time producing rec: 1.01591073E8
+Fold 5
+ Time used for training recommender:4.6696755094E10
+ Map: 0.04052645502645504
+ Avg time producing rec: 1.01682574E8
+Data all folds: 
+ Avg map: 0.04070484457671959
+ Avg train time: 4.7256202538E10
+ Avg test time: 1.055641162E8
+
+Recommender: Content-based
+Fold 1
+ Time used for training recommender:1.21977190093E11
+ Map: 0.0
+ Avg time producing rec: 9.43828223E8
+Fold 2
+ Time used for training recommender:1.39319641738E11
+ Map: 0.001682738095238095
+ Avg time producing rec: 9.81557582E8
+Fold 3
+ Time used for training recommender:1.2232847595E11
+ Map: 0.0
+ Avg time producing rec: 9.39542443E8
+Fold 4
+ Time used for training recommender:1.21983642761E11
+ Map: 5.009920634920635E-4
+ Avg time producing rec: 9.41048011E8
+Fold 5
+ Time used for training recommender:1.22481085703E11
+ Map: 9.629629629629629E-4
+ Avg time producing rec: 9.4250966E8
+Data all folds: 
+ Avg map: 6.293386243386243E-4
+ Avg train time: 1.25618007249E11
+ Avg test time: 9.496971838E8
+
+Recommender: Popularity baseline recommender
+Fold 1
+ Time used for training recommender:5.8445088E8
+ Map: 0.04347685185185187
+ Avg time producing rec: 488.0
+Fold 2
+ Time used for training recommender:5.01333625E8
+ Map: 0.0498869047619048
+ Avg time producing rec: 484.0
+Fold 3
+ Time used for training recommender:3.15594938E8
+ Map: 0.056446428571428627
+ Avg time producing rec: 577.0
+Fold 4
+ Time used for training recommender:3.81603956E8
+ Map: 0.05135317460317465
+ Avg time producing rec: 1481.0
+Fold 5
+ Time used for training recommender:5.03991584E8
+ Map: 0.0483022486772487
+ Avg time producing rec: 671.0
+Data all folds: 
+ Avg map: 0.049893121693121725
+ Avg train time: 4.573949966E8
+ Avg test time: 740.2

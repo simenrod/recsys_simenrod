@@ -47,10 +47,7 @@ public class ItemBasedRecommender implements Recommender {
         this.k = k;
     } //constructor where k (number of neighbours) can be specified
 
-    //TODO decide if all recommenders must have an initialize-method
-    public void initialize() {
-
-    }
+    public void initialize() {/*nothing to initialize*/}
 
     //Method that trains the recommender with the trainingFile, so it is ready to produce recommendations
     public void update(String trainingFile) {
@@ -92,6 +89,7 @@ public class ItemBasedRecommender implements Recommender {
         return "Item-based Collaborative Filtering | k = " + k;
     }
 
+    public void close() {/*nothing to close*/}
 }
 
 

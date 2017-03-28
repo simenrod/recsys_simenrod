@@ -1,14 +1,12 @@
 package recommender;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Set;
 
 
+import org.dmg.pmml.Model;
 import recommender.lenskit.ContentBasedRecommender;
 import recommender.lenskit.ItemBasedRecommender;
 import recommender.nonframework.BaselineRecommender;
@@ -30,7 +28,7 @@ public class Evaluator {
         //sr.initialize("data/movielens/item-tags", "data/movielens/titles");
         //sr.initialize("data/bx/item-tags", "data/bx/titles");
         //sr.initialize("data/bx6k/item-tags-reduced", "data/bx6k/titles");
-        ItemBasedRecommender sr = new ItemBasedRecommender();
+        //ItemBasedRecommender sr = new ItemBasedRecommender();
         //ModelBasedRecommender sr = new ModelBasedRecommender();
         //BaselineRecommender sr = new BaselineRecommender();
         //sr.initialize();
@@ -54,18 +52,27 @@ public class Evaluator {
         String[] trainingFiles = {"data/bx6k/cross-val/train1"};*/
         //String[] testFiles = {"data/msd6k/cross-val3/test1"};
         //String[] trainingFiles = {"data/msd6k/cross-val3/train1"};
-        String[] testFiles = {"data/ml6k/cross-val/test1"};
-        String[] trainingFiles = {"data/ml6k/cross-val/train1"};
+        //String[] testFiles = {"data/ml6k/cross-val/test1"};
+        //String[] trainingFiles = {"data/ml6k/cross-val/train1"};
 
         //String[] testFiles = {"data/tag-test/test1"};
         //String[] trainingFiles = {"data/tag-test/train1"};
 
         //eval.hitRate(sr, trainingFiles, testFiles, 10);
         //eval.map(sr, trainingFiles, testFiles, 10);
-        eval.combinedEvaluator(sr, trainingFiles, testFiles);
+        //eval.combinedEvaluator(sr, trainingFiles, testFiles);
         //ModelBasedRecommender.stopSparkContext(); //make instance variable + probably not make new context for each test
 
+        Recommender[] rss = eval.getTopNRecommenders("data/ml6k/tags", "data/ml6k/titles");
+        eval.evaluateCrossFold(rss, "data/ml6k/ab10", 1, 5);
+
+        rss = eval.getTopNRecommenders("data/msd6k/tags", "data/msd6k/titles");
+        eval.evaluateCrossFold(rss, "data/msd6k/ab10", 1, 5);
+
+        rss = eval.getTopNRecommenders("data/bx6k/item-tags-reduced", "data/bx6k/titles");
+        eval.evaluateCrossFold(rss, "data/bx6k/ab10", 1, 5);
     }
+
 
     public void hitRate(Recommender rs, String[] trainingFiles, String[] testFiles, int n) {
         if (trainingFiles.length != testFiles.length) {
@@ -145,41 +152,50 @@ public class Evaluator {
         double avgTrainTime = 0;
         double avgRecTime = 0;
         int nFolds = trainingFiles.length;
+        String printString;
 
-        if (trainingFiles.length != testFiles.length) {
-            System.out.println("Not equal numbers of trainingFiles and testFiles");
-            return;
-        }
+        try {
+            FileWriter fw = new FileWriter(new File("test-results.txt"), true);
 
-        //Repeats for all of the trainingfiles. i is the fold nr
-        for (int i = 0; i < trainingFiles.length; i++) {
-            //System.out.println("Testing with file " + (i+1) + ".");
+            if (trainingFiles.length != testFiles.length) {
+                System.out.println("Not equal numbers of trainingFiles and testFiles");
+                return;
+            }
+            printString = "\nRecommender: " + rs.getInfo() + "\n";
+            System.out.print(printString);
+            fw.append(printString);
 
-            startTime = System.nanoTime();
-            rs.update(trainingFiles[i]); //trains recommender with training file
-            endTime = System.nanoTime();
-            double trainingTime = endTime-startTime;
-            System.out.println("Time used for training recommender:" + trainingTime);
-            avgTrainTime += trainingTime/nFolds;
+            //Repeats for all of the trainingfiles. i is the fold nr
+            for (int i = 0; i < trainingFiles.length; i++) {
+                //System.out.println("Testing with file " + (i+1) + ".");
 
-
-            HashMap<Integer, HashMap<Integer, Double>> testData = readTestData(testFiles[i]);
-            double sum = 0;
-            double avgTime = 0;
-            int users = testData.size();
-            double map;
-
-            for (int userId : testData.keySet()) {
                 startTime = System.nanoTime();
-                int[] recommendedItems = rs.recommend(userId, n);
+                rs.update(trainingFiles[i]); //trains recommender with training file
                 endTime = System.nanoTime();
-                avgTime += (endTime-startTime)/users;
-                //if (isMatch(recommendedItems, testData.get(userId).keySet())) matches++;
-                //double ap = averagePrecision(recommendedItems, testData.get(userId).keySet());
-                //System.out.println(ap);
-                //sum +=  ap;
-                //System.out.println("Recs for user "+userId);
-                sum += averagePrecision(recommendedItems, testData.get(userId).keySet());
+                double trainingTime = endTime - startTime;
+
+                printString = "Fold " + (i+1) + "\n Time used for training recommender:" + trainingTime + "\n";
+                System.out.print(printString);
+                fw.append(printString);
+
+                avgTrainTime += trainingTime / nFolds;
+                HashMap<Integer, HashMap<Integer, Double>> testData = readTestData(testFiles[i]);
+                double sum = 0;
+                double avgTime = 0;
+                int users = testData.size();
+                double map;
+
+                for (int userId : testData.keySet()) {
+                    startTime = System.nanoTime();
+                    int[] recommendedItems = rs.recommend(userId, n);
+                    endTime = System.nanoTime();
+                    avgTime += (endTime - startTime) / users;
+                    //if (isMatch(recommendedItems, testData.get(userId).keySet())) matches++;
+                    //double ap = averagePrecision(recommendedItems, testData.get(userId).keySet());
+                    //System.out.println(ap);
+                    //sum +=  ap;
+                    //System.out.println("Recs for user "+userId);
+                    sum += averagePrecision(recommendedItems, testData.get(userId).keySet());
                 /*for (String itemId : testData.get(userId).keySet()) {
                     for (int recommendedId : recommendedItems) {
                         if (recommendedId  == Integer.parseInt(itemId)) {
@@ -187,16 +203,31 @@ public class Evaluator {
                         }
                     }
                 }*/
+                }
+                map = (double) sum / users;
+                printString = " Map: " + map + "\n Avg time producing rec: " + avgTime + "\n";
+                //System.out.println("Map: " + map);
+                //System.out.println("Avg time producing rec: " + avgTime);
+                fw.append(printString);
+                System.out.print(printString);
+
+                avgMap += map / nFolds;
+                avgRecTime += avgTime / nFolds;
             }
-            map = (double) sum / users;
-            System.out.println("Map: " + map);
-            System.out.println("Avg time producing rec: " + avgTime);
-            avgMap += map/nFolds;
-            avgRecTime += avgTime/nFolds;
+            printString = "Data all folds: \n Avg map: " + avgMap + "\n Avg train time: " +
+                    avgTrainTime + "\n Avg test time: " + avgRecTime + "\n";
+            System.out.print(printString);
+            fw.append(printString);
+            //System.out.println("Average map (all folds): " + avgMap);
+            //System.out.println("Average train time (all folds): " + avgTrainTime);
+            //System.out.println("Average test time (all folds): " + avgRecTime);
+            fw.flush();
+            fw.close();
         }
-        System.out.println("Average map (all folds): " + avgMap);
-        System.out.println("Average train time (all folds): " + avgTrainTime);
-        System.out.println("Average test time (all folds): " + avgRecTime);
+        catch (IOException ioe) {
+            ioe.printStackTrace();
+            System.exit(1);
+        }
     }
 
     public double averagePrecision(int[] recommendedItems, Set<Integer> relevantItems) {
@@ -334,5 +365,57 @@ public class Evaluator {
 
         System.out.println("Average train time (all folds): " + avgTrainTime);
         System.out.println("Average test time (all folds): " + avgRecTime);
+    }
+
+
+    //CHANGE TO RSS IN ARRAY AS PARAMETER
+    public void evaluateCrossFold(Recommender[] rss, String folder, int from, int to) {
+        //String[] trainMl = {"data/ab10/train1", "data/ab10/train2","data/ab10/train3","data/ab10/train4","data/ab10/train5"};
+        //String[] testMl = {"data/ab10/test1", "data/ab10/test2","data/ab10/test3","data/ab10/test4","data/ab10/test5"};
+
+
+        int numFolds = to - from + 1;
+
+        String[] trainFiles = new String[numFolds];
+        String[] testFiles = new String[numFolds];
+
+        for (int i = 0; i < numFolds; i++) {
+            trainFiles[i] = folder + "/train" + (from + i);
+            testFiles[i] = folder + "/test" + (from + i);
+            System.out.println(trainFiles[i] +", " + testFiles[i]);
+        }
+
+        try {
+            FileWriter fw = new FileWriter(new File("test-results.txt"), true);
+            fw.write("\nTest of dataset in folder: " + folder +"\n");
+            fw.flush();
+            fw.close();
+        }
+        catch (IOException ioe) {
+            ioe.printStackTrace();
+            System.exit(1);
+        }
+
+        //Recommender[] rss = getTopNRecommenders(tagFile, titleFile);
+
+        for (Recommender rs : rss) {
+            rs.initialize();
+            map(rs, trainFiles, testFiles, 10);
+            rs.close();
+        }
+
+    }
+
+    public Recommender[] getTopNRecommenders(String tagFile, String titlesFile) {
+        ModelBasedRecommender mbr = new ModelBasedRecommender();
+        ItemBasedRecommender ibr = new ItemBasedRecommender();
+        ContentBasedRecommender cbr = new ContentBasedRecommender(tagFile, titlesFile);
+        BaselineRecommender br = new BaselineRecommender();
+
+        //cbr.initialize();
+        //ibr.initialize();
+        //mbr.initialize();
+        Recommender[] rss = {mbr, ibr, cbr, br};
+        return rss;
     }
 }
