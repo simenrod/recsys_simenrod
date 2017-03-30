@@ -63,6 +63,8 @@ public class Evaluator {
         //eval.combinedEvaluator(sr, trainingFiles, testFiles);
         //ModelBasedRecommender.stopSparkContext(); //make instance variable + probably not make new context for each test
 
+        /*
+        //Tests run 28.03.17 - 5 fold cross validation all-but-10 MAP - MSD+BX+ML
         Recommender[] rss = eval.getTopNRecommenders("data/ml6k/tags", "data/ml6k/titles");
         eval.evaluateCrossFold(rss, "data/ml6k/ab10", 1, 5);
 
@@ -70,7 +72,12 @@ public class Evaluator {
         eval.evaluateCrossFold(rss, "data/msd6k/ab10", 1, 5);
 
         rss = eval.getTopNRecommenders("data/bx6k/item-tags-reduced", "data/bx6k/titles");
-        eval.evaluateCrossFold(rss, "data/bx6k/ab10", 1, 5);
+        eval.evaluateCrossFold(rss, "data/bx6k/ab10", 1, 5);*/
+
+        ContentBasedRecommender cbr = new ContentBasedRecommender("data/bx6k/item-tags-reduced","data/bx6k/titles");
+        Recommender[] rss = {cbr};
+        eval.evaluateCrossFold(rss, "data/bx6k/ab10", 2, 5);
+
     }
 
 

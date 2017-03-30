@@ -32,9 +32,11 @@ public class ReformatData {
                 "data/ml6k/tags", "data/ml6k/titles");*/
         /*bookCrossing("data/bx6k/ratings","data/bx/bx-books.csv", "data/bx6k/ratings-transformed",
                 "data/bx6k/item-tags","data/bx6k/titles");*/
+        reduceTags("data/bx6k/item-tags", "data/bx6k/item-tags-reduced", 2);
         //printInfoAboutData("data/msd6k/ratings3", "\t");
         //printInfoAboutData("data/bx6k/ratings-transformed", "\t");
         //printInfoAboutData("data/ml6k/ratings", "::");
+        //featureExtraction();
     }
 
     //makes a new file with tags for movies, and a file with the titles of the movies (for movielens 100k ratings)
@@ -571,33 +573,7 @@ public class ReformatData {
     //DONE binarize values, change evaluation-method to all-but-n,
     //format ml10m to 6k and handle tags,
 
-    public static void printInfoAboutData(String ratingFile, String delimiter) {
-        HashSet<String> users = new HashSet<>();
-        HashSet<String> items = new HashSet<>();
-        double ratings = 0;
 
-        try {
-            BufferedReader br = new BufferedReader(new FileReader(ratingFile));
-            String line = br.readLine();
 
-            while (line != null) {
-                String[] words = line.split(delimiter);
-                users.add(words[0]);
-                items.add(words[1]);
-                ratings++;
-                line = br.readLine();
-            }
-            System.out.println("Total number of users: " + users.size());
-            System.out.println("Total number of items: " + items.size());
-            System.out.println("Total number of ratings: " + ratings);
-            System.out.println("Avg ratings per user: " + ratings/users.size());
-            System.out.println("Avg ratings per item: " + ratings/items.size());
 
-        }
-        catch(IOException ie) {
-            ie.printStackTrace();
-            System.exit(1);
-        }
-
-    }
 }

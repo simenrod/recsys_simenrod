@@ -265,6 +265,7 @@ Average test time (all folds): 2.2924089E7
 
 Info about data:
 
+RATINGS
 BX6k (ratings-transformed / ratings) 6000 users w/ ratings between 20 and 200
 Total number of users: 6001
 Total number of items: 150771
@@ -285,3 +286,24 @@ Total number of items: 7359
 Total number of ratings: 407571
 Avg ratings per user: 67.9172
 Avg ratings per item: 55.3840
+
+TAGS
+BX6K (item-tags-reduced, i.e. tags with more than 2 inf frequency)
+Distinct tags: 47921
+Total number of <item,tag>-pairs: 872117
+Total number of items: 124626
+Avg tags per item: 6
+
+MSD6k (tags, i.e. tags with score more than 30 (scores are from 0-100))
+Distinct tags: 52291
+Total number of <item,tag>-pairs: 365191
+Total number of items: 70095
+Avg tags per item: 5
+
+ML6k (tags, i.e. all tags)
+Distinct tags: 20
+Total number of <item,tag>-pairs: 21564
+Total number of items: 10681
+Avg tags per item: 2
+
+

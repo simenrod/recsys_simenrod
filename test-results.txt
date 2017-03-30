@@ -657,3 +657,171 @@ Data all folds:
  Avg map: 0.049893121693121725
  Avg train time: 4.573949966E8
  Avg test time: 740.2
+
+Test of dataset in folder: data/bx6k/ab10
+
+Test of dataset in folder: data/bx6k/ab10
+
+Recommender: Content-based
+Fold 1
+ Time used for training recommender:6.834870166E9
+ Map: 3.055555555555556E-4
+ Avg time producing rec: 4.9830471E7
+Data all folds: 
+ Avg map: 3.055555555555556E-4
+ Avg train time: 6.834870166E9
+ Avg test time: 4.9830471E7
+
+Test of dataset in folder: data/bx6k/ab10 (using tags w/ over 1000 frequencies)
+
+Recommender: Content-based
+Fold 1
+ Time used for training recommender:1.0099158417E10
+ Map: 3.055555555555556E-4
+ Avg time producing rec: 5.2820714E7
+Fold 2
+ Time used for training recommender:3.375154082E9
+ Map: 0.001349404761904762
+ Avg time producing rec: 4.570004E7
+Fold 3
+ Time used for training recommender:2.25814159E9
+ Map: 4.166666666666667E-4
+ Avg time producing rec: 4.4118855E7
+Fold 4
+ Time used for training recommender:1.953216299E9
+ Map: 4.8611111111111104E-4
+ Avg time producing rec: 4.0966648E7
+Fold 5
+ Time used for training recommender:1.893538724E9
+ Map: 1.666666666666667E-4
+ Avg time producing rec: 4.0959176E7
+Data all folds: 
+ Avg map: 5.448809523809524E-4
+ Avg train time: 3.9158418224000006E9
+ Avg test time: 4.49130866E7
+
+Test of dataset in folder: data/bx6k/ab10
+
+Test of dataset in folder: data/bx6k/ab10
+
+Test of dataset in folder: data/bx6k/ab10
+
+Recommender: Content-based
+Fold 1
+ Time used for training recommender:7.537769275E9
+ Map: 3.055555555555556E-4
+ Avg time producing rec: 4.6064733E7
+Fold 2
+ Time used for training recommender:2.864387228E9
+ Map: 0.001349404761904762
+ Avg time producing rec: 4.155972E7
+Fold 3
+ Time used for training recommender:1.963156326E9
+ Map: 4.166666666666667E-4
+ Avg time producing rec: 4.2606948E7
+Fold 4
+ Time used for training recommender:1.856212068E9
+ Map: 4.8611111111111104E-4
+ Avg time producing rec: 5.2423082E7
+Fold 5
+ Time used for training recommender:3.626790622E9
+ Map: 1.666666666666667E-4
+ Avg time producing rec: 8.113383E7
+Data all folds: 
+ Avg map: 5.448809523809524E-4
+ Avg train time: 3.5696631037999997E9
+ Avg test time: 5.27576626E7
+
+Recommender: Content-based (tags med over 500 i frek)
+Fold 1
+ Time used for training recommender:1.0010719311E10
+ Map: 1.666666666666667E-4
+ Avg time producing rec: 5.96855E7
+Fold 2
+ Time used for training recommender:3.481870551E9
+ Map: 9.327380952380954E-4
+ Avg time producing rec: 5.81236E7
+Fold 3
+ Time used for training recommender:3.276124759E9
+ Map: 4.166666666666667E-4
+ Avg time producing rec: 7.2111587E7
+Fold 4
+ Time used for training recommender:3.221023837E9
+ Map: 4.8611111111111104E-4
+ Avg time producing rec: 6.1494175E7
+Fold 5
+ Time used for training recommender:3.297564277E9
+ Map: 1.666666666666667E-4
+ Avg time producing rec: 6.3202676E7
+Data all folds: 
+ Avg map: 4.337698412698413E-4
+ Avg train time: 4.657460547E9
+ Avg test time: 6.2923507599999994E7
+
+Test of dataset in folder: data/bx6k/ab10
+
+Recommender: Content-based (tags med over 100 i frek)
+Fold 1
+ Time used for training recommender:1.6260088775E10
+ Map: 1.388888888888889E-4
+ Avg time producing rec: 1.87130664E8
+Data all folds: 
+ Avg map: 1.388888888888889E-4
+ Avg train time: 1.6260088775E10
+ Avg test time: 1.87130664E8
+
+Test of dataset in folder: data/bx6k/ab10
+
+Recommender: Content-based (tags med over 10 i frek)
+Fold 1
+ Time used for training recommender:1.45173046911E11
+ Map: 7.799823633156966E-4
+ Avg time producing rec: 1.229081148E9
+Data all folds: 
+ Avg map: 7.799823633156966E-4
+ Avg train time: 1.45173046911E11
+ Avg test time: 1.229081148E9
+
+=======================================================
+Test of dataset in folder: data/bx6k/ab10
+
+Recommender: Content-based (tags med over 2 i frek)
+Fold 1
+ Time used for training recommender:6.22998247224E11
+ Map: 0.0016597222222222222
+ Avg time producing rec: 2.600816773E9
+Data all folds: 
+ Avg map: 0.0016597222222222222
+ Avg train time: 6.22998247224E11
+ Avg test time: 2.600816773E9
+
+Test of dataset in folder: data/bx6k/ab10
+
+Recommender: Content-based (tags med over 2 i frek - fortsettelse - fold 2-5)
+Fold 1
+ Time used for training recommender:6.20088299554E11
+ Map: 0.003188359788359788
+ Avg time producing rec: 2.694393173E9
+Fold 2
+ Time used for training recommender:6.0812260353E11
+ Map: 0.004215277777777778
+ Avg time producing rec: 2.772983265E9
+Fold 3
+ Time used for training recommender:5.99008033033E11
+ Map: 0.002234457671957672
+ Avg time producing rec: 2.645438024E9
+Fold 4
+ Time used for training recommender:6.29304918635E11
+ Map: 0.0020477843915343917
+ Avg time producing rec: 2.589669816E9
+Data all folds: 
+ Avg map: 0.0029214699074074073
+ Avg train time: 6.14130963688E11
+ Avg test time: 2.6756210695E9
+
+All 5:
+AVG MAP: 0.00266912
+AVG TRAIN TIME: 6.15904420395E11 (615904420395.2)
+AVG TEST TIME: 2.2660660210E9 (2660660210.2)
+
+========================================================
