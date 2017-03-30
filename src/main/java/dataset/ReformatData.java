@@ -32,11 +32,14 @@ public class ReformatData {
                 "data/ml6k/tags", "data/ml6k/titles");*/
         /*bookCrossing("data/bx6k/ratings","data/bx/bx-books.csv", "data/bx6k/ratings-transformed",
                 "data/bx6k/item-tags","data/bx6k/titles");*/
-        reduceTags("data/bx6k/item-tags", "data/bx6k/item-tags-reduced", 2);
+        //reduceTags("data/bx6k/item-tags", "data/bx6k/item-tags-reduced", 2);
         //printInfoAboutData("data/msd6k/ratings3", "\t");
         //printInfoAboutData("data/bx6k/ratings-transformed", "\t");
         //printInfoAboutData("data/ml6k/ratings", "::");
         //featureExtraction();
+        //binarizeTrainingFiles("data/bx6k/ab10","data/bx6k/bab10", 1, 5);
+        //binarizeTrainingFiles("data/msd6k/ab10","data/msd6k/bab10", 1, 5);
+        binarizeTrainingFiles("data/ml6k/ab10","data/ml6k/bab10", 1, 5);
     }
 
     //makes a new file with tags for movies, and a file with the titles of the movies (for movielens 100k ratings)
@@ -565,6 +568,19 @@ public class ReformatData {
             System.exit(1);
         }
     }
+
+    //Reads train-files (from nr "from" to nr "to") from inputDirectory and writes as binary ratings to outputDirectory.
+    public static void binarizeTrainingFiles(String inputDirectory, String outputDirectory, int from, int to) {
+        int numFiles = to - from + 1;
+
+        for (int i = 0; i < numFiles; i++) {
+            String inFile = inputDirectory + "/train" + (from + i);
+            String outFile = outputDirectory + "/train" + (from + i);
+            binarizeRatings(inFile, outFile);
+        }
+    }
+
+
     //TODO  change evaluation-method to measure hit-rate
     //and using several recsizes (e.g. 10,20,30,100/500),
     //make scalability-test (train with whole dataset) and test e.g. recs for 100 persons for ml100k, ml1m, ml10m

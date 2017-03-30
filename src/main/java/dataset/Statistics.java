@@ -11,8 +11,8 @@ import java.util.HashSet;
 public class Statistics {
 
     public static void main(String[] args) {
-        //printInfoAboutTags("data/bx6k/item-tags-reduced", ",");
-        //printInfoAboutTags("data/msd6k/tags", ",");
+        printInfoAboutTags("data/bx6k/item-tags-reduced", ",");
+        printInfoAboutTags("data/msd6k/tags", ",");
         printInfoAboutTags("data/ml6k/tags", ",");
     }
 
@@ -49,7 +49,7 @@ public class Statistics {
     public static void printInfoAboutTags(String tagFile, String delimiter) {
         HashSet<String> distinctTags = new HashSet<>();
         HashSet<String> items = new HashSet<>();
-        int numTags = 0;
+        double numTags = 0;
 
 
         try {
@@ -65,6 +65,7 @@ public class Statistics {
                 line = br.readLine();
             }
 
+            System.out.println("Tag info about " + tagFile);
             System.out.println("Distinct tags: " + distinctTags.size());
             System.out.println("Total number of <item,tag>-pairs: " + numTags);
             System.out.println("Total number of items: " + items.size());

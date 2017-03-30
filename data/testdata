@@ -292,18 +292,19 @@ BX6K (item-tags-reduced, i.e. tags with more than 2 inf frequency)
 Distinct tags: 47921
 Total number of <item,tag>-pairs: 872117
 Total number of items: 124626
-Avg tags per item: 6
+Avg tags per item: 6.9979
 
 MSD6k (tags, i.e. tags with score more than 30 (scores are from 0-100))
 Distinct tags: 52291
 Total number of <item,tag>-pairs: 365191
 Total number of items: 70095
-Avg tags per item: 5
+Avg tags per item: 5.2099
 
 ML6k (tags, i.e. all tags)
+Tag info about data/ml6k/tags
 Distinct tags: 20
 Total number of <item,tag>-pairs: 21564
 Total number of items: 10681
-Avg tags per item: 2
+Avg tags per item: 2.0189
 
 
