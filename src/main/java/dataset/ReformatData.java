@@ -39,7 +39,7 @@ public class ReformatData {
         //featureExtraction();
         //binarizeTrainingFiles("data/bx6k/ab10","data/bx6k/bab10", 1, 5);
         //binarizeTrainingFiles("data/msd6k/ab10","data/msd6k/bab10", 1, 5);
-        binarizeTrainingFiles("data/ml6k/ab10","data/ml6k/bab10", 1, 5);
+        //binarizeTrainingFiles("data/ml6k/ab10","data/ml6k/bab10", 1, 5);
     }
 
     //makes a new file with tags for movies, and a file with the titles of the movies (for movielens 100k ratings)
