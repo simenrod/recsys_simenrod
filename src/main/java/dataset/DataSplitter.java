@@ -52,8 +52,20 @@ public class DataSplitter {
         //kFoldCrossValidationSets("data/ml6k/ratings", "data/ml6k/cross-val", 5, "::", 10, false);
         //kFoldCrossValidationSets("data/ml6k/ratings", "data/ml6k/ab10", 5, "::", 10, false);
         //kFoldCrossValidationSets("data/bx6k/ratings-transformed", "data/bx6k/ab10", 5, "\t", 10, false);
-        kFoldCrossValidationSets("data/msd6k/ratings-transformed", "data/msd6k/ab10", 5, "\t", 10, false);
+        //kFoldCrossValidationSets("data/msd6k/ratings-transformed", "data/msd6k/ab10", 5, "\t", 10, false);
 
+        //MAYBE USE 3-6-9-12 instead (or 2-5-8-11)
+        kFoldCrossValidationSets("data/msd6k/binarized-ratings", "data/msd6k/g3", 5, "\t", 3, true);
+        kFoldCrossValidationSets("data/msd6k/binarized-ratings", "data/msd6k/g5", 5, "\t", 5, true);
+        kFoldCrossValidationSets("data/msd6k/binarized-ratings", "data/msd6k/g7", 5, "\t", 7, true);
+
+        kFoldCrossValidationSets("data/ml6k/binarized-ratings", "data/ml6k/g3", 5, "\t", 3, true);
+        kFoldCrossValidationSets("data/ml6k/binarized-ratings", "data/ml6k/g5", 5, "\t", 5, true);
+        kFoldCrossValidationSets("data/ml6k/binarized-ratings", "data/ml6k/g7", 5, "\t", 7, true);
+
+        kFoldCrossValidationSets("data/bx6k/binarized-ratings", "data/bx6k/g3", 5, "\t", 3, true);
+        kFoldCrossValidationSets("data/bx6k/binarized-ratings", "data/bx6k/g5", 5, "\t", 5, true);
+        kFoldCrossValidationSets("data/bx6k/binarized-ratings", "data/bx6k/g7", 5, "\t", 7, true);
     }
 
 

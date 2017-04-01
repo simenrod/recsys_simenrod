@@ -40,6 +40,9 @@ public class ReformatData {
         //binarizeTrainingFiles("data/bx6k/ab10","data/bx6k/bab10", 1, 5);
         //binarizeTrainingFiles("data/msd6k/ab10","data/msd6k/bab10", 1, 5);
         //binarizeTrainingFiles("data/ml6k/ab10","data/ml6k/bab10", 1, 5);
+        binarizeRatings("data/bx6k/ratings-transformed", "data/bx6k/binarized-ratings");
+        binarizeRatings("data/ml6k/ratings", "data/ml6k/binarized-ratings");
+        binarizeRatings("data/msd6k/ratings-transformed", "data/msd6k/binarized-ratings");
     }
 
     //makes a new file with tags for movies, and a file with the titles of the movies (for movielens 100k ratings)

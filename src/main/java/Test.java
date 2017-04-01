@@ -17,5 +17,8 @@ public class Test {
         int[] x = {0,1,2,3,4,5,6,7,8,9};
         int[] y = Arrays.copyOfRange(x, 0,5);
         System.out.println(Arrays.toString(y));
+
+        double multiplier = 1 + Math.log10(3);
+        System.out.println(multiplier);
     }
 }

@@ -77,11 +77,22 @@ public class Evaluator {
         /*ContentBasedRecommender cbr = new ContentBasedRecommender("data/bx6k/item-tags-reduced","data/bx6k/titles");
         Recommender[] rss = {cbr};
         eval.evaluateCrossFold(rss, "data/bx6k/ab10", 2, 5);*/
-        eval.evalBab10();
-        /*BaselineRecommender bsr = new BaselineRecommender();
-        String[] trainingFiles = {"data/bx6k/ab10/train1"};
-        String[] testingFiles = {"data/bx6k/ab10/test1"};
-        eval.combinedEvaluator(bsr, trainingFiles, testingFiles);*/
+        //eval.evalBab10();
+        /*ContentBasedRecommender cbr1 = new ContentBasedRecommender("data/msd6k/tags","data/msd6k/titles");
+        Recommender[] rs1 = {cbr1};
+
+        //eval.evaluateCrossFold(rs1, "data/ml6k/ab10", 1, 5);
+        eval.evaluateCrossFold(rs1, "data/msd6k/ab10", 1, 5);
+
+        ContentBasedRecommender cbr2 = new ContentBasedRecommender("data/bx6k/item-tags-reduced","data/bx6k/titles");
+        Recommender[] rs2 = {cbr2};
+
+        eval.evaluateCrossFold(rs2, "data/bx6k/ab10", 1, 5);*/
+
+        BaselineRecommender bsr = new BaselineRecommender();
+        String[] trainingFiles = {"data/bx6k/ab10/train1", "data/bx6k/ab10/train2", "data/bx6k/ab10/train3", "data/bx6k/ab10/train4", "data/bx6k/ab10/train5"};
+        String[] testingFiles = {"data/bx6k/ab10/test1", "data/bx6k/ab10/test2", "data/bx6k/ab10/test3", "data/bx6k/ab10/test4", "data/bx6k/ab10/test5"};
+        eval.combinedEvaluator(bsr, trainingFiles, testingFiles);
 
     }
 
@@ -246,6 +257,7 @@ public class Evaluator {
         double rel = 0;
         double sum = 0;
         double ap;
+        int div;
 
         for (int i = 0; i < recommendedItems.length; i++) {
             //System.out.println(recommendedItems[i]);
@@ -260,10 +272,50 @@ public class Evaluator {
         //System.out.println("sum: " + sum + ", rel: " + rel);
         if (rel == 0) return 0;
 
-        ap = sum / rel;
+        //ap = sum / 10;
+
+        //divides by the smallest of recommendation list-size and the number of relevant items
+        if (recommendedItems.length < relevantItems.size()) div = recommendedItems.length;
+        else div = relevantItems.size();
+        ap = sum / div;
+
+        //ap = sum / rel;
         return ap;
     }
 
+    public double precision(int[] recommendedItems, Set<Integer> relevantItems) {
+        double rel = 0;
+
+        for (int i = 0; i < recommendedItems.length; i++) {
+            //System.out.println(recommendedItems[i]);
+            for (int relevantId : relevantItems) {
+                if (recommendedItems[i] == relevantId) {
+                    rel++;
+                    //sum += (++rel / (i+1));
+                    //System.out.println("Nr rel: " + rel + ", pos: " + (i+1));
+                    //System.out.println("(MATCH)");
+                }
+            }
+        }
+        //System.out.println("Rel: " + rel + ", numItems: " + recommendedItems.length + ", prec: " + (rel/recommendedItems.length));
+        return rel/recommendedItems.length;
+    }
+
+    public double rhr(int[] recommendedItems, Set<Integer> relevantItems) {
+        double arhr;
+        for (int i = 0; i < recommendedItems.length; i++) {
+            //System.out.println(recommendedItems[i]);
+            for (int relevantId : relevantItems) {
+                if (recommendedItems[i] == relevantId) {
+                    arhr = (double) 1 / (i+1);
+                    //System.out.println("ARHR " + arhr);
+                    return arhr;
+                }
+            }
+        }
+        //System.out.println("ARHR 0");
+        return 0;
+    }
 
     //Returns datastructure with data from trainingFile
     public HashMap<Integer, HashMap<Integer, Double>> readTestData(String testFile){
@@ -299,6 +351,145 @@ public class Evaluator {
     }
 
     public void combinedEvaluator(Recommender rs, String[] trainingFiles, String[] testFiles) {
+        int[] n = {10,20,30,100,500}; //recs for map, arhr
+        int[] m = {3,5,10,20,30}; //recs for hr, precision
+        int numRecs = 30;
+        long startTime;
+        long endTime;
+        double[] avgMap = {0,0,0,0,0};
+        double avgTrainTime = 0;
+        double avgRecTime = 0;
+        double[] avgHr = {0,0,0,0,0};
+        double[] avgArhr = {0,0,0,0,0};
+        double[] avgPrecision = {0,0,0,0,0};
+        String printString;
+        int nFolds = trainingFiles.length;
+
+        try {
+            FileWriter fw = new FileWriter(new File("test-results.txt"), true);
+
+            if (trainingFiles.length != testFiles.length) {
+                System.out.println("Not equal numbers of trainingFiles and testFiles");
+                return;
+            }
+
+            //Repeats for all of the trainingfiles. i is the fold nr
+            for (int i = 0; i < trainingFiles.length; i++) {
+                //System.out.println("Testing with file " + (i+1) + ".");
+
+                startTime = System.nanoTime();
+                rs.update(trainingFiles[i]); //trains recommender with training file
+                endTime = System.nanoTime();
+                double trainingTime = endTime - startTime;
+                printString = "Fold " + (i+1) + "\n Time used for training recommender:" + trainingTime + "\n";
+                System.out.print(printString);
+                fw.append(printString);
+                avgTrainTime += trainingTime / nFolds;
+
+                HashMap<Integer, HashMap<Integer, Double>> testData = readTestData(testFiles[i]);
+                double[] sumAp = {0,0,0,0,0};
+                double[] sumRhr = {0,0,0,0,0};
+                double[] sumPrecision = {0,0,0,0,0};
+                double[] matches = {0,0,0,0,0};
+                double avgTime = 0;
+                int users = testData.size();
+                double[] map = new double[5];
+                double[] arhr = new double[5];
+                double[] hr = new double[5];
+                double[] precision = new double[5];
+
+
+                for (int userId : testData.keySet()) {
+                    startTime = System.nanoTime();
+                    int[] recommendedItems = rs.recommend(userId, numRecs);
+                    endTime = System.nanoTime();
+                    avgTime += (endTime - startTime) / users;
+                    //if (isMatch(recommendedItems, testData.get(userId).keySet())) matches++;
+                    //double ap = averagePrecision(recommendedItems, testData.get(userId).keySet());
+                    //System.out.println(ap);
+                    //sumAp +=  ap;
+                    //System.out.println("Recs for user "+userId);
+
+                    //updates measures for the different recommendations lengths
+                    for (int k = 0; k < n.length; k++) {
+                        sumRhr[k] += rhr(Arrays.copyOfRange(recommendedItems, 0, n[k]), testData.get(userId).keySet());
+                        //sumAp[k] += precision(Arrays.copyOfRange(recommendedItems, 0, n[k]), testData.get(userId).keySet());
+                        sumAp[k] += averagePrecision(Arrays.copyOfRange(recommendedItems, 0, n[k]), testData.get(userId).keySet());//recommendedItems, testData.get(userId).keySet());
+                        if (isMatch(Arrays.copyOfRange(recommendedItems, 0, m[k]), testData.get(userId).keySet()))
+                            matches[k]++;
+                        sumPrecision[k] += precision(Arrays.copyOfRange(recommendedItems, 0, m[k]), testData.get(userId).keySet());
+                    }
+
+                /*for (String itemId : testData.get(userId).keySet()) {
+                    for (int recommendedId : recommendedItems) {
+                        if (recommendedId  == Integer.parseInt(itemId)) {
+                            matches++;
+                        }
+                    }
+                }*/
+                }
+                //printString = "Fold " + i + ":";
+                //System.out.println(printString);
+                //fw.append(printString);
+
+                //for each of the reommendation lengths, calculates average for this fold, plus adding values to the scores for all folds
+                for (int k = 0; k < n.length; k++) {
+                    map[k] = (double) sumAp[k] / users;
+                    avgMap[k] += map[k] / nFolds;
+                    hr[k] = matches[k] / users;
+                    avgHr[k] += hr[k] / nFolds;
+                    arhr[k] = sumRhr[k] / users;
+                    avgArhr[k] += arhr[k] / nFolds;
+                    precision[k] = sumPrecision[k] / users;
+                    avgPrecision[k] += precision[k] / nFolds;
+
+                    printString = " Map for " + n[k] + "recommendations: " + map[k] + "\n" +
+                            " ARHR for" + n[k] + "recommendations:" + arhr[k] + "\n" +
+                            " Hr for " + m[k] + "recommendations: " + hr[k] + "\n" +
+                            " Precision for " + m[k] + "recommendations: " + precision[k] + "\n";
+                    System.out.print(printString);
+                    fw.append(printString);
+                }
+
+                printString = " Avg time producing rec: " + avgTime + "\n";
+                System.out.print(printString);
+                fw.append(printString);
+                avgRecTime += avgTime / nFolds;
+            }
+
+            printString = "===Results all folds:" + "===\n" +
+                    " Average train time: " + avgTrainTime + "\n" +
+                    " Average test time: " + avgRecTime + "\n";
+
+
+            /*for (int k = 0; k < n.length; k++) {
+                printString = " Average map  for " + n[k] + " recommendations: " + avgMap[k] + "\n" +
+                        " Average hr for " + m[k] + " recommendations: " + avgHr[k] + "\n" +
+                        " Average arhr for " + n[k] + " recommendations: " + avgArhr[k] + "\n" +
+                        " Average precison for " + m[k] + "recommendations: " + avgPrecision[k] + "\n";
+                System.out.print(printString);
+                fw.append(printString);
+            }*/
+
+            for (int k = 0; k < n.length; k++) printString += " Average map  for " + n[k] + " recommendations: " + avgMap[k] + "\n";
+            for (int k = 0; k < n.length; k++) printString += " Average arhr for " + n[k] + " recommendations: " + avgArhr[k] + "\n";
+            for (int k = 0; k < n.length; k++) printString +=  " Average hr for " + m[k] + " recommendations: " + avgHr[k] + "\n";
+            for (int k = 0; k < n.length; k++) printString += " Average precison for " + m[k] + " recommendations: " + avgPrecision[k] + "\n";
+
+
+            System.out.print(printString);
+            fw.append(printString);
+
+            fw.flush();
+            fw.close();
+        }
+        catch (IOException ioe) {
+            ioe.printStackTrace();
+            System.exit(1);
+        }
+    }
+
+    /*public void combinedEvaluator(Recommender rs, String[] trainingFiles, String[] testFiles) {
         int[] n = {10,20,30}; //recs for map
         int[] m = {3,5,10}; //recs for hr
         int numRecs = 30;
@@ -327,7 +518,7 @@ public class Evaluator {
                 rs.update(trainingFiles[i]); //trains recommender with training file
                 endTime = System.nanoTime();
                 double trainingTime = endTime - startTime;
-                printString = "Time used for training recommender:" + trainingTime + "\n";
+                printString = "Fold " + (i+1) + "\nTime used for training recommender:" + trainingTime + "\n";
                 System.out.print(printString);
                 fw.append(printString);
                 avgTrainTime += trainingTime / nFolds;
@@ -350,23 +541,21 @@ public class Evaluator {
                     //System.out.println(ap);
                     //sumAp +=  ap;
                     //System.out.println("Recs for user "+userId);
+
+                    //updates measures for the different recommendations lengths
                     for (int k = 0; k < n.length; k++) {
                         sumAp[k] += averagePrecision(Arrays.copyOfRange(recommendedItems, 0, n[k]), testData.get(userId).keySet());//recommendedItems, testData.get(userId).keySet());
                         if (isMatch(Arrays.copyOfRange(recommendedItems, 0, m[k]), testData.get(userId).keySet()))
                             matches[k]++;
                     }
 
-                /*for (String itemId : testData.get(userId).keySet()) {
-                    for (int recommendedId : recommendedItems) {
-                        if (recommendedId  == Integer.parseInt(itemId)) {
-                            matches++;
-                        }
-                    }
-                }*/
+
                 }
-                printString = "Fold " + i + ":";
-                System.out.println(printString);
-                fw.append(printString);
+                //printString = "Fold " + i + ":";
+                //System.out.println(printString);
+                //fw.append(printString);
+
+                //for each of the reommendation lengths, calculates average for this fold, plus adding values to the scores for all folds
                 for (int k = 0; k < n.length; k++) {
                     map[k] = (double) sumAp[k] / users;
                     avgMap[k] += map[k] / nFolds;
@@ -400,7 +589,7 @@ public class Evaluator {
             ioe.printStackTrace();
             System.exit(1);
         }
-    }
+    }*/
 
 
     public void evaluateCrossFold(Recommender[] rss, String folder, int from, int to) {

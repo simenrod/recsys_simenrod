@@ -117,7 +117,7 @@ public class TFIDFItemScorer extends AbstractItemScorer {
             double ratingValue = p.getValue();
             //double multiplier = ratingValue - avgRating;
             //double multiplier = ratingValue;
-            double multiplier = 1 + Math.log10(ratingValue);
+            double multiplier = 1 + Math.log10(1+ratingValue);
             long itemId = r.getItemId();
             SparseVector itemVector = this.model.getItemVector(itemId);
             for(VectorEntry v: itemVector.fast()){
