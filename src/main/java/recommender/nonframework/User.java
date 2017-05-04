@@ -6,6 +6,7 @@ import java.util.Stack;
 
 /**
  * Created by simen on 3/24/17.
+ * Class that stores info about a user an which items that are rated by the user
  */
 class User {
     private String id;

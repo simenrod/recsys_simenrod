@@ -2,9 +2,8 @@ package recommender.nonframework;
 
 /**
  * Created by simen on 3/20/17.
+ * Class that stores values for predictions of a item. Higher values means better recommendations.
  */
-
-//Class that stores values for predictions of a item. Higher values means better recommendations.
 public class Prediction implements Comparable<Prediction> {
     private Item item;
     private double value;
@@ -14,6 +13,7 @@ public class Prediction implements Comparable<Prediction> {
         value = v;
     }
 
+    //increases the frequency of this item
     public void increaseValue(double d) {
         value += d;
     }

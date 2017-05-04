@@ -31,6 +31,7 @@ import static java.lang.Math.toIntExact;
 
 /**
  * Created by simen on 2/15/17.
+ * Item-based collaborative filtering recommender built with lenskit.
  */
 public class ItemBasedRecommender implements Recommender {
     private LenskitConfiguration config;

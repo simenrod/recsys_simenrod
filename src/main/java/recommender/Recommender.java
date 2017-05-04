@@ -1,15 +1,15 @@
 package recommender;
 
-import org.apache.spark.mllib.recommendation.Rating;
 
 /**
  * Created by simen on 3/16/17.
+ * Recommender interface that all of the recommendation algorithms implement, to ensure that all
+ * algorithms have same functionality.
  */
 public interface Recommender {
 
     /**
      * Method that initializes Recommender, if anything must be initialized for the recommender to work.
-     *
      */
     public void initialize();
 

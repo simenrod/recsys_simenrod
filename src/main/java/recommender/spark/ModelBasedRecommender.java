@@ -23,6 +23,8 @@ import java.util.Scanner;
 
 /**
  * Created by simen on 2/8/17.
+ * Model based collaborative filtering done with an alternating least square matrix factorization algorithm,
+ * implemented with Spark's MLlib.
  */
 
 public class ModelBasedRecommender implements Recommender, Serializable {
@@ -36,12 +38,13 @@ public class ModelBasedRecommender implements Recommender, Serializable {
     private double alpha;
 
 
-    //default values in spark: rank=10, iterations=10, lambda=0.01 alpha= 1.0 (thinks only alpha should be cross-validated if we use cross-validation)
 
+    //constructor without parameters - using default values
     public ModelBasedRecommender() {
-        setParameters(10,10,0.01,0.01);
+        setParameters(10,10,0.01,1.0);
     }
 
+    //constructor with parameters
     public ModelBasedRecommender(int rank, int iterations, double lambda, double alpha) {
         setParameters(rank, iterations, lambda, alpha);
     }
@@ -57,6 +60,7 @@ public class ModelBasedRecommender implements Recommender, Serializable {
         //options for Level include: all, debug, error, fatal, info, off, trace, trace_int, warn
     }
 
+    //method for updating parameters
     public void setParameters(int rank, int iterations, double lambda, double alpha) {
         this.rank = rank;
         this.iterations = iterations;
@@ -81,13 +85,12 @@ public class ModelBasedRecommender implements Recommender, Serializable {
                     }
                 }
         );
-        //ratings10m.cache();
 
         model = ALS.trainImplicit(JavaRDD.toRDD(ratings), rank, iterations, lambda, alpha); // Trains the ALS-model
 
         //Because Spark recommends already rated items, we want to filer out these items.
-        //Therefore, we want to keep each users ratings10m.
-        //Groups the ratings10m for each user into an Iterable of Ratings
+        //Therefore, we want to keep each users ratings.
+        //Groups the ratings for each user into an Iterable of Ratings
         JavaPairRDD<Integer, Iterable<Rating>> ratingsGrouped = ratings.groupBy(
                 (Function<Rating, Integer>) r -> r.user()
         );
@@ -131,11 +134,12 @@ public class ModelBasedRecommender implements Recommender, Serializable {
         return recommendedItems;
     }
 
-
+    //shuts down the spark context
     public static void stopSparkContext() {
         sc.stop();
-    } //shuts down the spark context
+    }
 
+    //returns info about this recommender and its parameters
     public String getInfo() {
         return "Model-based Collaborative filtering | r = " + rank
                 +" i = "+ iterations + " l = " + lambda + " a = " + alpha;

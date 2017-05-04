@@ -20,6 +20,9 @@ import static java.lang.Math.toIntExact;
 
 /**
  * Created by simen on 3/21/17.
+ * Content-based filtering recommender built with Lenskit. Uses both classes that are built in LensKit and some
+ * classes from org/grouplens/mooc/cbf, which is a continuation of the content-based recommender in this project:
+ * https://github.com/eugenelin89/recommender_content_based.
  */
 public class ContentBasedRecommender implements Recommender {
     private LenskitConfiguration config;
@@ -29,6 +32,7 @@ public class ContentBasedRecommender implements Recommender {
     private String titleFile;
 
 
+    //Constructor where tag file and title file to use must be specified
     public ContentBasedRecommender(String tagFile, String titleFile){
         this.tagFile = tagFile;
         this.titleFile = titleFile;
@@ -37,22 +41,17 @@ public class ContentBasedRecommender implements Recommender {
     public void initialize() {/*nothing to inialize*/}
 
 
+    //Method that configures and trains the content-based recommender
     public void update(String trainingFile) {
 
         //Configures the content-based recommender
         config = new LenskitConfiguration();
-        config.bind(EventDAO.class).to(MOOCRatingDAO.class); //could maybe have used SimpleFileRatingDAO
+        config.bind(EventDAO.class).to(MOOCRatingDAO.class);
         config.set(RatingFile.class).to(new File(trainingFile));
         config.bind(ItemDAO.class).to(CSVItemTagDAO.class);
         config.set(TagFile.class).to(new File(tagFile));
         config.set(TitleFile.class).to(new File(titleFile));
         config.bind(ItemScorer.class).to(TFIDFItemScorer.class);
-
-        /*// our user DAO can look up by user name
-        config.bind(UserDAO.class)
-                .to(MOOCUserDAO.class);
-        config.set(UserFile.class)
-                .to(new File("data/users.csv"));*/
 
         //builds recommender
         try {
@@ -77,6 +76,7 @@ public class ContentBasedRecommender implements Recommender {
         return recommendedItems;
     }
 
+    //returns info about which type of recommender this is
     public String getInfo() {
         return "Content-based";
     }

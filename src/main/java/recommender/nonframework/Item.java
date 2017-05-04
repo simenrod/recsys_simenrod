@@ -6,6 +6,7 @@ import java.util.Stack;
 
 /**
  * Created by simen on 3/24/17.
+ * Class that store info about an item
  */
 public class Item {
     private String id;

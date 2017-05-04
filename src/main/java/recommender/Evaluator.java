@@ -137,6 +137,8 @@ public class Evaluator {
     }
 
 
+    //Method that computes the hit-rate of a recommender rs, for a set of training-files and a set of test files.
+    //Uses a recommendation list size of n
     public void hitRate(Recommender rs, String[] trainingFiles, String[] testFiles, int n) {
         if (trainingFiles.length != testFiles.length) {
             System.out.println("Not equal numbers of trainingFiles and testFiles");
@@ -148,40 +150,18 @@ public class Evaluator {
 
         //Repeats for all of the trainingfiles. i is the fold nr
         for (int i = 0; i < trainingFiles.length; i++) {
-            //System.out.println("Testing with file " + (i+1) + ".");
             rs.update(trainingFiles[i]); //trains recommender with training file
-            HashMap<Integer, HashMap<Integer, Double>> testData = readTestData(testFiles[i]);
+            HashMap<Integer, HashMap<Integer, Double>> testData = readTestData(testFiles[i]); //stores ratings in a 2d hashmap
             int matches = 0;
             int users = testData.size();
             double hr;
 
-            /*System.out.println(testData.get("943").size());
-            //String[] = testData.get("1").keySet();
-            for (String s : testData.get("75").keySet()) {
-                System.out.println(s + ", rating: "+ testData.get("75").get(s));
-
-            }*/
-            /*int[] recs = rs.recommend(1, 10);
-            System.out.println("Recs for user 1");
-
-            for (int x : recs) {
-                System.out.println(x);
-            }*/
-            //System.out.println(testData.size());
-
-
+            //checks for each user in test set if there is a match in the recommendations given to him/her
             for (int userId : testData.keySet()) {
-
                 int[] recommendedItems = rs.recommend(userId, n);
-                if (isMatch(recommendedItems, testData.get(userId).keySet())) matches++;
-                /*for (String itemId : testData.get(userId).keySet()) {
-                    for (int recommendedId : recommendedItems) {
-                        if (recommendedId  == Integer.parseInt(itemId)) {
-                            matches++;
-                        }
-                    }
-                }*/
+                if (isMatch(recommendedItems, testData.get(userId).keySet())) matches++; //if match - increases counter
             }
+
             hr = (double) matches / users;
             avgHr += hr/trainingFiles.length;
             System.out.println("Hr fold nr " + i + ": " + hr);
@@ -192,7 +172,6 @@ public class Evaluator {
 
 
     //Returns true if one of the recommended items are in the set of relevant items
-    //(if I want to include ARHR -> return index for first match, if want to use MAP -> return AP for user)
     public boolean isMatch(int[] recommendedItems, Set<Integer> relevantItems) {
         for (int recommendedId : recommendedItems) {
             for (int relevantId : relevantItems) {
@@ -204,9 +183,9 @@ public class Evaluator {
         return false;
     }
 
-//https://github.com/lenskit/lenskit/blob/master/lenskit-eval/src/main/java/org/lenskit/eval/traintest/recommend/TopNMAPMetric.java
 
-
+    //Measures MAP for a recommender rs on a set of training files and a set of test files.
+    //The results are written to the file test-results.txt
     //n=number of recs
     public void map(Recommender rs, String[] trainingFiles, String[] testFiles, int n) {
         long startTime;
@@ -230,60 +209,47 @@ public class Evaluator {
 
             //Repeats for all of the trainingfiles. i is the fold nr
             for (int i = 0; i < trainingFiles.length; i++) {
-                //System.out.println("Testing with file " + (i+1) + ".");
 
+                //trains recommender with training file and measures time used
                 startTime = System.nanoTime();
-                rs.update(trainingFiles[i]); //trains recommender with training file
+                rs.update(trainingFiles[i]);
                 endTime = System.nanoTime();
                 double trainingTime = endTime - startTime;
-
                 printString = "Fold " + (i+1) + "\n Time used for training recommender:" + trainingTime + "\n";
                 System.out.print(printString);
                 fw.append(printString);
-
                 avgTrainTime += trainingTime / nFolds;
+
                 HashMap<Integer, HashMap<Integer, Double>> testData = readTestData(testFiles[i]);
                 double sum = 0;
                 double avgTime = 0;
                 int users = testData.size();
                 double map;
 
+                //Computes average precision for each user in test set and measures time used for making recommendations
                 for (int userId : testData.keySet()) {
                     startTime = System.nanoTime();
                     int[] recommendedItems = rs.recommend(userId, n);
                     endTime = System.nanoTime();
                     avgTime += (endTime - startTime) / users;
-                    //if (isMatch(recommendedItems, testData.get(userId).keySet())) matches++;
-                    //double ap = averagePrecision(recommendedItems, testData.get(userId).keySet());
-                    //System.out.println(ap);
-                    //sum +=  ap;
-                    //System.out.println("Recs for user "+userId);
                     sum += averagePrecision(recommendedItems, testData.get(userId).keySet());
-                /*for (String itemId : testData.get(userId).keySet()) {
-                    for (int recommendedId : recommendedItems) {
-                        if (recommendedId  == Integer.parseInt(itemId)) {
-                            matches++;
-                        }
-                    }
-                }*/
                 }
+
+                //computes map in this fold
                 map = (double) sum / users;
                 printString = " Map: " + map + "\n Avg time producing rec: " + avgTime + "\n";
-                //System.out.println("Map: " + map);
-                //System.out.println("Avg time producing rec: " + avgTime);
                 fw.append(printString);
                 System.out.print(printString);
 
                 avgMap += map / nFolds;
                 avgRecTime += avgTime / nFolds;
             }
+
+            //computes average map over all folds
             printString = "Data all folds: \n Avg map: " + avgMap + "\n Avg train time: " +
                     avgTrainTime + "\n Avg test time: " + avgRecTime + "\n";
             System.out.print(printString);
             fw.append(printString);
-            //System.out.println("Average map (all folds): " + avgMap);
-            //System.out.println("Average train time (all folds): " + avgTrainTime);
-            //System.out.println("Average test time (all folds): " + avgRecTime);
             fw.flush();
             fw.close();
         }
@@ -293,67 +259,61 @@ public class Evaluator {
         }
     }
 
+
+    //Method that measures average precison for an ordered list of recommended items and a set of relevant items for a user
     public double averagePrecision(int[] recommendedItems, Set<Integer> relevantItems) {
         double rel = 0;
         double sum = 0;
         double ap;
         int div;
 
+        //checks for each recommended item if it is relevant.
+        //if relevant recommendation - add proportion of relevant recs in the i first recs to sum
         for (int i = 0; i < recommendedItems.length; i++) {
-            //System.out.println(recommendedItems[i]);
             for (int relevantId : relevantItems) {
                 if (recommendedItems[i] == relevantId) {
                     sum += (++rel / (i+1));
-                    //System.out.println("Nr rel: " + rel + ", pos: " + (i+1));
-                    //System.out.println("(MATCH)");
                 }
             }
         }
-        //System.out.println("sum: " + sum + ", rel: " + rel);
         if (rel == 0) return 0;
 
-        //ap = sum / 10;
-
-        //divides by the smallest of recommendation list-size and the number of relevant items
+        //gets ap by dividing the sum by the smallest of recommendation list-size and the number of relevant items
         if (recommendedItems.length < relevantItems.size()) div = recommendedItems.length;
         else div = relevantItems.size();
         ap = sum / div;
 
-        //ap = sum / rel;
         return ap;
     }
 
+    //Measures the precison of a recommendation list for a user with a set of relevant items
     public double precision(int[] recommendedItems, Set<Integer> relevantItems) {
         double rel = 0;
 
+        //counts number of relevant recs and divides by number of items in the recommendation list
         for (int i = 0; i < recommendedItems.length; i++) {
-            //System.out.println(recommendedItems[i]);
             for (int relevantId : relevantItems) {
                 if (recommendedItems[i] == relevantId) {
                     rel++;
-                    //sum += (++rel / (i+1));
-                    //System.out.println("Nr rel: " + rel + ", pos: " + (i+1));
-                    //System.out.println("(MATCH)");
                 }
             }
         }
-        //System.out.println("Rel: " + rel + ", numItems: " + recommendedItems.length + ", prec: " + (rel/recommendedItems.length));
         return rel/recommendedItems.length;
     }
 
+    //Measures reciprocal hit rate for a recommendation list and a set of relevant items
     public double rhr(int[] recommendedItems, Set<Integer> relevantItems) {
-        double arhr;
+        double rhr;
+
+        //finds first relevant item in recommendation list and returns 1 divided by this index
         for (int i = 0; i < recommendedItems.length; i++) {
-            //System.out.println(recommendedItems[i]);
             for (int relevantId : relevantItems) {
                 if (recommendedItems[i] == relevantId) {
-                    arhr = (double) 1 / (i+1);
-                    //System.out.println("ARHR " + arhr);
-                    return arhr;
+                    rhr = (double) 1 / (i+1);
+                    return rhr;
                 }
             }
         }
-        //System.out.println("ARHR 0");
         return 0;
     }
 
@@ -390,15 +350,19 @@ public class Evaluator {
         return testData;
     }
 
+
+    //Combined evaluator that measures MAP, ARHR, HR and precision for a recommender rs on a set of training files and a set of test files
+    //MAP and ARHR are measured with recommendation list size 10,20,30,100 and 500, while hr and precision are measured with list size
+    //of 3,5,10,20 and 30. Results are both written to file and to terminal
     public void combinedEvaluator(Recommender rs, String[] trainingFiles, String[] testFiles) {
         int[] n = {10,20,30,100,500}; //recs for map, arhr
         int[] m = {3,5,10,20,30}; //recs for hr, precision
-        int numRecs = 30;
+        int numRecs = 500;
         long startTime;
         long endTime;
-        double[] avgMap = {0,0,0,0,0};
         double avgTrainTime = 0;
         double avgRecTime = 0;
+        double[] avgMap = {0,0,0,0,0};
         double[] avgHr = {0,0,0,0,0};
         double[] avgArhr = {0,0,0,0,0};
         double[] avgPrecision = {0,0,0,0,0};
@@ -407,7 +371,6 @@ public class Evaluator {
 
         try {
             FileWriter fw = new FileWriter(new File("test-results.txt"), true);
-
             if (trainingFiles.length != testFiles.length) {
                 System.out.println("Not equal numbers of trainingFiles and testFiles");
                 return;
@@ -419,8 +382,8 @@ public class Evaluator {
 
             //Repeats for all of the trainingfiles. i is the fold nr
             for (int i = 0; i < trainingFiles.length; i++) {
-                //System.out.println("Testing with file " + (i+1) + ".");
 
+                //Trains recommender and measures time used for this
                 startTime = System.nanoTime();
                 rs.update(trainingFiles[i]); //trains recommender with training file
                 endTime = System.nanoTime();
@@ -442,39 +405,22 @@ public class Evaluator {
                 double[] hr = new double[5];
                 double[] precision = new double[5];
 
-
+                //produces recommendation for each user, measure time used and updates the different measures
                 for (int userId : testData.keySet()) {
                     startTime = System.nanoTime();
                     int[] recommendedItems = rs.recommend(userId, numRecs);
                     endTime = System.nanoTime();
                     avgTime += (endTime - startTime) / users;
-                    //if (isMatch(recommendedItems, testData.get(userId).keySet())) matches++;
-                    //double ap = averagePrecision(recommendedItems, testData.get(userId).keySet());
-                    //System.out.println(ap);
-                    //sumAp +=  ap;
-                    //System.out.println("Recs for user "+userId);
 
                     //updates measures for the different recommendations lengths
                     for (int k = 0; k < n.length; k++) {
                         sumRhr[k] += rhr(Arrays.copyOfRange(recommendedItems, 0, n[k]), testData.get(userId).keySet());
-                        //sumAp[k] += precision(Arrays.copyOfRange(recommendedItems, 0, n[k]), testData.get(userId).keySet());
                         sumAp[k] += averagePrecision(Arrays.copyOfRange(recommendedItems, 0, n[k]), testData.get(userId).keySet());//recommendedItems, testData.get(userId).keySet());
                         if (isMatch(Arrays.copyOfRange(recommendedItems, 0, m[k]), testData.get(userId).keySet()))
                             matches[k]++;
                         sumPrecision[k] += precision(Arrays.copyOfRange(recommendedItems, 0, m[k]), testData.get(userId).keySet());
                     }
-
-                /*for (String itemId : testData.get(userId).keySet()) {
-                    for (int recommendedId : recommendedItems) {
-                        if (recommendedId  == Integer.parseInt(itemId)) {
-                            matches++;
-                        }
-                    }
-                }*/
                 }
-                //printString = "Fold " + i + ":";
-                //System.out.println(printString);
-                //fw.append(printString);
 
                 //for each of the reommendation lengths, calculates average for this fold, plus adding values to the scores for all folds
                 for (int k = 0; k < n.length; k++) {
@@ -506,20 +452,10 @@ public class Evaluator {
                     " Average test time: " + avgRecTime + "\n";
 
 
-            /*for (int k = 0; k < n.length; k++) {
-                printString = " Average map  for " + n[k] + " recommendations: " + avgMap[k] + "\n" +
-                        " Average hr for " + m[k] + " recommendations: " + avgHr[k] + "\n" +
-                        " Average arhr for " + n[k] + " recommendations: " + avgArhr[k] + "\n" +
-                        " Average precison for " + m[k] + "recommendations: " + avgPrecision[k] + "\n";
-                System.out.print(printString);
-                fw.append(printString);
-            }*/
-
             for (int k = 0; k < n.length; k++) printString += " Average map  for " + n[k] + " recommendations: " + avgMap[k] + "\n";
             for (int k = 0; k < n.length; k++) printString += " Average arhr for " + n[k] + " recommendations: " + avgArhr[k] + "\n";
             for (int k = 0; k < n.length; k++) printString +=  " Average hr for " + m[k] + " recommendations: " + avgHr[k] + "\n";
             for (int k = 0; k < n.length; k++) printString += " Average precison for " + m[k] + " recommendations: " + avgPrecision[k] + "\n";
-
 
             System.out.print(printString);
             fw.append(printString);
@@ -533,107 +469,7 @@ public class Evaluator {
         }
     }
 
-    /*public void combinedEvaluator(Recommender rs, String[] trainingFiles, String[] testFiles) {
-        int[] n = {10,20,30}; //recs for map
-        int[] m = {3,5,10}; //recs for hr
-        int numRecs = 30;
-        long startTime;
-        long endTime;
-        double[] avgMap = {0,0,0};
-        double avgTrainTime = 0;
-        double avgRecTime = 0;
-        double[] avgHr = {0,0,0};
-        String printString;
-        int nFolds = trainingFiles.length;
 
-        try {
-            FileWriter fw = new FileWriter(new File("test-results.txt"), true);
-
-            if (trainingFiles.length != testFiles.length) {
-                System.out.println("Not equal numbers of trainingFiles and testFiles");
-                return;
-            }
-
-            //Repeats for all of the trainingfiles. i is the fold nr
-            for (int i = 0; i < trainingFiles.length; i++) {
-                //System.out.println("Testing with file " + (i+1) + ".");
-
-                startTime = System.nanoTime();
-                rs.update(trainingFiles[i]); //trains recommender with training file
-                endTime = System.nanoTime();
-                double trainingTime = endTime - startTime;
-                printString = "Fold " + (i+1) + "\nTime used for training recommender:" + trainingTime + "\n";
-                System.out.print(printString);
-                fw.append(printString);
-                avgTrainTime += trainingTime / nFolds;
-
-                HashMap<Integer, HashMap<Integer, Double>> testData = readTestData(testFiles[i]);
-                double[] sumAp = {0, 0, 0};
-                double avgTime = 0;
-                int users = testData.size();
-                double[] map = new double[3];
-                double[] hr = new double[3];
-                double[] matches = {0, 0, 0};
-
-                for (int userId : testData.keySet()) {
-                    startTime = System.nanoTime();
-                    int[] recommendedItems = rs.recommend(userId, numRecs);
-                    endTime = System.nanoTime();
-                    avgTime += (endTime - startTime) / users;
-                    //if (isMatch(recommendedItems, testData.get(userId).keySet())) matches++;
-                    //double ap = averagePrecision(recommendedItems, testData.get(userId).keySet());
-                    //System.out.println(ap);
-                    //sumAp +=  ap;
-                    //System.out.println("Recs for user "+userId);
-
-                    //updates measures for the different recommendations lengths
-                    for (int k = 0; k < n.length; k++) {
-                        sumAp[k] += averagePrecision(Arrays.copyOfRange(recommendedItems, 0, n[k]), testData.get(userId).keySet());//recommendedItems, testData.get(userId).keySet());
-                        if (isMatch(Arrays.copyOfRange(recommendedItems, 0, m[k]), testData.get(userId).keySet()))
-                            matches[k]++;
-                    }
-
-
-                }
-                //printString = "Fold " + i + ":";
-                //System.out.println(printString);
-                //fw.append(printString);
-
-                //for each of the reommendation lengths, calculates average for this fold, plus adding values to the scores for all folds
-                for (int k = 0; k < n.length; k++) {
-                    map[k] = (double) sumAp[k] / users;
-                    avgMap[k] += map[k] / nFolds;
-                    hr[k] = matches[k] / users;
-                    avgHr[k] += hr[k] / nFolds;
-                    //printString = "Map for " + n[k] + "recommendations: " + map[k] + "\n" + "Hr for " + n[k] + "recommendations: " + hr[k];
-                    //System.out.println("Map for " + n[k] + "recommendations: " + map[k]);
-                    //System.out.println("Hr for " + n[k] + "recommendations: " + hr[k]);
-                }
-
-                printString = "Avg time producing rec: " + avgTime + "\n";
-                System.out.print(printString);
-                fw.append(printString);
-                avgRecTime += avgTime / nFolds;
-            }
-            for (int k = 0; k < n.length; k++) {
-                printString = "Average map (all folds) for " + n[k] + " recommendations: " + avgMap[k] + "\n" +
-                        "Average hr (all folds) for " + m[k] + " recommendations: " + avgHr[k] + "\n";
-                System.out.print(printString);
-                fw.append(printString);
-            }
-
-            printString = "Average train time (all folds): " + avgTrainTime + "\n" + "Average test time (all folds): " + avgRecTime + "\n";
-            System.out.print(printString);
-            fw.append(printString);
-
-            fw.flush();
-            fw.close();
-        }
-        catch (IOException ioe) {
-            ioe.printStackTrace();
-            System.exit(1);
-        }
-    }*/
 
 
     public void evaluateCrossFold(Recommender[] rss, String folder, int from, int to) {

@@ -8,6 +8,8 @@ import java.util.HashMap;
 
 /**
  * Created by simen on 3/20/17.
+ * Non-personalized popularity algorithm that is used as a baseline algorithm. The recommender recommends
+ * the n most rated items.
  */
 public class BaselineRecommender implements Recommender {
     private HashMap<String,Item> items;
@@ -21,14 +23,14 @@ public class BaselineRecommender implements Recommender {
     }
 
     //makes recommender ready to produce recommendations by calling ReadRatings, and sorting the predictions based
-    //on number of users who have interacted with the item
+    //on number of users who have interacted with the items
     public void update(String trainingFile) {
         readRatings("\t", trainingFile);
         sortedPredictions = predictions.values().toArray(new Prediction[predictions.size()]);
         Arrays.sort(sortedPredictions);
     }
 
-    //Recommends the most popular items which the user has not rated before
+    //Recommends the most popular items that the user does not have rated before
     public int[] recommend(int userId, int num) {
         int[] recIds = new int[num];
         User u = users.get(Integer.toString(userId));
@@ -42,7 +44,7 @@ public class BaselineRecommender implements Recommender {
     }
 
 
-    //Reads the ratings from the training file and stores them in datastructure
+    //Reads the ratings from the training file and stores the information in hashmaps
     public void readRatings(String splitter, String trainingFile) {
         items = new HashMap<>();
         users = new HashMap<>();
@@ -52,7 +54,7 @@ public class BaselineRecommender implements Recommender {
             BufferedReader br = new BufferedReader(new FileReader(trainingFile));
             String line = br.readLine();
 
-            //for each line adds users, items and predictions to h
+            //for each line, adds users, items and predictions to hashmaps
             while (line != null) {
                 String[] datas = line.split(splitter);
                 Prediction p = predictions.get(datas[1]);
@@ -78,6 +80,7 @@ public class BaselineRecommender implements Recommender {
         }
     }
 
+    //returns info about which type of recommender this is
     public String getInfo() {
         return "Popularity baseline recommender";
     }
