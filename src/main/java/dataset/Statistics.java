@@ -11,9 +11,18 @@ import java.util.HashSet;
 public class Statistics {
 
     public static void main(String[] args) {
-        printInfoAboutTags("data/bx6k/item-tags-reduced", ",");
-        printInfoAboutTags("data/msd6k/tags", ",");
-        printInfoAboutTags("data/ml6k/tags", ",");
+        //printInfoAboutTags("data/bx6k/item-tags-reduced", ",");
+        //printInfoAboutTags("data/msd6k/tags", ",");
+        //printInfoAboutTags("data/ml6k/tags", ",");
+        printInfoAboutTags("data/ml10m/tags100k", ",");
+        printInfoAboutTags("data/ml10m/tags1m", ",");
+        printInfoAboutTags("data/ml10m/tags5m", ",");
+        printInfoAboutData("data/ml10m/ratings100k", "\t");
+        printInfoAboutData("data/ml10m/ratings1m", "\t");
+        printInfoAboutData("data/ml10m/ratings5m", "\t");
+
+        //printInfoAboutData("data/ml6k/ratings10m", "::");
+
     }
 
     public static void printInfoAboutData(String ratingFile, String delimiter) {
@@ -34,9 +43,9 @@ public class Statistics {
             }
             System.out.println("Total number of users: " + users.size());
             System.out.println("Total number of items: " + items.size());
-            System.out.println("Total number of ratings: " + ratings);
-            System.out.println("Avg ratings per user: " + ratings/users.size());
-            System.out.println("Avg ratings per item: " + ratings/items.size());
+            System.out.println("Total number of ratings10m: " + ratings);
+            System.out.println("Avg ratings10m per user: " + ratings/users.size());
+            System.out.println("Avg ratings10m per item: " + ratings/items.size());
 
         }
         catch(IOException ie) {

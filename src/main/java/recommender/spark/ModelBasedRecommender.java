@@ -81,13 +81,13 @@ public class ModelBasedRecommender implements Recommender, Serializable {
                     }
                 }
         );
-        //ratings.cache();
+        //ratings10m.cache();
 
         model = ALS.trainImplicit(JavaRDD.toRDD(ratings), rank, iterations, lambda, alpha); // Trains the ALS-model
 
         //Because Spark recommends already rated items, we want to filer out these items.
-        //Therefore, we want to keep each users ratings.
-        //Groups the ratings for each user into an Iterable of Ratings
+        //Therefore, we want to keep each users ratings10m.
+        //Groups the ratings10m for each user into an Iterable of Ratings
         JavaPairRDD<Integer, Iterable<Rating>> ratingsGrouped = ratings.groupBy(
                 (Function<Rating, Integer>) r -> r.user()
         );

@@ -76,7 +76,7 @@ public class CBFMain {
         config.bind(EventDAO.class)
               .to(MOOCRatingDAO.class);
         config.set(RatingFile.class)
-              .to(new File("data/ratings.csv"));
+              .to(new File("data/ratings10m.csv"));
 
         // use custom item and user DAOs
         // specify item DAO implementation with tags

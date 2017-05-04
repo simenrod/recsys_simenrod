@@ -1,3 +1,5 @@
+import recommender.lenskit.ContentBasedRecommender;
+
 import java.util.Arrays;
 
 /**
@@ -20,5 +22,7 @@ public class Test {
 
         double multiplier = 1 + Math.log10(3);
         System.out.println(multiplier);
+
+
     }
 }

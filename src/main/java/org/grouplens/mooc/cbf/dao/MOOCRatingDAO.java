@@ -12,7 +12,7 @@ import javax.inject.Inject;
 import java.io.File;
 
 /**
- * Customized rating DAO for MOOC ratings.  This just wraps some standard LensKit DAOs in an
+ * Customized rating DAO for MOOC ratings10m.  This just wraps some standard LensKit DAOs in an
  * easy-to-configure interface.
  *
  * @see EventCollectionDAO
@@ -32,7 +32,7 @@ public class MOOCRatingDAO implements EventDAO {
     }*/
 
     /**
-     * Pre-fetch the ratings into memory if we haven't done so already.
+     * Pre-fetch the ratings10m into memory if we haven't done so already.
      */
     private void ensureRatingCache() {
         if (cache == null) {

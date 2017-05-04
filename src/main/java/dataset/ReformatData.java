@@ -15,37 +15,49 @@ public class ReformatData {
 
     public static void main(String[] args) {
         //movieLensTagsSmall("data/movielens/u.item", "data/movielens/item-tags", "data/movielens/titles");
-        /*bookCrossing("data/bx6k/ratings","data/bx/bx-books.csv", "data/bx6k/ratings-transformed",
+        /*bookCrossing("data/bx6k/ratings10m","data/bx/bx-books.csv", "data/bx6k/ratings10m-transformed",
                 "data/bx6k/item-tags","data/bx6k/titles");*/
-        //makeSubset("data/bx/bx.csv", "data/bx6k/ratings",";", 6000, 20, 200);
+        //makeSubset("data/bx/bx.csv", "data/bx6k/ratings10m",";", 6000, 20, 200);
         //makeSubset("/home/simen/Desktop/train_triplets.txt", "data/msd6k/ratings4","\t", 6000, 30, 100);
-        //makeSubset("/home/simen/Desktop/ml-1m/ratings.dat", "data/ml6k/ratings","::", 6000, 20, 200);
+        //makeSubset("/home/simen/Desktop/ml-1m/ratings10m.dat", "data/ml6k/ratings10m","::", 6000, 20, 200);
         /*msd("data/msd6k/ratings3", "data/msd6k/song-to-track", "data/msd6k/itemids",
-                "data/msd6k/ratings-transformed", "/home/simen/Desktop/msd/tags-reduced",
+                "data/msd6k/ratings10m-transformed", "/home/simen/Desktop/msd/tags-reduced",
                 "data/msd6k/tags", "data/msd6k/titles");*/
 
         //reduceTags("data/msd6k/tags", "data/msd6k/tags-reduced", 10);
         //reduceMsdTags("/home/simen/Desktop/msd/tid_tag.csv", "/home/simen/Desktop/msd/tags-reduced", 30);
-        //binarizeRatings("data/msd6k/ratings", "data/msd6k/binarized-ratings");
-        //makeSubset("/home/simen/Desktop/ml-10M100K/ratings.dat","data/ml6k/ratings", "::", 6000,20,200);
-        /*movieLensTagsLarge("/home/simen/Desktop/ml-10M100K/movies.dat", "data/ml6k/ratings",
+        //binarizeRatings("data/msd6k/ratings10m", "data/msd6k/binarized-ratings10m");
+        //makeSubset("/home/simen/Desktop/ml-10M100K/ratings10m.dat","data/ml6k/ratings10m", "::", 6000,20,200);
+        /*movieLensTagsLarge("/home/simen/Desktop/ml-10M100K/movies.dat", "data/ml6k/ratings10m",
                 "data/ml6k/tags", "data/ml6k/titles");*/
-        /*bookCrossing("data/bx6k/ratings","data/bx/bx-books.csv", "data/bx6k/ratings-transformed",
+        /*movieLensTagsLarge("/home/simen/Desktop/ml-10M100K/movies.dat", "data/ml6k/ratings10m",
+                "data/ml6k/tags", "data/ml6k/titles");*/
+        /*movieLensTagsLarge("/home/simen/Desktop/ml-10M100K/movies.dat", "/home/simen/Desktop/ml-10M100K/ratings10m.dat",
+                "data/ml10m/tags", "data/ml10m/titles");*/
+        movieLensTagsLarge("/home/simen/Desktop/ml-10M100K/movies.dat", "data/ml10m/ratings5m",
+                "data/ml10m/tags5m", "data/ml10m/titles5m", "\t");
+        movieLensTagsLarge("/home/simen/Desktop/ml-10M100K/movies.dat", "data/ml10m/ratings1m",
+                "data/ml10m/tags1m", "data/ml10m/titles1m", "\t");
+        movieLensTagsLarge("/home/simen/Desktop/ml-10M100K/movies.dat", "data/ml10m/ratings100k",
+                "data/ml10m/tags100k", "data/ml10m/titles100k", "\t");
+        //binarizeRatings("/home/simen/Desktop/ml-10M100K/ratings10m.dat", "data/ml10m/ratings10m", "::");
+
+        /*bookCrossing("data/bx6k/ratings10m","data/bx/bx-books.csv", "data/bx6k/ratings10m-transformed",
                 "data/bx6k/item-tags","data/bx6k/titles");*/
         //reduceTags("data/bx6k/item-tags", "data/bx6k/item-tags-reduced", 2);
         //printInfoAboutData("data/msd6k/ratings3", "\t");
-        //printInfoAboutData("data/bx6k/ratings-transformed", "\t");
-        //printInfoAboutData("data/ml6k/ratings", "::");
+        //printInfoAboutData("data/bx6k/ratings10m-transformed", "\t");
+        //printInfoAboutData("data/ml6k/ratings10m", "::");
         //featureExtraction();
         //binarizeTrainingFiles("data/bx6k/ab10","data/bx6k/bab10", 1, 5);
         //binarizeTrainingFiles("data/msd6k/ab10","data/msd6k/bab10", 1, 5);
         //binarizeTrainingFiles("data/ml6k/ab10","data/ml6k/bab10", 1, 5);
-        binarizeRatings("data/bx6k/ratings-transformed", "data/bx6k/binarized-ratings");
-        binarizeRatings("data/ml6k/ratings", "data/ml6k/binarized-ratings");
-        binarizeRatings("data/msd6k/ratings-transformed", "data/msd6k/binarized-ratings");
+        /*binarizeRatings("data/bx6k/ratings10m-transformed", "data/bx6k/binarized-ratings10m", "\t");
+        binarizeRatings("data/ml6k/ratings10m", "data/ml6k/binarized-ratings10m", "::");
+        binarizeRatings("data/msd6k/ratings10m-transformed", "data/msd6k/binarized-ratings10m", "\t");*/
     }
 
-    //makes a new file with tags for movies, and a file with the titles of the movies (for movielens 100k ratings)
+    //makes a new file with tags for movies, and a file with the titles of the movies (for movielens 100k ratings10m)
     public static void movieLensTagsSmall(String fileName, String outputTagFile, String outputTitleFile) {
         /*FROM MOVIELENS' README: Information about the items (movies); this is a tab separated
         list of
@@ -100,9 +112,9 @@ public class ReformatData {
     }
 
     //making tags file and titles file for the itemids contained in ratingfile, suitable for movielens 1M & 10M
-    public static void movieLensTagsLarge(String tagsFile, String ratingFile, String outputTagFile, String outputTitleFile) {
+    public static void movieLensTagsLarge(String tagsFile, String ratingFile, String outputTagFile, String outputTitleFile, String splitter) {
         try {
-            String splitter = "::";
+            //String splitter = "::";
             HashSet<String> itemIds = new HashSet<>();
             BufferedReader br = new BufferedReader(new FileReader(ratingFile));
 
@@ -122,14 +134,17 @@ public class ReformatData {
             line = br.readLine();
 
             while (line != null) {
-                String[] datas = line.split(splitter);
+                String[] datas = line.split("::");
                 String itemId = datas[0];
-                fwTitles.write(itemId + "," + datas[1] + "\n");
-                //if (items.get(datas[0]) == null) items.put(datas[0], new Item(datas[0]));
 
-                for (String s : datas[2].split("\\|")) {
-                    fw.write(itemId + "," + s + "\n");
+                if (itemIds.contains(itemId)) {
+                    fwTitles.write(itemId + "," + datas[1] + "\n");
+                    for (String s : datas[2].split("\\|")) {
+                        fw.write(itemId + "," + s + "\n");
+                    }
                 }
+
+
                 line = br.readLine();
             }
             fw.flush();
@@ -143,7 +158,7 @@ public class ReformatData {
         }
     }
 
-    //makes a new file with ratings (where isbn are substitued with integer values because some of the recommenders not handles itemids
+    //makes a new file with ratings10m (where isbn are substitued with integer values because some of the recommenders not handles itemids
     // as strings), a file for the tags of the items and a file with titles of the items.
     public static void bookCrossing(String ratingFile, String contentFile, String outputRatingFile,
                                     String outputTagFile, String outputTitleFile) {
@@ -241,7 +256,7 @@ public class ReformatData {
         return stopWords.contains(word);
     }
 
-    //method that reads bx ratings, writes to file with <userid, itemid, rating> to file (substituting isbn with integers)
+    //method that reads bx ratings10m, writes to file with <userid, itemid, rating> to file (substituting isbn with integers)
     //and returning a hashmap with one userid value for each isbn read
     public static HashMap<String, Integer> formatBxRatings(String inputFile, String outputFile) {
         System.out.println("Reformating bx...");
@@ -291,7 +306,7 @@ public class ReformatData {
     }
 
     //makes a subset in outputFile of inputFile. Chooses numUsers random users from the subset with
-    // ratings in the range given
+    // ratings10m in the range given
     public static void makeSubset(String inputFile, String outputFile, String delimiter, int numUsers, int minRatings, int maxRatings) {
         //read all lines
         //for each line, store userID in hashset h1
@@ -321,7 +336,7 @@ public class ReformatData {
             Collections.shuffle(list);
 
             //stores the numUsers users to keep in the set usersToKeep. The list has been shuffled
-            //and we store the x first users who has ratings in the range we have chosen (ensures random users)
+            //and we store the x first users who has ratings10m in the range we have chosen (ensures random users)
             int i = 0;
             for (Map.Entry<String,Integer> entry : list) {
                 if (entry.getValue() >= minRatings && entry.getValue() <= maxRatings) {
@@ -550,8 +565,9 @@ public class ReformatData {
 
     }
 
-    //Method that substitutes all ratings values with 1-values
-    public static void binarizeRatings(String inputFile, String outputFile) {
+
+    //Method that substitutes all ratings10m values with 1-values
+    public static void binarizeRatings(String inputFile, String outputFile, String delimiter) {
 
         try {
             BufferedReader br = new BufferedReader(new FileReader(inputFile));
@@ -559,7 +575,7 @@ public class ReformatData {
             String line = br.readLine();
 
             while (line != null) {
-                String[] words = line.split("\t");
+                String[] words = line.split(delimiter);
                 fw.write(words[0] + "\t" + words[1] + "\t" + 1 + "\n");
                 line = br.readLine();
             }
@@ -572,14 +588,14 @@ public class ReformatData {
         }
     }
 
-    //Reads train-files (from nr "from" to nr "to") from inputDirectory and writes as binary ratings to outputDirectory.
+    //Reads train-files (from nr "from" to nr "to") from inputDirectory and writes as binary ratings10m to outputDirectory.
     public static void binarizeTrainingFiles(String inputDirectory, String outputDirectory, int from, int to) {
         int numFiles = to - from + 1;
 
         for (int i = 0; i < numFiles; i++) {
             String inFile = inputDirectory + "/train" + (from + i);
             String outFile = outputDirectory + "/train" + (from + i);
-            binarizeRatings(inFile, outFile);
+            binarizeRatings(inFile, outFile, "\t");
         }
     }
 

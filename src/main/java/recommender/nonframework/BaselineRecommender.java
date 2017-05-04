@@ -16,7 +16,6 @@ public class BaselineRecommender implements Recommender {
     private Prediction[] sortedPredictions;
 
 
-    //TODO only include if this is included in interface
     public void initialize() {
         //nothing to initialize
     }
@@ -43,7 +42,7 @@ public class BaselineRecommender implements Recommender {
     }
 
 
-    //Reads the ratings from the training file and stores them
+    //Reads the ratings from the training file and stores them in datastructure
     public void readRatings(String splitter, String trainingFile) {
         items = new HashMap<>();
         users = new HashMap<>();

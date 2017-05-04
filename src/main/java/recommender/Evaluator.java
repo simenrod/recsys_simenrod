@@ -63,16 +63,24 @@ public class Evaluator {
         //eval.combinedEvaluator(sr, trainingFiles, testFiles);
         //ModelBasedRecommender.stopSparkContext(); //make instance variable + probably not make new context for each test
 
-        /*
+
         //Tests run 28.03.17 - 5 fold cross validation all-but-10 MAP - MSD+BX+ML
-        Recommender[] rss = eval.getTopNRecommenders("data/ml6k/tags", "data/ml6k/titles");
+        //Recommender[] rss = eval.getTopNRecommenders("data/ml6k/tags", "data/ml6k/titles");
+        Recommender[] rss = new Recommender[1];
+        ModelBasedRecommender mbr = new ModelBasedRecommender(10, 10, 0.01, 1.0);
+        //ContentBasedRecommender cbr = new ContentBasedRecommender("data/ml6k/tags", "data/ml6k/titles");
+        rss[0] = mbr;
         eval.evaluateCrossFold(rss, "data/ml6k/ab10", 1, 5);
 
-        rss = eval.getTopNRecommenders("data/msd6k/tags", "data/msd6k/titles");
-        eval.evaluateCrossFold(rss, "data/msd6k/ab10", 1, 5);
+        //rss = eval.getTopNRecommenders("data/msd6k/tags", "data/msd6k/titles");
+        //cbr = new ContentBasedRecommender("data/msd6k/tags", "data/msd6k/titles");
+        //rss[0] = cbr;
+        //eval.evaluateCrossFold(rss, "data/msd6k/ab10", 1, 5);
 
-        rss = eval.getTopNRecommenders("data/bx6k/item-tags-reduced", "data/bx6k/titles");
-        eval.evaluateCrossFold(rss, "data/bx6k/ab10", 1, 5);*/
+        //rss = eval.getTopNRecommenders("data/bx6k/item-tags-reduced", "data/bx6k/titles");
+        //cbr = new ContentBasedRecommender("data/bx6k/item-tags-reduced", "data/bx6k/titles");
+        //rss[0] = cbr;
+        //eval.evaluateCrossFold(rss, "data/bx6k/ab10", 1, 5);
 
         /*ContentBasedRecommender cbr = new ContentBasedRecommender("data/bx6k/item-tags-reduced","data/bx6k/titles");
         Recommender[] rss = {cbr};
@@ -89,10 +97,42 @@ public class Evaluator {
 
         eval.evaluateCrossFold(rs2, "data/bx6k/ab10", 1, 5);*/
 
-        BaselineRecommender bsr = new BaselineRecommender();
+        /*BaselineRecommender bsr = new BaselineRecommender();
         String[] trainingFiles = {"data/bx6k/ab10/train1", "data/bx6k/ab10/train2", "data/bx6k/ab10/train3", "data/bx6k/ab10/train4", "data/bx6k/ab10/train5"};
         String[] testingFiles = {"data/bx6k/ab10/test1", "data/bx6k/ab10/test2", "data/bx6k/ab10/test3", "data/bx6k/ab10/test4", "data/bx6k/ab10/test5"};
-        eval.combinedEvaluator(bsr, trainingFiles, testingFiles);
+        eval.combinedEvaluator(bsr, trainingFiles, testingFiles);*/
+        //eval.evalBab10();
+        //eval.evalAb10();
+        //eval.evalGiven(2);
+        //eval.evalGiven(5);
+        //eval.evalGiven(8);
+        /*Recommender[] rss = new Recommender[4];
+        rss[0] = new ModelBasedRecommender();
+        rss[1] = new ItemBasedRecommender();
+        rss[2] = new ContentBasedRecommender("data/ml10m/tags5m", "data/ml10m/titles5m");
+        rss[3] = new BaselineRecommender();
+        //eval.testScalability(rss, "data/bx/ratings10m", "data/bx/item-tags", "data/bx/titles");
+        //eval.testScalability(rss, "data/ml10m/ratings5m", "data/ml10m/tags", "data/ml10m/titles");
+        eval.testScalability(rss, "data/ml10m/ratings5m");*/
+
+        /*Recommender[] rss = new Recommender[4];
+        rss[0] = new ModelBasedRecommender();
+        rss[1] = new ItemBasedRecommender();
+        rss[2] = new ContentBasedRecommender("data/ml10m/tags1m", "data/ml10m/titles1m");
+        rss[3] = new BaselineRecommender();
+        //eval.testScalability(rss, "data/bx/ratings10m", "data/bx/item-tags", "data/bx/titles");
+        //eval.testScalability(rss, "data/ml10m/ratings5m", "data/ml10m/tags", "data/ml10m/titles");
+        eval.testScalability(rss, "data/ml10m/ratings1m");*/
+
+        /*Recommender[] rss = new Recommender[2];
+        //rss[0] = new ModelBasedRecommender();
+        //rss[1] = new ItemBasedRecommender();
+        //rss[0] = new ContentBasedRecommender("data/ml10m/tags5m", "data/ml10m/titles5m");
+        //rss[1] = new BaselineRecommender();
+        //rss[0] = new ContentBasedRecommender("data/ml10m/tags5m", "data/ml10m/titles5m");
+        //eval.testScalability(rss, "data/bx/ratings10m", "data/bx/item-tags", "data/bx/titles");
+        //eval.testScalability(rss, "data/ml10m/ratings5m", "data/ml10m/tags", "data/ml10m/titles");
+        eval.testScalability(rss, "data/ml10m/ratings5m");*/
 
     }
 
@@ -373,6 +413,10 @@ public class Evaluator {
                 return;
             }
 
+            printString = "\nRecommender: " + rs.getInfo() + "\n";
+            System.out.print(printString);
+            fw.append(printString);
+
             //Repeats for all of the trainingfiles. i is the fold nr
             for (int i = 0; i < trainingFiles.length; i++) {
                 //System.out.println("Testing with file " + (i+1) + ".");
@@ -443,10 +487,10 @@ public class Evaluator {
                     precision[k] = sumPrecision[k] / users;
                     avgPrecision[k] += precision[k] / nFolds;
 
-                    printString = " Map for " + n[k] + "recommendations: " + map[k] + "\n" +
-                            " ARHR for" + n[k] + "recommendations:" + arhr[k] + "\n" +
-                            " Hr for " + m[k] + "recommendations: " + hr[k] + "\n" +
-                            " Precision for " + m[k] + "recommendations: " + precision[k] + "\n";
+                    printString = " Map for " + n[k] + " recommendations: " + map[k] + "\n" +
+                            " ARHR for " + n[k] + " recommendations:" + arhr[k] + "\n" +
+                            " Hr for " + m[k] + " recommendations: " + hr[k] + "\n" +
+                            " Precision for " + m[k] + " recommendations: " + precision[k] + "\n";
                     System.out.print(printString);
                     fw.append(printString);
                 }
@@ -623,7 +667,8 @@ public class Evaluator {
 
         for (Recommender rs : rss) {
             rs.initialize();
-            map(rs, trainFiles, testFiles, 10);
+            //map(rs, trainFiles, testFiles, 10);
+            combinedEvaluator(rs, trainFiles, testFiles);
             rs.close();
         }
 
@@ -642,7 +687,7 @@ public class Evaluator {
         return rss;
     }
 
-    //5 fold cross validation all-but-10 MAP - MSD+BX+ML arbitrart value ratings
+    //5 fold cross validation all-but-10 MAP - MSD+BX+ML arbitrart value ratings10m
     public void evalAb10() {
         //Tests run 28.03.17
         Recommender[] rss = getTopNRecommenders("data/ml6k/tags", "data/ml6k/titles");
@@ -655,7 +700,7 @@ public class Evaluator {
         evaluateCrossFold(rss, "data/bx6k/ab10", 1, 5);
     }
 
-    //5 fold cross validation all-but-10 MAP - MSD+BX+ML binarized ratings
+    //5 fold cross validation all-but-10 MAP - MSD+BX+ML binarized ratings10m
     public void evalBab10() {
         Recommender[] rss = getTopNRecommenders("data/ml6k/tags", "data/ml6k/titles");
         evaluateCrossFold(rss, "data/ml6k/bab10", 1, 5);
@@ -665,6 +710,67 @@ public class Evaluator {
 
         rss = getTopNRecommenders("data/bx6k/item-tags-reduced", "data/bx6k/titles");
         evaluateCrossFold(rss, "data/bx6k/bab10", 1, 5);
+    }
+
+    public void evalGiven(int n) {
+        String folderMl = "data/ml6k/g" + n;
+        Recommender[] rss = getTopNRecommenders("data/ml6k/tags", "data/ml6k/titles");
+        evaluateCrossFold(rss, folderMl, 1, 5);
+
+        String folderMsd = "data/msd6k/g" + n;
+        rss = getTopNRecommenders("data/msd6k/tags", "data/msd6k/titles");
+        evaluateCrossFold(rss, folderMsd, 1, 5);
+
+        String folderBx = "data/bx6k/g" + n;
+        rss = getTopNRecommenders("data/bx6k/item-tags-reduced", "data/bx6k/titles");
+        evaluateCrossFold(rss, folderBx, 1, 5);
+    }
+
+    public void testScalability(Recommender[] rss, String ratingFile) {
+        long startTime;
+        long endTime;
+        int n = 10;
+
+        //reads training file into datastructure, so we have users to test on (we will not measure
+        // accuracy so it does not matter that train file is the same as the test file)
+        HashMap<Integer, HashMap<Integer, Double>> testData = readTestData(ratingFile);
+
+
+        for (Recommender rs : rss) {
+            long overallAvgTrain = 0;
+            long overallAvgTest = 0;
+
+            System.out.println(rs.getInfo());
+            for (int i = 0; i < 5; i++ ) {
+                long trainTime;
+                long avgTestTime = 0;
+                rs.initialize();
+                startTime = System.nanoTime();
+                rs.update(ratingFile); //trains recommender with training file
+                endTime = System.nanoTime();
+                trainTime = endTime - startTime;
+
+
+                int x = 0;
+                int max = 100;
+                for (Integer userId : testData.keySet()) {
+                    //System.out.println(userId);
+                    startTime = System.nanoTime();
+                    int[] recommendedItems = rs.recommend(userId, n);
+                    endTime = System.nanoTime();
+                    avgTestTime += (endTime - startTime) / max;
+                    if (x++ == max) break;
+                }
+                rs.close();
+                System.out.println("Iteration: " + i + ", train time: " + trainTime + ", avgTestTime: " + avgTestTime);
+                overallAvgTest += avgTestTime/5;
+                overallAvgTrain += trainTime/5;
+            }
+
+            System.out.println("Avg results: Train time: " + overallAvgTrain +", test time: " + overallAvgTest);
+        }
+
+
     }
 
 }

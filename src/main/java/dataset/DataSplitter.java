@@ -8,10 +8,10 @@ import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
 /*class User {
-    HashMap<String,Rating> ratings;
+    HashMap<String,Rating> ratings10m;
 
     User() {
-        ratings = new HashMap<String,Rating>();
+        ratings10m = new HashMap<String,Rating>();
     }
 }*/
 
@@ -48,32 +48,32 @@ public class DataSplitter {
         //leaveOneOut("movielens100k.data");
         //leaveOneOut("data/movielens/u.data", "data/movielens/leave_one_out", 5, "\t"); //not change leave_one_out for movielens
         //kFoldCrossValidationSets("data/movielens/u.data", "data/movielens/cross-val", 5, "\t", -1);
-        //kFoldCrossValidationSets("data/bx/bx-ratings.csv", "data/bx/cross-val", 5, "\t", -1);
-        //kFoldCrossValidationSets("data/ml6k/ratings", "data/ml6k/cross-val", 5, "::", 10, false);
-        //kFoldCrossValidationSets("data/ml6k/ratings", "data/ml6k/ab10", 5, "::", 10, false);
-        //kFoldCrossValidationSets("data/bx6k/ratings-transformed", "data/bx6k/ab10", 5, "\t", 10, false);
-        //kFoldCrossValidationSets("data/msd6k/ratings-transformed", "data/msd6k/ab10", 5, "\t", 10, false);
+        //kFoldCrossValidationSets("data/bx/bx-ratings10m.csv", "data/bx/cross-val", 5, "\t", -1);
+        //kFoldCrossValidationSets("data/ml6k/ratings10m", "data/ml6k/cross-val", 5, "::", 10, false);
+        //kFoldCrossValidationSets("data/ml6k/ratings10m", "data/ml6k/ab10", 5, "::", 10, false);
+        //kFoldCrossValidationSets("data/bx6k/ratings10m-transformed", "data/bx6k/ab10", 5, "\t", 10, false);
+        //kFoldCrossValidationSets("data/msd6k/ratings10m-transformed", "data/msd6k/ab10", 5, "\t", 10, false);
 
         //MAYBE USE 3-6-9-12 instead (or 2-5-8-11)
-        kFoldCrossValidationSets("data/msd6k/binarized-ratings", "data/msd6k/g3", 5, "\t", 3, true);
-        kFoldCrossValidationSets("data/msd6k/binarized-ratings", "data/msd6k/g5", 5, "\t", 5, true);
-        kFoldCrossValidationSets("data/msd6k/binarized-ratings", "data/msd6k/g7", 5, "\t", 7, true);
+        kFoldCrossValidationSets("data/msd6k/binarized-ratings10m", "data/msd6k/g2", 5, "\t", 2, true);
+        kFoldCrossValidationSets("data/msd6k/binarized-ratings10m", "data/msd6k/g5", 5, "\t", 5, true);
+        kFoldCrossValidationSets("data/msd6k/binarized-ratings10m", "data/msd6k/g8", 5, "\t", 8, true);
 
-        kFoldCrossValidationSets("data/ml6k/binarized-ratings", "data/ml6k/g3", 5, "\t", 3, true);
-        kFoldCrossValidationSets("data/ml6k/binarized-ratings", "data/ml6k/g5", 5, "\t", 5, true);
-        kFoldCrossValidationSets("data/ml6k/binarized-ratings", "data/ml6k/g7", 5, "\t", 7, true);
+        kFoldCrossValidationSets("data/ml6k/binarized-ratings10m", "data/ml6k/g2", 5, "\t", 2, true);
+        kFoldCrossValidationSets("data/ml6k/binarized-ratings10m", "data/ml6k/g5", 5, "\t", 5, true);
+        kFoldCrossValidationSets("data/ml6k/binarized-ratings10m", "data/ml6k/g8", 5, "\t", 8, true);
 
-        kFoldCrossValidationSets("data/bx6k/binarized-ratings", "data/bx6k/g3", 5, "\t", 3, true);
-        kFoldCrossValidationSets("data/bx6k/binarized-ratings", "data/bx6k/g5", 5, "\t", 5, true);
-        kFoldCrossValidationSets("data/bx6k/binarized-ratings", "data/bx6k/g7", 5, "\t", 7, true);
+        kFoldCrossValidationSets("data/bx6k/binarized-ratings10m", "data/bx6k/g2", 5, "\t", 2, true);
+        kFoldCrossValidationSets("data/bx6k/binarized-ratings10m", "data/bx6k/g5", 5, "\t", 5, true);
+        kFoldCrossValidationSets("data/bx6k/binarized-ratings10m", "data/bx6k/g8", 5, "\t", 8, true);
     }
 
 
     //Method that takes an input file inFile, reads it and writes it to train/test files nFolds times
     //in the directory outDirectory. For each user, one rating is written to test file, while
-    //the rest of the ratings are written to the training file
+    //the rest of the ratings10m are written to the training file
     public static void leaveOneOut(String inFile, String outDirectory, int nFolds, String delimiter) {
-        //2d data structure -> an outer hashmap with userids as keys, and hashmaps with ratings
+        //2d data structure -> an outer hashmap with userids as keys, and hashmaps with ratings10m
         // for the given user as inner values
         /*HashMap<String,HashMap<String,Rating>> usersRatings = new HashMap<String,HashMap<String,Rating>>();
 
@@ -99,10 +99,10 @@ public class DataSplitter {
 
                 for (String userId : usersRatings.keySet()) {
 
-                    HashMap<String, Rating> ratings = usersRatings.get(userId); //gets thie given user's ratings
+                    HashMap<String, Rating> ratings = usersRatings.get(userId); //gets thie given user's ratings10m
                     int numRatings = ratings.size();
-                    if (numRatings <= 2) continue; //dont add data for users with too few ratings
-                    int randomNum = ThreadLocalRandom.current().nextInt(0, numRatings); //chooses which index of the ratings to leave out
+                    if (numRatings <= 2) continue; //dont add data for users with too few ratings10m
+                    int randomNum = ThreadLocalRandom.current().nextInt(0, numRatings); //chooses which index of the ratings10m to leave out
                     int j = 0;
 
                     for (Rating rating : ratings.values()) {
@@ -163,9 +163,9 @@ public class DataSplitter {
 
                 for (int j = 0; j < numUsers; j++) {
 
-                    //ensures all users have at least 20 ratings
+                    //ensures all users have at least 20 ratings10m
                     if (list.get(j).getValue().size() < 20) {
-                        System.out.println("Skipping user with less than 20 ratings");
+                        System.out.println("Skipping user with less than 20 ratings10m");
                         continue;
                     }
                     else {
@@ -180,8 +180,8 @@ public class DataSplitter {
                         int numToTrain;
 
                         if (n == -1) numToTrain = ratingsForUser.size() / 2; //divides by half
-                        else if (givenN) numToTrain = n; //given-n, i.e. n ratings are written to train set
-                        else numToTrain = ratingsForUser.size() - n; //all-but-n, i.e. all ratings except n are written to train set
+                        else if (givenN) numToTrain = n; //given-n, i.e. n ratings10m are written to train set
+                        else numToTrain = ratingsForUser.size() - n; //all-but-n, i.e. all ratings10m except n are written to train set
 
                         for (int k = 0; k < ratingsForUser.size(); k++) {
                             Rating rating = ratingsForUser.get(k).getValue();
@@ -194,7 +194,7 @@ public class DataSplitter {
                             }
                         }
                     }
-                    //if user outside testset for this fold - write all ratings to train set
+                    //if user outside testset for this fold - write all ratings10m to train set
                     else {
                         List<Map.Entry<String, Rating>> ratingsForUser = new ArrayList<>(list.get(j).getValue().entrySet());
                         Collections.shuffle(ratingsForUser);
@@ -210,7 +210,7 @@ public class DataSplitter {
                 writeTest.flush();
                 writeTest.close();
                 System.out.println("-----------------------");
-                System.out.println("Users retained: " + usersRetained + ", ratings retained: " + ratingsRetained);
+                System.out.println("Users retained: " + usersRetained + ", ratings10m retained: " + ratingsRetained);
             }
         }
         catch (IOException ie) {
@@ -298,7 +298,7 @@ public class DataSplitter {
                 writeTest.flush();
                 writeTest.close();
                 System.out.println("-----------------------");
-                System.out.println("Users retained: " + usersRetained + ", ratings retained: " + ratingsRetained);
+                System.out.println("Users retained: " + usersRetained + ", ratings10m retained: " + ratingsRetained);
             }
         }
         catch (IOException ie) {

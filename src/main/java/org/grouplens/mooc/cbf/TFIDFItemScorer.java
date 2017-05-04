@@ -23,7 +23,7 @@ public class TFIDFItemScorer extends AbstractItemScorer {
      * Construct a new item scorer.  LensKit's dependency injector will call this constructor and
      * provide the appropriate parameters.
      *
-     * @param dao The user-event DAO, so we can fetch a user's ratings when scoring items for them.
+     * @param dao The user-event DAO, so we can fetch a user's ratings10m when scoring items for them.
      * @param m   The precomputed model containing the item tag vectors.
      */
     @Inject
@@ -66,7 +66,7 @@ public class TFIDFItemScorer extends AbstractItemScorer {
     }
 
     private SparseVector makeUserVector(long user) {
-        // Get the user's ratings
+        // Get the user's ratings10m
         List<Rating> userRatings = dao.getEventsForUser(user, Rating.class);
         if (userRatings == null) {
             // the user doesn't exist
@@ -78,13 +78,13 @@ public class TFIDFItemScorer extends AbstractItemScorer {
         // Fill it with 0's initially - they don't like anything
         profile.fill(0);
 
-        // Iterate over the user's ratings to build their profile
+        // Iterate over the user's ratings10m to build their profile
         /*double ratingSum = 0;
         int counter = 0;
         for (Rating r: userRatings) {
-            // In LensKit, ratings are expressions of preference
+            // In LensKit, ratings10m are expressions of preference
             Preference p = r.getPreference();
-            // We'll never have a null preference. But in LensKit, ratings can have null
+            // We'll never have a null preference. But in LensKit, ratings10m can have null
             // preferences to express the user unrating an item*/
             /*  Part 1
             if (p != null && p.getValue() >= 3.5) {
