@@ -21,119 +21,28 @@ public class Evaluator {
 
     public static void main(String[] args) {
         Evaluator eval = new Evaluator();
-        //ContentBasedRecommender sr = new ContentBasedRecommender();
-        //sr.initialize("data/ml6k/tags", "data/ml6k/titles");
-        //sr.initialize("data/msd6k/tags-reduced", "data/msd6k/titles");
-        //sr.initialize("data/movie-tags.csv", "data/movie-titles-test.csv");
-        //sr.initialize("data/movielens/item-tags", "data/movielens/titles");
-        //sr.initialize("data/bx/item-tags", "data/bx/titles");
-        //sr.initialize("data/bx6k/item-tags-reduced", "data/bx6k/titles");
-        //ItemBasedRecommender sr = new ItemBasedRecommender();
-        //ModelBasedRecommender sr = new ModelBasedRecommender();
-        //BaselineRecommender sr = new BaselineRecommender();
-        //sr.initialize();
-        //String[] trainingFiles = {"/home/simen/Documents/datasett/crossfold-movielens-binary/training"};
-        //String[] testFiles = {"/home/simen/Documents/datasett/crossfold-movielens-binary/test"};
-        /*String[] trainingFiles = {"data/movielens/leave_one_out/train1","data/movielens/leave_one_out/train2",
-                "data/movielens/leave_one_out/train3","data/movielens/leave_one_out/train4",
-                "data/movielens/leave_one_out/train5"};
-        String[] testFiles = {"data/movielens/leave_one_out/test1","data/movielens/leave_one_out/test2",
-                "data/movielens/leave_one_out/test3","data/movielens/leave_one_out/test4",
-                "data/movielens/leave_one_out/test5"};*/
-        /*String[] trainingFiles = {"data/movielens/cross-val/train1","data/movielens/cross-val/train2",
-                "data/movielens/cross-val/train3","data/movielens/cross-val/train4",
-                "data/movielens/cross-val/train5"};
-        String[] testFiles = {"data/movielens/cross-val/test1","data/movielens/cross-val/test2",
-                "data/movielens/cross-val/test3","data/movielens/cross-val/test4",
-                "data/movielens/cross-val/test5"};*/
-        /*String[] testFiles = {"data/bx/cross-val/test1"};
-        String[] trainingFiles = {"data/bx/cross-val/train1"};*/
-        /*String[] testFiles = {"data/bx6k/cross-val/test1"};
-        String[] trainingFiles = {"data/bx6k/cross-val/train1"};*/
-        //String[] testFiles = {"data/msd6k/cross-val3/test1"};
-        //String[] trainingFiles = {"data/msd6k/cross-val3/train1"};
-        //String[] testFiles = {"data/ml6k/cross-val/test1"};
-        //String[] trainingFiles = {"data/ml6k/cross-val/train1"};
-
-        //String[] testFiles = {"data/tag-test/test1"};
-        //String[] trainingFiles = {"data/tag-test/train1"};
-
-        //eval.hitRate(sr, trainingFiles, testFiles, 10);
-        //eval.map(sr, trainingFiles, testFiles, 10);
-        //eval.combinedEvaluator(sr, trainingFiles, testFiles);
-        //ModelBasedRecommender.stopSparkContext(); //make instance variable + probably not make new context for each test
 
 
-        //Tests run 28.03.17 - 5 fold cross validation all-but-10 MAP - MSD+BX+ML
-        //Recommender[] rss = eval.getTopNRecommenders("data/ml6k/tags", "data/ml6k/titles");
-        Recommender[] rss = new Recommender[1];
-        ModelBasedRecommender mbr = new ModelBasedRecommender(10, 10, 0.01, 1.0);
-        //ContentBasedRecommender cbr = new ContentBasedRecommender("data/ml6k/tags", "data/ml6k/titles");
-        rss[0] = mbr;
-        eval.evaluateCrossFold(rss, "data/ml6k/ab10", 1, 5);
-
-        //rss = eval.getTopNRecommenders("data/msd6k/tags", "data/msd6k/titles");
-        //cbr = new ContentBasedRecommender("data/msd6k/tags", "data/msd6k/titles");
-        //rss[0] = cbr;
-        //eval.evaluateCrossFold(rss, "data/msd6k/ab10", 1, 5);
-
-        //rss = eval.getTopNRecommenders("data/bx6k/item-tags-reduced", "data/bx6k/titles");
-        //cbr = new ContentBasedRecommender("data/bx6k/item-tags-reduced", "data/bx6k/titles");
-        //rss[0] = cbr;
-        //eval.evaluateCrossFold(rss, "data/bx6k/ab10", 1, 5);
-
-        /*ContentBasedRecommender cbr = new ContentBasedRecommender("data/bx6k/item-tags-reduced","data/bx6k/titles");
-        Recommender[] rss = {cbr};
-        eval.evaluateCrossFold(rss, "data/bx6k/ab10", 2, 5);*/
-        //eval.evalBab10();
-        /*ContentBasedRecommender cbr1 = new ContentBasedRecommender("data/msd6k/tags","data/msd6k/titles");
-        Recommender[] rs1 = {cbr1};
-
-        //eval.evaluateCrossFold(rs1, "data/ml6k/ab10", 1, 5);
-        eval.evaluateCrossFold(rs1, "data/msd6k/ab10", 1, 5);
-
-        ContentBasedRecommender cbr2 = new ContentBasedRecommender("data/bx6k/item-tags-reduced","data/bx6k/titles");
-        Recommender[] rs2 = {cbr2};
-
-        eval.evaluateCrossFold(rs2, "data/bx6k/ab10", 1, 5);*/
-
-        /*BaselineRecommender bsr = new BaselineRecommender();
-        String[] trainingFiles = {"data/bx6k/ab10/train1", "data/bx6k/ab10/train2", "data/bx6k/ab10/train3", "data/bx6k/ab10/train4", "data/bx6k/ab10/train5"};
-        String[] testingFiles = {"data/bx6k/ab10/test1", "data/bx6k/ab10/test2", "data/bx6k/ab10/test3", "data/bx6k/ab10/test4", "data/bx6k/ab10/test5"};
-        eval.combinedEvaluator(bsr, trainingFiles, testingFiles);*/
+        /*The accuracy tests run for the thesis - gives MAP, ARHR, HR and MAP + training and prediction times
+        for all of our 4 implemented recommenders on MovieLens, Million Song and Book-Crossing dataset.
+        */
         //eval.evalBab10();
         //eval.evalAb10();
         //eval.evalGiven(2);
         //eval.evalGiven(5);
         //eval.evalGiven(8);
-        /*Recommender[] rss = new Recommender[4];
-        rss[0] = new ModelBasedRecommender();
-        rss[1] = new ItemBasedRecommender();
-        rss[2] = new ContentBasedRecommender("data/ml10m/tags5m", "data/ml10m/titles5m");
-        rss[3] = new BaselineRecommender();
-        //eval.testScalability(rss, "data/bx/ratings10m", "data/bx/item-tags", "data/bx/titles");
-        //eval.testScalability(rss, "data/ml10m/ratings5m", "data/ml10m/tags", "data/ml10m/titles");
-        eval.testScalability(rss, "data/ml10m/ratings5m");*/
 
-        /*Recommender[] rss = new Recommender[4];
-        rss[0] = new ModelBasedRecommender();
-        rss[1] = new ItemBasedRecommender();
-        rss[2] = new ContentBasedRecommender("data/ml10m/tags1m", "data/ml10m/titles1m");
-        rss[3] = new BaselineRecommender();
-        //eval.testScalability(rss, "data/bx/ratings10m", "data/bx/item-tags", "data/bx/titles");
-        //eval.testScalability(rss, "data/ml10m/ratings5m", "data/ml10m/tags", "data/ml10m/titles");
-        eval.testScalability(rss, "data/ml10m/ratings1m");*/
 
-        /*Recommender[] rss = new Recommender[2];
-        //rss[0] = new ModelBasedRecommender();
-        //rss[1] = new ItemBasedRecommender();
-        //rss[0] = new ContentBasedRecommender("data/ml10m/tags5m", "data/ml10m/titles5m");
-        //rss[1] = new BaselineRecommender();
-        //rss[0] = new ContentBasedRecommender("data/ml10m/tags5m", "data/ml10m/titles5m");
-        //eval.testScalability(rss, "data/bx/ratings10m", "data/bx/item-tags", "data/bx/titles");
-        //eval.testScalability(rss, "data/ml10m/ratings5m", "data/ml10m/tags", "data/ml10m/titles");
-        eval.testScalability(rss, "data/ml10m/ratings5m");*/
+        /*The scalability tests run for the thesis for the 4 algorithms on three subsets of MovieLens:
+         */
+        //Recommender[] rss = eval.getTopNRecommenders("data/ml10m/tags100k", "data/ml10m/titles100k");
+        //eval.testScalability(rss, "data/ml10m/ratings100k");
 
+        //rss = eval.getTopNRecommenders("data/ml10m/tags1m", "data/ml10m/titles1m");
+        //eval.testScalability(rss, "data/ml10m/ratings1m");
+
+        //rss = eval.getTopNRecommenders("data/ml10m/tags5m", "data/ml10m/titles5m");
+        //eval.testScalability(rss, "data/ml10m/ratings5m");
     }
 
 
@@ -286,6 +195,7 @@ public class Evaluator {
         return ap;
     }
 
+
     //Measures the precison of a recommendation list for a user with a set of relevant items
     public double precision(int[] recommendedItems, Set<Integer> relevantItems) {
         double rel = 0;
@@ -300,6 +210,7 @@ public class Evaluator {
         }
         return rel/recommendedItems.length;
     }
+
 
     //Measures reciprocal hit rate for a recommendation list and a set of relevant items
     public double rhr(int[] recommendedItems, Set<Integer> relevantItems) {
@@ -316,6 +227,7 @@ public class Evaluator {
         }
         return 0;
     }
+
 
     //Returns datastructure with data from trainingFile
     public HashMap<Integer, HashMap<Integer, Double>> readTestData(String testFile){
@@ -352,10 +264,10 @@ public class Evaluator {
 
 
     //Combined evaluator that measures MAP, ARHR, HR and precision for a recommender rs on a set of training files and a set of test files
-    //MAP and ARHR are measured with recommendation list size 10,20,30,100 and 500, while hr and precision are measured with list size
+    //MAP and ARHR are measured with recommendation list size 10,20,30,40 and 50, while hr and precision are measured with list size
     //of 3,5,10,20 and 30. Results are both written to file and to terminal
     public void combinedEvaluator(Recommender rs, String[] trainingFiles, String[] testFiles) {
-        int[] n = {10,20,30,100,500}; //recs for map, arhr
+        int[] n = {10,20,30,40,50}; //recs for map, arhr
         int[] m = {3,5,10,20,30}; //recs for hr, precision
         int numRecs = 500;
         long startTime;
@@ -470,12 +382,10 @@ public class Evaluator {
     }
 
 
-
-
+    //Method that evaluates a set of recommenders with a cross-fold approach for the training and test files in folder.
+    //from and to indicates the range of training/test sets that should be used.
+    //Uses combinedEvaluator() to evaluate the recommender
     public void evaluateCrossFold(Recommender[] rss, String folder, int from, int to) {
-        //String[] trainMl = {"data/ab10/train1", "data/ab10/train2","data/ab10/train3","data/ab10/train4","data/ab10/train5"};
-        //String[] testMl = {"data/ab10/test1", "data/ab10/test2","data/ab10/test3","data/ab10/test4","data/ab10/test5"};
-
 
         int numFolds = to - from + 1;
 
@@ -507,25 +417,22 @@ public class Evaluator {
             combinedEvaluator(rs, trainFiles, testFiles);
             rs.close();
         }
-
     }
 
+
+    //Method that returns all four of our implemented recommenders
     public Recommender[] getTopNRecommenders(String tagFile, String titlesFile) {
         ModelBasedRecommender mbr = new ModelBasedRecommender();
         ItemBasedRecommender ibr = new ItemBasedRecommender();
         ContentBasedRecommender cbr = new ContentBasedRecommender(tagFile, titlesFile);
         BaselineRecommender br = new BaselineRecommender();
-
-        //cbr.initialize();
-        //ibr.initialize();
-        //mbr.initialize();
         Recommender[] rss = {mbr, ibr, cbr, br};
         return rss;
     }
 
-    //5 fold cross validation all-but-10 MAP - MSD+BX+ML arbitrart value ratings10m
+
+    //5 fold cross validation all-but - with various measures
     public void evalAb10() {
-        //Tests run 28.03.17
         Recommender[] rss = getTopNRecommenders("data/ml6k/tags", "data/ml6k/titles");
         evaluateCrossFold(rss, "data/ml6k/ab10", 1, 5);
 
@@ -536,7 +443,8 @@ public class Evaluator {
         evaluateCrossFold(rss, "data/bx6k/ab10", 1, 5);
     }
 
-    //5 fold cross validation all-but-10 MAP - MSD+BX+ML binarized ratings10m
+
+    //5 fold cross validation all-but - with various measures
     public void evalBab10() {
         Recommender[] rss = getTopNRecommenders("data/ml6k/tags", "data/ml6k/titles");
         evaluateCrossFold(rss, "data/ml6k/bab10", 1, 5);
@@ -548,6 +456,8 @@ public class Evaluator {
         evaluateCrossFold(rss, "data/bx6k/bab10", 1, 5);
     }
 
+
+    //5 fold cross validation - given-n - with various measures
     public void evalGiven(int n) {
         String folderMl = "data/ml6k/g" + n;
         Recommender[] rss = getTopNRecommenders("data/ml6k/tags", "data/ml6k/titles");
@@ -562,6 +472,10 @@ public class Evaluator {
         evaluateCrossFold(rss, folderBx, 1, 5);
     }
 
+
+    //Method that takes average training and prediciton time for each recommender in the set recommenders for a rating
+    // file. To get more reliable data, we repeat the training and predictions 5 times (and for each repetition we recommend
+    // items to 100 users).
     public void testScalability(Recommender[] rss, String ratingFile) {
         long startTime;
         long endTime;
@@ -587,10 +501,9 @@ public class Evaluator {
                 trainTime = endTime - startTime;
 
 
-                int x = 0;
-                int max = 100;
+                int x = 0; //counter
+                int max = 100; //number of users to recommend items for
                 for (Integer userId : testData.keySet()) {
-                    //System.out.println(userId);
                     startTime = System.nanoTime();
                     int[] recommendedItems = rs.recommend(userId, n);
                     endTime = System.nanoTime();
