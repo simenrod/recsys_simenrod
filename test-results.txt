@@ -1,0 +1,296 @@
+
+Test of dataset in folder: data/bx6k/ab10
+
+Test of dataset in folder: data/ml6k/ab10
+
+Recommender: Model-based Collaborative filtering | r = 10 i = 10 l = 0.01 a = 1.0
+Fold 1
+ Time used for training recommender:3.4373853211E10
+ Map for 10 recommendations: 0.14117126322751353
+ ARHR for 10 recommendations:0.4931117724867722
+ Hr for 3 recommendations: 0.5866666666666667
+ Precision for 3 recommendations: 0.3138888888888887
+ Map for 20 recommendations: 0.17604701941612758
+ ARHR for 20 recommendations:0.49942036396051454
+ Hr for 5 recommendations: 0.6791666666666667
+ Precision for 5 recommendations: 0.2756666666666653
+ Map for 30 recommendations: 0.19085812445842806
+ ARHR for 30 recommendations:0.5012207652535136
+ Hr for 10 recommendations: 0.7883333333333333
+ Precision for 10 recommendations: 0.2227499999999992
+ Map for 100 recommendations: 0.21174844380051253
+ ARHR for 100 recommendations:0.5025607188010682
+ Hr for 20 recommendations: 0.8775
+ Precision for 20 recommendations: 0.1666666666666665
+ Map for 500 recommendations: 0.21945307723138655
+ ARHR for 500 recommendations:0.5026412451659353
+ Hr for 30 recommendations: 0.9225
+ Precision for 30 recommendations: 0.13419444444444378
+ Avg time producing rec: 7.7042131E7
+Fold 2
+ Time used for training recommender:1.846650919E10
+ Map for 10 recommendations: 0.13663548280423277
+ ARHR for 10 recommendations:0.4931484788359788
+ Hr for 3 recommendations: 0.5716666666666667
+ Precision for 3 recommendations: 0.3041666666666667
+ Map for 20 recommendations: 0.16705384230420986
+ ARHR for 20 recommendations:0.5001942213309275
+ Hr for 5 recommendations: 0.6666666666666666
+ Precision for 5 recommendations: 0.2679999999999989
+ Map for 30 recommendations: 0.1800525632249267
+ ARHR for 30 recommendations:0.5021483751347192
+ Hr for 10 recommendations: 0.7783333333333333
+ Precision for 10 recommendations: 0.2165833333333324
+ Map for 100 recommendations: 0.20142645049885627
+ ARHR for 100 recommendations:0.5034331270633122
+ Hr for 20 recommendations: 0.8783333333333333
+ Precision for 20 recommendations: 0.15920833333333337
+ Map for 500 recommendations: 0.20946624764494204
+ ARHR for 500 recommendations:0.5035180900037141
+ Hr for 30 recommendations: 0.9258333333333333
+ Precision for 30 recommendations: 0.12830555555555512
+ Avg time producing rec: 5.4054235E7
+Fold 3
+ Time used for training recommender:1.137852511E10
+ Map for 10 recommendations: 0.13107791005291014
+ ARHR for 10 recommendations:0.48190443121693105
+ Hr for 3 recommendations: 0.5641666666666667
+ Precision for 3 recommendations: 0.2916666666666662
+ Map for 20 recommendations: 0.16436785642046903
+ ARHR for 20 recommendations:0.4881170178290919
+ Hr for 5 recommendations: 0.6725
+ Precision for 5 recommendations: 0.26133333333333186
+ Map for 30 recommendations: 0.17853221928577165
+ ARHR for 30 recommendations:0.48963017075077175
+ Hr for 10 recommendations: 0.7975
+ Precision for 10 recommendations: 0.2148333333333325
+ Map for 100 recommendations: 0.20116724846844333
+ ARHR for 100 recommendations:0.4910386535159494
+ Hr for 20 recommendations: 0.8875
+ Precision for 20 recommendations: 0.16308333333333355
+ Map for 500 recommendations: 0.20898661680489686
+ ARHR for 500 recommendations:0.4911317910764356
+ Hr for 30 recommendations: 0.9241666666666667
+ Precision for 30 recommendations: 0.13219444444444373
+ Avg time producing rec: 6.2646535E7
+Fold 4
+ Time used for training recommender:1.2155274637E10
+ Map for 10 recommendations: 0.13887470238095215
+ ARHR for 10 recommendations:0.5070929232804238
+ Hr for 3 recommendations: 0.6058333333333333
+ Precision for 3 recommendations: 0.3113888888888882
+ Map for 20 recommendations: 0.1696468100863417
+ ARHR for 20 recommendations:0.5129245171323351
+ Hr for 5 recommendations: 0.6908333333333333
+ Precision for 5 recommendations: 0.2761666666666649
+ Map for 30 recommendations: 0.18325799197164958
+ ARHR for 30 recommendations:0.5146376804929811
+ Hr for 10 recommendations: 0.7958333333333333
+ Precision for 10 recommendations: 0.21799999999999908
+ Map for 100 recommendations: 0.20510573729252188
+ ARHR for 100 recommendations:0.5158315512677649
+ Hr for 20 recommendations: 0.8775
+ Precision for 20 recommendations: 0.160291666666667
+ Map for 500 recommendations: 0.21342092006969465
+ ARHR for 500 recommendations:0.5159993111903356
+ Hr for 30 recommendations: 0.92
+ Precision for 30 recommendations: 0.12949999999999912
+ Avg time producing rec: 5.8597468E7
+Fold 5
+ Time used for training recommender:1.4387663577E10
+ Map for 10 recommendations: 0.1362201388888891
+ ARHR for 10 recommendations:0.4902450396825399
+ Hr for 3 recommendations: 0.57
+ Precision for 3 recommendations: 0.30194444444444424
+ Map for 20 recommendations: 0.16838930700863775
+ ARHR for 20 recommendations:0.4964861505167234
+ Hr for 5 recommendations: 0.6683333333333333
+ Precision for 5 recommendations: 0.26799999999999896
+ Map for 30 recommendations: 0.18099357450040526
+ ARHR for 30 recommendations:0.49818339454950605
+ Hr for 10 recommendations: 0.7833333333333333
+ Precision for 10 recommendations: 0.214749999999999
+ Map for 100 recommendations: 0.2026701729378659
+ ARHR for 100 recommendations:0.4996249193155228
+ Hr for 20 recommendations: 0.8716666666666667
+ Precision for 20 recommendations: 0.159125
+ Map for 500 recommendations: 0.21043819611300274
+ ARHR for 500 recommendations:0.49974793171856996
+ Hr for 30 recommendations: 0.9133333333333333
+ Precision for 30 recommendations: 0.12747222222222182
+ Avg time producing rec: 6.349254E7
+===Results all folds:===
+ Average train time: 1.8152365145E10
+ Average test time: 6.3166581800000004E7
+ Average map  for 10 recommendations: 0.13679589947089954
+ Average map  for 20 recommendations: 0.16910096704715716
+ Average map  for 30 recommendations: 0.18273889468823626
+ Average map  for 100 recommendations: 0.20442361059963998
+ Average map  for 500 recommendations: 0.21235301157278458
+ Average arhr for 10 recommendations: 0.49310052910052904
+ Average arhr for 20 recommendations: 0.4994284541539185
+ Average arhr for 30 recommendations: 0.5011640772362983
+ Average arhr for 100 recommendations: 0.5024977939927235
+ Average arhr for 500 recommendations: 0.5026076738309981
+ Average hr for 3 recommendations: 0.5796666666666667
+ Average hr for 5 recommendations: 0.6755
+ Average hr for 10 recommendations: 0.7886666666666666
+ Average hr for 20 recommendations: 0.8785
+ Average hr for 30 recommendations: 0.9211666666666666
+ Average precison for 3 recommendations: 0.3046111111111108
+ Average precison for 5 recommendations: 0.269833333333332
+ Average precison for 10 recommendations: 0.2173833333333324
+ Average precison for 20 recommendations: 0.16167500000000007
+ Average precison for 30 recommendations: 0.13033333333333272
+
+Test of dataset in folder: data/ml6k/bab10
+
+Test of dataset in folder: data/ml6k/ab10
+
+Test of dataset in folder: data/ml6k/g2
+
+Test of dataset in folder: data/ml6k/g8
+
+Test of dataset in folder: data/ml6k/g8
+
+Test of dataset in folder: data/ml6k/g8
+
+Recommender: Content-based
+Fold 1
+ Time used for training recommender:7.0129544992E11
+ Map for 10 recommendations: 0.007313591269841271
+ ARHR for 10 recommendations:0.04470171957671961
+ Hr for 3 recommendations: 0.06583333333333333
+ Precision for 3 recommendations: 0.024166666666666645
+ Map for 20 recommendations: 0.00934188010132283
+ ARHR for 20 recommendations:0.05041783476671258
+ Hr for 5 recommendations: 0.09
+ Precision for 5 recommendations: 0.021999999999999964
+ Map for 30 recommendations: 0.010190131389223665
+ ARHR for 30 recommendations:0.052426858300048965
+ Hr for 10 recommendations: 0.16583333333333333
+ Precision for 10 recommendations: 0.023166666666666735
+ Map for 100 recommendations: 0.010190131389223665
+ ARHR for 100 recommendations:0.052426858300048965
+ Hr for 20 recommendations: 0.24916666666666668
+ Precision for 20 recommendations: 0.01925000000000008
+ Map for 500 recommendations: 0.010190131389223665
+ ARHR for 500 recommendations:0.052426858300048965
+ Hr for 30 recommendations: 0.2991666666666667
+ Precision for 30 recommendations: 0.016388888888888932
+ Avg time producing rec: 2.497373716E9
+Fold 2
+ Time used for training recommender:5.74054926925E11
+ Map for 10 recommendations: 0.008740443121693121
+ ARHR for 10 recommendations:0.05181117724867733
+ Hr for 3 recommendations: 0.07833333333333334
+ Precision for 3 recommendations: 0.030833333333333327
+ Map for 20 recommendations: 0.010532263848266174
+ ARHR for 20 recommendations:0.05716290452610125
+ Hr for 5 recommendations: 0.115
+ Precision for 5 recommendations: 0.029833333333333312
+ Map for 30 recommendations: 0.011393780186680939
+ ARHR for 30 recommendations:0.0592197782264657
+ Hr for 10 recommendations: 0.18166666666666667
+ Precision for 10 recommendations: 0.0260833333333334
+ Map for 100 recommendations: 0.011393780186680939
+ ARHR for 100 recommendations:0.0592197782264657
+ Hr for 20 recommendations: 0.25833333333333336
+ Precision for 20 recommendations: 0.02012500000000008
+ Map for 500 recommendations: 0.011393780186680939
+ ARHR for 500 recommendations:0.0592197782264657
+ Hr for 30 recommendations: 0.30916666666666665
+ Precision for 30 recommendations: 0.016888888888888922
+ Avg time producing rec: 2.708663743E9
+Fold 3
+ Time used for training recommender:7.6383009927E11
+ Map for 10 recommendations: 0.007376455026455022
+ ARHR for 10 recommendations:0.04852513227513236
+ Hr for 3 recommendations: 0.06916666666666667
+ Precision for 3 recommendations: 0.025277777777777757
+ Map for 20 recommendations: 0.009192007527717672
+ ARHR for 20 recommendations:0.054581272815019094
+ Hr for 5 recommendations: 0.11166666666666666
+ Precision for 5 recommendations: 0.026499999999999944
+ Map for 30 recommendations: 0.00999395185499996
+ ARHR for 30 recommendations:0.05663835192013669
+ Hr for 10 recommendations: 0.175
+ Precision for 10 recommendations: 0.02333333333333337
+ Map for 100 recommendations: 0.00999395185499996
+ ARHR for 100 recommendations:0.05663835192013669
+ Hr for 20 recommendations: 0.26416666666666666
+ Precision for 20 recommendations: 0.019875000000000087
+ Map for 500 recommendations: 0.00999395185499996
+ ARHR for 500 recommendations:0.05663835192013669
+ Hr for 30 recommendations: 0.31583333333333335
+ Precision for 30 recommendations: 0.016750000000000046
+ Avg time producing rec: 3.577467905E9
+Fold 4
+ Time used for training recommender:7.30996638722E11
+ Map for 10 recommendations: 0.007375297619047614
+ ARHR for 10 recommendations:0.04762301587301594
+ Hr for 3 recommendations: 0.06916666666666667
+ Precision for 3 recommendations: 0.024999999999999977
+ Map for 20 recommendations: 0.009171212434438048
+ ARHR for 20 recommendations:0.052623200368459785
+ Hr for 5 recommendations: 0.11083333333333334
+ Precision for 5 recommendations: 0.027166666666666627
+ Map for 30 recommendations: 0.009994199686279624
+ ARHR for 30 recommendations:0.055006432026579025
+ Hr for 10 recommendations: 0.16583333333333333
+ Precision for 10 recommendations: 0.022666666666666727
+ Map for 100 recommendations: 0.009994199686279624
+ ARHR for 100 recommendations:0.055006432026579025
+ Hr for 20 recommendations: 0.23916666666666667
+ Precision for 20 recommendations: 0.018333333333333403
+ Map for 500 recommendations: 0.009994199686279624
+ ARHR for 500 recommendations:0.055006432026579025
+ Hr for 30 recommendations: 0.2991666666666667
+ Precision for 30 recommendations: 0.015916666666666697
+ Avg time producing rec: 3.568601488E9
+Fold 5
+ Time used for training recommender:6.17904324339E11
+ Map for 10 recommendations: 0.007261408730158725
+ ARHR for 10 recommendations:0.04559193121693128
+ Hr for 3 recommendations: 0.058333333333333334
+ Precision for 3 recommendations: 0.021111111111111098
+ Map for 20 recommendations: 0.00902181913051688
+ ARHR for 20 recommendations:0.05094285897352861
+ Hr for 5 recommendations: 0.1075
+ Precision for 5 recommendations: 0.02683333333333329
+ Map for 30 recommendations: 0.009830772678126109
+ ARHR for 30 recommendations:0.05306106626875991
+ Hr for 10 recommendations: 0.17083333333333334
+ Precision for 10 recommendations: 0.023583333333333366
+ Map for 100 recommendations: 0.009830772678126109
+ ARHR for 100 recommendations:0.05306106626875991
+ Hr for 20 recommendations: 0.25
+ Precision for 20 recommendations: 0.019041666666666745
+ Map for 500 recommendations: 0.009830772678126109
+ ARHR for 500 recommendations:0.05306106626875991
+ Hr for 30 recommendations: 0.3025
+ Precision for 30 recommendations: 0.016194444444444487
+ Avg time producing rec: 2.922709763E9
+===Results all folds:===
+ Average train time: 6.776162878352001E11
+ Average test time: 3.054963323E9
+ Average map  for 10 recommendations: 0.00761343915343915
+ Average map  for 20 recommendations: 0.009451836608452321
+ Average map  for 30 recommendations: 0.01028056715906206
+ Average map  for 100 recommendations: 0.01028056715906206
+ Average map  for 500 recommendations: 0.01028056715906206
+ Average arhr for 10 recommendations: 0.047650595238095304
+ Average arhr for 20 recommendations: 0.05314561428996427
+ Average arhr for 30 recommendations: 0.055270497348398055
+ Average arhr for 100 recommendations: 0.055270497348398055
+ Average arhr for 500 recommendations: 0.055270497348398055
+ Average hr for 3 recommendations: 0.06816666666666668
+ Average hr for 5 recommendations: 0.10699999999999998
+ Average hr for 10 recommendations: 0.17183333333333334
+ Average hr for 20 recommendations: 0.25216666666666665
+ Average hr for 30 recommendations: 0.3051666666666667
+ Average precison for 3 recommendations: 0.02527777777777776
+ Average precison for 5 recommendations: 0.026466666666666628
+ Average precison for 10 recommendations: 0.02376666666666672
+ Average precison for 20 recommendations: 0.019325000000000078
+ Average precison for 30 recommendations: 0.01642777777777782
