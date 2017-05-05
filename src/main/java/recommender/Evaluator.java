@@ -6,16 +6,16 @@ import java.util.HashMap;
 import java.util.Set;
 
 
-import org.dmg.pmml.Model;
 import recommender.lenskit.ContentBasedRecommender;
 import recommender.lenskit.ItemBasedRecommender;
 import recommender.nonframework.BaselineRecommender;
 import recommender.spark.ModelBasedRecommender;
-//import recommender.nonframework.BaselineRecommender;
 
 
 /**
  * Created by simen on 3/16/17.
+ * Class used for evaluating Recommenders in terms of accuracy (MAP, ARHR, HR, precision) and scalability (training and
+ * prediction time).
  */
 public class Evaluator {
 
@@ -26,22 +26,23 @@ public class Evaluator {
         /*The accuracy tests run for the thesis - gives MAP, ARHR, HR and MAP + training and prediction times
         for all of our 4 implemented recommenders on MovieLens, Million Song and Book-Crossing dataset.
         */
-        //eval.evalBab10();
-        //eval.evalAb10();
-        //eval.evalGiven(2);
-        //eval.evalGiven(5);
-        //eval.evalGiven(8);
+        //eval.evalBab10(); //using binary ratings, all-but-10
+        //eval.evalAb10(); //using orignal ratings, all-but-10
+        //eval.evalGiven(2); //using binary ratings, given-2
+        //eval.evalGiven(5); //using binary ratings, given-5
+        //eval.evalGiven(8); //using binary ratings, given-8
 
 
         /*The scalability tests run for the thesis for the 4 algorithms on three subsets of MovieLens:
          */
-        //Recommender[] rss = eval.getTopNRecommenders("data/ml10m/tags100k", "data/ml10m/titles100k");
+        //Recommender[] rss;
+        //rss = eval.getTopNRecommenders("data/ml10m/tags100k", "data/ml10m/titles100k"); //100K subset
         //eval.testScalability(rss, "data/ml10m/ratings100k");
 
-        //rss = eval.getTopNRecommenders("data/ml10m/tags1m", "data/ml10m/titles1m");
+        //rss = eval.getTopNRecommenders("data/ml10m/tags1m", "data/ml10m/titles1m"); //1M subset
         //eval.testScalability(rss, "data/ml10m/ratings1m");
 
-        //rss = eval.getTopNRecommenders("data/ml10m/tags5m", "data/ml10m/titles5m");
+        //rss = eval.getTopNRecommenders("data/ml10m/tags5m", "data/ml10m/titles5m");//5M subset
         //eval.testScalability(rss, "data/ml10m/ratings5m");
     }
 
