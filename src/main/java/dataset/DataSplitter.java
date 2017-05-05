@@ -72,7 +72,7 @@ public class DataSplitter {
 
     //Method that takes an input file inFile, reads it and writes it to train/test files nFolds times
     //in the directory outDirectory. For each user, one rating is written to test file, while
-    //the rest of the ratings10m are written to the training file
+    //the rest of the ratings are written to the training file
     public static void leaveOneOut(String inFile, String outDirectory, int nFolds, String delimiter) {
 
         HashMap<String,HashMap<String,Rating>> usersRatings = readRatingData(inFile, delimiter);
@@ -86,10 +86,10 @@ public class DataSplitter {
 
                 for (String userId : usersRatings.keySet()) {
 
-                    HashMap<String, Rating> ratings = usersRatings.get(userId); //gets thie given user's ratings10m
+                    HashMap<String, Rating> ratings = usersRatings.get(userId); //gets thie given user's ratings
                     int numRatings = ratings.size();
-                    if (numRatings <= 2) continue; //dont add data for users with too few ratings10m
-                    int randomNum = ThreadLocalRandom.current().nextInt(0, numRatings); //chooses which index of the ratings10m to leave out
+                    if (numRatings <= 2) continue; //dont add data for users with too few ratings
+                    int randomNum = ThreadLocalRandom.current().nextInt(0, numRatings); //chooses which index of the ratings to leave out
                     int j = 0;
 
                     for (Rating rating : ratings.values()) {

@@ -16,47 +16,6 @@ public class ReformatData {
     private static HashSet<String> stopWords;
 
     public static void main(String[] args) {
-        //movieLensTagsSmall("data/movielens/u.item", "data/movielens/item-tags", "data/movielens/titles");
-        /*bookCrossing("data/bx6k/ratings10m","data/bx/bx-books.csv", "data/bx6k/ratings10m-transformed",
-                "data/bx6k/item-tags","data/bx6k/titles");*/
-        //makeSubset("data/bx/bx.csv", "data/bx6k/ratings10m",";", 6000, 20, 200);
-        //makeSubset("/home/simen/Desktop/train_triplets.txt", "data/msd6k/ratings4","\t", 6000, 30, 100);
-        //makeSubset("/home/simen/Desktop/ml-1m/ratings10m.dat", "data/ml6k/ratings10m","::", 6000, 20, 200);
-        /*msd("data/msd6k/ratings3", "data/msd6k/song-to-track", "data/msd6k/itemids",
-                "data/msd6k/ratings10m-transformed", "/home/simen/Desktop/msd/tags-reduced",
-                "data/msd6k/tags", "data/msd6k/titles");*/
-
-        //reduceTags("data/msd6k/tags", "data/msd6k/tags-reduced", 10);
-        //reduceMsdTags("/home/simen/Desktop/msd/tid_tag.csv", "/home/simen/Desktop/msd/tags-reduced", 30);
-        //binarizeRatings("data/msd6k/ratings10m", "data/msd6k/binarized-ratings10m");
-        //makeSubset("/home/simen/Desktop/ml-10M100K/ratings10m.dat","data/ml6k/ratings10m", "::", 6000,20,200);
-        /*movieLensTagsLarge("/home/simen/Desktop/ml-10M100K/movies.dat", "data/ml6k/ratings10m",
-                "data/ml6k/tags", "data/ml6k/titles");*/
-        /*movieLensTagsLarge("/home/simen/Desktop/ml-10M100K/movies.dat", "data/ml6k/ratings10m",
-                "data/ml6k/tags", "data/ml6k/titles");*/
-        /*movieLensTagsLarge("/home/simen/Desktop/ml-10M100K/movies.dat", "/home/simen/Desktop/ml-10M100K/ratings10m.dat",
-                "data/ml10m/tags", "data/ml10m/titles");*/
-        movieLensTagsLarge("/home/simen/Desktop/ml-10M100K/movies.dat", "data/ml10m/ratings5m",
-                "data/ml10m/tags5m", "data/ml10m/titles5m", "\t");
-        movieLensTagsLarge("/home/simen/Desktop/ml-10M100K/movies.dat", "data/ml10m/ratings1m",
-                "data/ml10m/tags1m", "data/ml10m/titles1m", "\t");
-        movieLensTagsLarge("/home/simen/Desktop/ml-10M100K/movies.dat", "data/ml10m/ratings100k",
-                "data/ml10m/tags100k", "data/ml10m/titles100k", "\t");
-        //binarizeRatings("/home/simen/Desktop/ml-10M100K/ratings10m.dat", "data/ml10m/ratings10m", "::");
-
-        /*bookCrossing("data/bx6k/ratings10m","data/bx/bx-books.csv", "data/bx6k/ratings10m-transformed",
-                "data/bx6k/item-tags","data/bx6k/titles");*/
-        //reduceTags("data/bx6k/item-tags", "data/bx6k/item-tags-reduced", 2);
-        //printInfoAboutData("data/msd6k/ratings3", "\t");
-        //printInfoAboutData("data/bx6k/ratings10m-transformed", "\t");
-        //printInfoAboutData("data/ml6k/ratings10m", "::");
-        //featureExtraction();
-        //binarizeTrainingFiles("data/bx6k/ab10","data/bx6k/bab10", 1, 5);
-        //binarizeTrainingFiles("data/msd6k/ab10","data/msd6k/bab10", 1, 5);
-        //binarizeTrainingFiles("data/ml6k/ab10","data/ml6k/bab10", 1, 5);
-        /*binarizeRatings("data/bx6k/ratings10m-transformed", "data/bx6k/binarized-ratings10m", "\t");
-        binarizeRatings("data/ml6k/ratings10m", "data/ml6k/binarized-ratings10m", "::");
-        binarizeRatings("data/msd6k/ratings10m-transformed", "data/msd6k/binarized-ratings10m", "\t");*/
     }
 
 

@@ -52,21 +52,18 @@ public class TFIDFItemScorer extends AbstractItemScorer {
             // Score the item represented by 'e'.
             // Get the item vector for this item
             SparseVector iv = model.getItemVector(e.getKey());
-            // TODO Compute the cosine of this item and the user's profile, store it in the output vector
+            // Compute the cosine of this item and the user's profile, store it in the output vector
             // Cosine b/n iv and userVector
             double numerator = userVector.dot(iv);
             double denominator = userVector.norm() * iv.norm();
             double cosine = numerator / denominator;
             output.set(e.getKey(), cosine);
 
-
-            // TODO And remove this exception to say you've implemented it
-            //throw new UnsupportedOperationException("stub implementation");
         }
     }
 
     private SparseVector makeUserVector(long user) {
-        // Get the user's ratings10m
+        // Get the user's ratings
         List<Rating> userRatings = dao.getEventsForUser(user, Rating.class);
         if (userRatings == null) {
             // the user doesn't exist
@@ -78,45 +75,11 @@ public class TFIDFItemScorer extends AbstractItemScorer {
         // Fill it with 0's initially - they don't like anything
         profile.fill(0);
 
-        // Iterate over the user's ratings10m to build their profile
-        /*double ratingSum = 0;
-        int counter = 0;
-        for (Rating r: userRatings) {
-            // In LensKit, ratings10m are expressions of preference
-            Preference p = r.getPreference();
-            // We'll never have a null preference. But in LensKit, ratings10m can have null
-            // preferences to express the user unrating an item*/
-            /*  Part 1
-            if (p != null && p.getValue() >= 3.5) {
-                // The user likes this item!
-                // 1. Get the itemVectors for this item
-                long itemId = r.getItemId();
-                SparseVector itemVector = this.model.getItemVector(itemId);
+        // Iterate over the user's ratings to build their profile
 
-                for(VectorEntry v: itemVector.fast()){
-                    // get the vector's key
-                    long vKey = v.getKey();
-
-                    // get the vector's value
-                    double vValue = v.getValue();
-
-                    // add the value to Profile
-                    double sum = vValue + profile.get(vKey);
-                    profile.set(vKey, sum);
-                }
-            }
-            */
-            /*// Part2
-            // 1. calculate the user rating
-            counter++;
-            ratingSum += p.getValue();
-        }*/
-        //double avgRating = ratingSum/counter;
         for(Rating r: userRatings){
             Preference p = r.getPreference();
             double ratingValue = p.getValue();
-            //double multiplier = ratingValue - avgRating;
-            //double multiplier = ratingValue;
             double multiplier = 1 + Math.log10(1+ratingValue);
             long itemId = r.getItemId();
             SparseVector itemVector = this.model.getItemVector(itemId);
@@ -128,10 +91,6 @@ public class TFIDFItemScorer extends AbstractItemScorer {
             }
 
         }
-
-
-        //System.out.println("");
-
 
         // The profile is accumulated, return it.
         // It is good practice to return a frozen vector.

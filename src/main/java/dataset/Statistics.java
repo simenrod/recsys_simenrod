@@ -7,24 +7,22 @@ import java.util.HashSet;
 
 /**
  * Created by simen on 3/30/17.
+ * Class that prints info about the properties of datasets, both for ratings and for tags.
  */
 public class Statistics {
 
+
     public static void main(String[] args) {
-        //printInfoAboutTags("data/bx6k/item-tags-reduced", ",");
-        //printInfoAboutTags("data/msd6k/tags", ",");
-        //printInfoAboutTags("data/ml6k/tags", ",");
         printInfoAboutTags("data/ml10m/tags100k", ",");
         printInfoAboutTags("data/ml10m/tags1m", ",");
         printInfoAboutTags("data/ml10m/tags5m", ",");
         printInfoAboutData("data/ml10m/ratings100k", "\t");
         printInfoAboutData("data/ml10m/ratings1m", "\t");
         printInfoAboutData("data/ml10m/ratings5m", "\t");
-
-        //printInfoAboutData("data/ml6k/ratings10m", "::");
-
     }
 
+
+    //Mehod that prints info about number of users, items, ratings, and average ratings per user and item in rating dataset.
     public static void printInfoAboutData(String ratingFile, String delimiter) {
         HashSet<String> users = new HashSet<>();
         HashSet<String> items = new HashSet<>();
@@ -43,9 +41,9 @@ public class Statistics {
             }
             System.out.println("Total number of users: " + users.size());
             System.out.println("Total number of items: " + items.size());
-            System.out.println("Total number of ratings10m: " + ratings);
-            System.out.println("Avg ratings10m per user: " + ratings/users.size());
-            System.out.println("Avg ratings10m per item: " + ratings/items.size());
+            System.out.println("Total number of ratings: " + ratings);
+            System.out.println("Avg ratings per user: " + ratings/users.size());
+            System.out.println("Avg ratings per item: " + ratings/items.size());
 
         }
         catch(IOException ie) {
@@ -55,6 +53,7 @@ public class Statistics {
 
     }
 
+    //Method that prints info about the properties of a tag dataset.
     public static void printInfoAboutTags(String tagFile, String delimiter) {
         HashSet<String> distinctTags = new HashSet<>();
         HashSet<String> items = new HashSet<>();
