@@ -138,12 +138,7 @@ public class TFIDFModelBuilder implements Provider<TFIDFModel> {
                 double tf = v.getValue();
 
                 double idf = docFreq.get(v.getKey());
-                //System.out.print(" idf: ");
-                //System.out.print(idf);
-
                 tv.set(v.getKey(), tf*idf);
-                //System.out.print(" tf*idf ");
-                //System.out.println(tv.get(v.getKey()));
             }
             // tv is now the tf*idf vector
 
